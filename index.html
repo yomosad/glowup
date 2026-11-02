@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glow-up Трекер</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Идея: тёмное мобильное приложение с нижней навигацией, цветные плитки разделов, всё считается по реальным данным пользователя. */
+:root {
+  --bg: #f2f4fb; --card: #ffffff; --ink: #0e1530; --muted: #5a6585; --line: #dde2f1;
+  --blue: #2f6bff; --purple: #7447f0; --green: #17936a; --amber: #a96a0c; --red: #c23b3b;
+  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a0f1f; --card: #121a31; --ink: #eef1fb; --muted: #97a2c4; --line: #222c4a;
+    --blue: #5b93ff; --purple: #a183ff; --green: #4cd39b; --amber: #f0b24a; --red: #ff7a7a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a0f1f; --card: #121a31; --ink: #eef1fb; --muted: #97a2c4; --line: #222c4a;
+  --blue: #5b93ff; --purple: #a183ff; --green: #4cd39b; --amber: #f0b24a; --red: #ff7a7a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45;
+  margin: 0;
+  padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: 104px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 520px; margin: 0 auto; }
+h1 { font-size: 26px; line-height: 1.15; margin: 0 0 4px; font-weight: 700; text-wrap: balance; }
+h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; font-weight: 600; }
+h3 { font-size: 17px; margin: 0; font-weight: 600; }
+p { margin: 0; }
+.sub { color: var(--muted); }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; min-width: 0; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+.stat b { display: block; font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+.stat span { font-size: 13px; color: var(--muted); }
+.pill { display: block; margin-top: 14px; padding: 10px 14px; border-radius: 12px; background: color-mix(in srgb, var(--blue) 10%, var(--card)); font-size: 14px; }
+.tile { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  padding: 16px; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--c) 45%, var(--line));
+  background: color-mix(in srgb, var(--c) 9%, var(--card)); }
+.tile .ico { flex: none; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--c); color: #fff; }
+.tile .ico svg { width: 24px; height: 24px; }
+.tile strong { display: block; font-size: 17px; color: var(--c); font-weight: 600; }
+.tile small { color: var(--muted); font-size: 14px; }
+.tile .go { margin-left: auto; color: var(--c); font-size: 20px; }
+.c-blue { --c: var(--blue); } .c-purple { --c: var(--purple); } .c-green { --c: var(--green); } .c-amber { --c: var(--amber); }
+svg { display: block; }
+.ico svg, nav svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.task { display: flex; align-items: center; gap: 12px; width: 100%; font: inherit; color: inherit; text-align: left; cursor: pointer;
+  padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+.task .box { flex: none; width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; color: transparent; }
+.task .box svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.task[aria-pressed="true"] { border-color: color-mix(in srgb, var(--green) 55%, var(--line)); background: color-mix(in srgb, var(--green) 9%, var(--card)); }
+.task[aria-pressed="true"] .box { background: var(--green); border-color: var(--green); color: #fff; }
+.task[aria-pressed="true"] .t { color: var(--muted); }
+.task .star { margin-left: auto; font-size: 12px; color: var(--amber); font-weight: 600; white-space: nowrap; }
+.bar { height: 10px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--green); border-radius: 99px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+input[type=text], input[type=number] { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; min-width: 0; flex: 1 1 120px; }
+input:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.btn { font: inherit; font-weight: 600; cursor: pointer; border: 0; border-radius: 12px; padding: 11px 18px; background: var(--blue); color: #fff; }
+.btn.ghost { background: transparent; color: var(--red); border: 1px solid var(--red); }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; align-items: end; height: 120px; }
+.week div { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; height: 100%; font-size: 12px; color: var(--muted); }
+.week i { width: 100%; max-width: 30px; border-radius: 8px 8px 4px 4px; background: color-mix(in srgb, var(--blue) 55%, var(--line)); min-height: 4px; }
+.week i.ok { background: var(--green); }
+.chart text { fill: var(--muted); font-size: 11px; font-family: var(--font); }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .ln { fill: none; stroke: var(--blue); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart circle { fill: var(--card); stroke: var(--blue); stroke-width: 2.5; }
+.empty { padding: 26px 8px; text-align: center; color: var(--muted); }
+details { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 0 16px; }
+summary { cursor: pointer; padding: 14px 0; font-weight: 600; list-style: none; display: flex; gap: 10px; justify-content: space-between; align-items: center; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--blue); font-size: 20px; }
+details[open] summary::after { content: "–"; }
+details .body { padding: 0 0 16px; display: flex; flex-direction: column; gap: 10px; color: var(--ink); }
+details ul { margin: 0; padding-left: 18px; }
+.src { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.tag { font-size: 12px; font-weight: 600; color: var(--purple); }
+nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: color-mix(in srgb, var(--card) 94%, transparent); border-top: 1px solid var(--line);
+  padding: 8px max(8px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+nav .in { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+nav button { font: inherit; font-size: 12px; font-weight: 500; color: var(--muted); background: none; border: 0; cursor: pointer; padding: 6px 2px; display: flex; flex-direction: column; align-items: center; gap: 3px; border-radius: 12px; }
+nav button svg { width: 24px; height: 24px; }
+nav button[aria-current="page"] { color: var(--blue); font-weight: 600; }
+.ring { position: relative; width: 84px; height: 84px; flex: none; }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 20px; font-variant-numeric: tabular-nums; }
+.ring circle { fill: none; stroke-width: 9; }
+.note { font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .bar i, .week i { transition: height .3s, width .3s; } }
+</style>
+</head>
+<body>
+<main id="view" aria-live="polite"></main>
+<nav aria-label="Разделы"><div class="in" id="nav"></div></nav>
+
+<script>
+(function () {
+  var KEY = "glowup-app-v1";
+  var ITEMS = [
+    { k: "sleep", t: "Сон: отбой в 23:00, 8 часов", min: true },
+    { k: "food", t: "Еда с белком, 5 приёмов", min: true },
+    { k: "english", t: "Английский 30 минут", min: true },
+    { k: "water", t: "Вода около 2 л" },
+    { k: "gym", t: "Зал или прогулка 30 минут" },
+    { k: "skin_am", t: "Кожа утром: крем + SPF" },
+    { k: "skin_pm", t: "Кожа вечером: пенка + крем" },
+    { k: "ege", t: "ЕГЭ 1,5 часа" },
+    { k: "money", t: "Деньги: ресейл или контент" },
+    { k: "read", t: "Чтение 30 минут" }
+  ];
+  var MIN = ITEMS.filter(function (i) { return i.min; }).map(function (i) { return i.k; });
+  var ICONS = {
+    home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    tasks: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/>',
+    chart: '<path d="M5 20v-6M12 20V6M19 20v-10"/>',
+    book: '<path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h12"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'
+  };
+  var TABS = [
+    ["home", "Главная", "home"], ["tasks", "Задачи", "tasks"], ["progress", "Прогресс", "chart"],
+    ["base", "База", "book"], ["profile", "Профиль", "user"]
+  ];
+  var TIPS = [
+    "Недосып снижает тестостерон: неделя по 5 часов сна дала падение на 10–15% у здоровых молодых мужчин (Leproult & Van Cauter, JAMA, 2011).",
+    "Белок лучше делить на 4–5 приёмов по 20–30 г: так мышцы получают сигнал к росту несколько раз за день (Schoenfeld & Aragon, 2018).",
+    "Привычка формируется в среднем за 66 дней, но разброс огромный: от 18 до 254. Один пропуск процесс не ломает (Lally et al., 2010).",
+    "SPF 30 нужен и зимой на открытых участках: ультрафиолет есть при любой температуре, а снег отражает до 80% излучения.",
+    "Проверять себя вопросами эффективнее, чем перечитывать конспект (Dunlosky et al., 2013). Это работает и для ЕГЭ, и для английского.",
+    "Вес растёт, только если калорий больше, чем расход. Для набора обычно хватает профицита +300–500 ккал в день (Iraki et al., 2019)."
+  ];
+  var BASE = [
+    { tag: "Сон", t: "Сон и тестостерон", s: "Недосып бьёт по гормонам, восстановлению и настроению.",
+      pts: ["В эксперименте здоровые мужчины 10 дней спали по 5 часов: тестостерон днём упал на 10–15%.", "Подросткам нужно 8–10 часов сна.", "Практика: отбой до 23:00, экран за 30 минут до сна убрать."],
+      src: "Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. JAMA, 2011." },
+    { tag: "Питание", t: "Белок для мышц", s: "Больше белка выше определённого порога почти не добавляет роста.",
+      pts: ["Польза растёт примерно до 1,6 г белка на кг веса в день.", "Для 52 кг это около 85 г, а с запасом до 115 г в сутки.", "Делить на 4–5 приёмов по 20–30 г. Источники: яйца, творог, курица, рыба, кефир."],
+      src: "Morton R.W. et al. A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training. British Journal of Sports Medicine, 2018. Schoenfeld B., Aragon A. How much protein can the body use in a single meal? JISSN, 2018." },
+    { tag: "Питание", t: "Калории для набора массы", s: "Если вес не растёт, значит калорий не хватает.",
+      pts: ["Нужен профицит примерно +300–500 ккал к расходу.", "Темп набора 0,25–0,5 кг в неделю: быстрее обычно значит больше жира.", "Если за 2 недели вес не вырос, добавь 200–300 ккал (молоко, банан с арахисовой пастой).", "Нет роста 3–4 недели при честном питании: сходи к врачу."],
+      src: "Iraki J., Fitschen P., Espinar S., Helms E. Nutrition recommendations for bodybuilders in the off-season. Sports, 2019." },
+    { tag: "Здоровье", t: "Сколько пить воды", s: "Около 2,5 л жидкости в сутки для юноши, из них примерно пятая часть приходит с едой.",
+      pts: ["Пить стакан воды утром и около тренировки.", "Моча светло-жёлтая: питьё достаточное.", "Больше не значит лучше: гонять литры сверх потребности пользы нет."],
+      src: "EFSA Panel on Dietetic Products, Nutrition and Allergies. Scientific opinion on dietary reference values for water. EFSA Journal, 2010." },
+    { tag: "Кожа", t: "SPF: 30 или 50", s: "Разница в защите небольшая, важнее нанести достаточно и вовремя обновлять.",
+      pts: ["SPF 30 задерживает около 97% UVB, SPF 50 около 98%.", "Люди обычно наносят в 2–4 раза меньше нормы, поэтому реальная защита ниже.", "Выбирай SPF 30+ с защитой от UVA, на день, на лицо, в том числе зимой."],
+      src: "American Academy of Dermatology: рекомендации по солнцезащите (SPF 30 и выше, широкий спектр)." },
+    { tag: "Кожа", t: "Проблемная кожа без фанатизма", s: "Простой уход работает лучше, чем много баночек сразу.",
+      pts: ["Мягкая пенка, увлажняющий крем, SPF: база утром и вечером.", "В рекомендациях по акне первая линия это местные средства (бензоилпероксид, ретиноиды, азелаиновая кислота), а не «сыворотка для всего».", "Новое средство добавляй по одному, раз в 2 недели. Шелушение и жжение: пауза и возврат к базе.", "Воспалённые высыпания, рубцы: к дерматологу."],
+      src: "Reynolds R.V. et al. Guidelines of care for the management of acne vulgaris. Journal of the American Academy of Dermatology, 2024." },
+    { tag: "Привычки", t: "Как закрепить режим", s: "Автоматизм появляется не за 21 день, а в среднем за 66.",
+      pts: ["Привязывай действие к тому, что уже делаешь (после зала: белок и растяжка).", "Пропуск одного дня не обнуляет прогресс. Главное вернуться на следующий.", "В тяжёлый день делай только минимум: сон, еда с белком, английский."],
+      src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
+    { tag: "Учёба", t: "Как учить английский и ЕГЭ", s: "Две самые полезные техники по обзору десяти методов.",
+      pts: ["Проверяй себя вопросами и карточками вместо перечитывания.", "Повторяй с интервалами: сегодня, через 2 дня, через неделю.", "30 минут каждый день лучше, чем 3 часа раз в неделю."],
+      src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+  ];
+
+  var tg = window.Telegram && window.Telegram.WebApp;
+  var cloud = null;
+  try {
+    if (tg && tg.initData) { tg.ready(); tg.expand(); }
+    if (tg && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast("6.9") && tg.initData) cloud = tg.CloudStorage;
+  } catch (e) { cloud = null; }
+
+  var state = loadLocal();
+  function loadLocal() {
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
+    return { name: "", goal: "", days: {}, weights: {} };
+  }
+  function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  state.days = state.days || {}; state.weights = state.weights || {};
+
+  /* Облако Telegram: ключи p (профиль), d_ДАТА (задачи дня), w_ДАТА (вес) */
+  function cset(key, val) { if (cloud) { try { cloud.setItem(key, val, function () {}); } catch (e) {} } }
+  function saveDay(k) { saveLocal(); cset("d_" + k, (state.days[k] || []).join(",") || "-"); }
+  function saveWeight(k) { saveLocal(); cset("w_" + k, String(state.weights[k])); }
+  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal })); }
+  function wipe() {
+    saveLocal();
+    if (!cloud) return;
+    try {
+      cloud.getKeys(function (err, keys) {
+        if (!err && keys && keys.length) { cloud.removeItems(keys, function () {}); }
+      });
+    } catch (e) {}
+  }
+  function loadCloud(done) {
+    if (!cloud) return;
+    try {
+      cloud.getKeys(function (err, keys) {
+        if (err || !keys || !keys.length) { done(); return; }
+        cloud.getItems(keys, function (err2, vals) {
+          if (err2 || !vals) { done(); return; }
+          var s = { name: "", goal: "", days: {}, weights: {} };
+          Object.keys(vals).forEach(function (k) {
+            var v = vals[k];
+            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; } catch (e) {} }
+            else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
+            else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
+          });
+          state = s; saveLocal(); done(true);
+        });
+      });
+    } catch (e) { done(); }
+  }
+
+  function dkey(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function shift(n) { var d = new Date(); d.setDate(d.getDate() + n); return d; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function doneOn(key) { return state.days[key] || []; }
+  function okDay(key) { var d = doneOn(key); return MIN.every(function (k) { return d.indexOf(k) >= 0; }); }
+  function streak() {
+    var n = 0, off = okDay(dkey(new Date())) ? 0 : -1;
+    while (okDay(dkey(shift(off - n)))) n++;
+    return n;
+  }
+  function icon(name) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + "</svg>"; }
+  function sortedWeights() {
+    return Object.keys(state.weights).sort().map(function (k) { return { d: k, kg: state.weights[k] }; });
+  }
+  function fmtDate(k) { var p = k.split("-"); return p[2] + "." + p[1]; }
+  function kgText(v) { return v.toFixed(1).replace(".", ","); }
+
+  /* ---------- виды ---------- */
+  function home() {
+    var tk = dkey(new Date()), done = doneOn(tk).length, total = ITEMS.length;
+    var w = sortedWeights(), last = w.length ? kgText(w[w.length - 1].kg) + " кг" : "вес не записан";
+    var pct = Math.round(done / total * 100), C = 2 * Math.PI * 34, off = C * (1 - done / total);
+    var tip = TIPS[Math.floor(Date.now() / 86400000) % TIPS.length];
+    var left = ITEMS.filter(function (i) { return i.min && doneOn(tk).indexOf(i.k) < 0; }).map(function (i) { return i.t.split(":")[0]; });
+    return '<div class="stack">' +
+      '<div><h1>Привет' + (state.name ? ", " + esc(state.name) : "") + "!</h1><p class='sub'>Что делаем сегодня для себя?</p></div>" +
+      '<section class="card"><h2>Твой статус</h2><div class="row" style="flex-wrap:nowrap;gap:16px">' +
+        '<div class="ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="var(--line)"/><circle cx="42" cy="42" r="34" stroke="var(--green)" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 42 42)"/></svg><b>' + pct + '%</b></div>' +
+        '<div class="stats" style="flex:1"><div class="stat"><b>' + streak() + '</b><span>серия дней</span></div><div class="stat"><b>' + done + '/' + total + '</b><span>задач</span></div><div class="stat"><b style="font-size:20px;line-height:36px">' + last + '</b><span>вес</span></div></div></div>' +
+        '<span class="pill">' + (left.length ? "До минимума дня: " + esc(left.join(", ").toLowerCase()) : "Минимум дня выполнен. Остальное бонус.") + "</span></section>" +
+      tile("tasks", "c-blue", "Задачи на день", "Твой план на сегодня") +
+      tile("progress", "c-green", "Прогресс", "Вес, серия, неделя") +
+      tile("base", "c-purple", "База знаний", "Только то, что доказано исследованиями") +
+      '<section class="card"><h2>Факт дня</h2><p>' + esc(tip) + "</p></section></div>";
+  }
+  function tile(go, cls, t, s) {
+    var ic = { tasks: "tasks", progress: "chart", base: "book" }[go];
+    return '<button class="tile ' + cls + '" data-go="' + go + '"><span class="ico">' + icon(ic) + "</span><span><strong>" + t + "</strong><small>" + s + '</small></span><span class="go" aria-hidden="true">→</span></button>';
+  }
+  function tasks() {
+    var tk = dkey(new Date()), d = doneOn(tk), done = d.length;
+    var list = ITEMS.map(function (i) {
+      var on = d.indexOf(i.k) >= 0;
+      return '<button class="task" data-t="' + i.k + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="t">' + esc(i.t) + "</span>" + (i.min ? '<span class="star">минимум</span>' : "") + "</button>";
+    }).join("");
+    var d0 = new Date(), months = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+    return '<div class="stack"><div><h1>Задачи на день</h1><p class="sub">' + d0.getDate() + " " + months[d0.getMonth()] + "</p></div>" +
+      '<div class="card"><div class="row" style="justify-content:space-between"><b>Выполнено ' + done + " из " + ITEMS.length + '</b><span class="sub">' + (okDay(tk) ? "минимум закрыт" : "до минимума: " + MIN.filter(function (k) { return d.indexOf(k) < 0; }).length) + '</span></div><div class="bar" style="margin-top:10px"><i style="width:' + (done / ITEMS.length * 100) + '%"></i></div></div>' +
+      list + '<p class="note">Тяжёлый день: достаточно трёх пунктов с пометкой «минимум». Один пропуск ничего не ломает.</p></div>';
+  }
+  function chart(w) {
+    if (!w.length) return '<div class="empty">Запиши первый вес, и здесь появится график.</div>';
+    var pts = w.slice(-12), W = 340, H = 170, L = 38, R = 14, T = 14, B = 26;
+    var vals = pts.map(function (p) { return p.kg; }), mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    var lo = Math.floor((mn - 0.5) * 2) / 2, hi = Math.ceil((mx + 0.5) * 2) / 2; if (hi - lo < 1) { hi = lo + 1; }
+    function X(i) { return pts.length === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (pts.length - 1); }
+    function Y(v) { return T + (hi - v) / (hi - lo) * (H - T - B); }
+    var g = "", ticks = [lo, (lo + hi) / 2, hi];
+    ticks.forEach(function (t) { g += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(t).toFixed(1) + '" y2="' + Y(t).toFixed(1) + '"/><text x="' + (L - 6) + '" y="' + (Y(t) + 4).toFixed(1) + '" text-anchor="end">' + kgText(t) + "</text>"; });
+    var path = pts.map(function (p, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(p.kg).toFixed(1); }).join(" ");
+    var dots = pts.map(function (p, i) { return '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(p.kg).toFixed(1) + '" r="4"/>'; }).join("");
+    var xl = '<text x="' + X(0).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + (pts.length === 1 ? "middle" : "start") + '">' + fmtDate(pts[0].d) + "</text>" +
+      (pts.length > 1 ? '<text x="' + X(pts.length - 1).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="end">' + fmtDate(pts[pts.length - 1].d) + "</text>" : "");
+    return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="График веса">' + g + '<path class="ln" d="' + path + '"/>' + dots + xl + "</svg>";
+  }
+  function progress() {
+    var w = sortedWeights(), diff = "";
+    if (w.length > 1) { var c = w[w.length - 1].kg - w[0].kg; diff = (c >= 0 ? "+" : "−") + kgText(Math.abs(c)) + " кг с " + fmtDate(w[0].d); }
+    var goal = parseFloat(String(state.goal).replace(",", ".")), goalTxt = "";
+    if (goal && w.length) { var left = goal - w[w.length - 1].kg; goalTxt = left > 0.05 ? "До цели " + kgText(goal) + " кг: " + kgText(left) + " кг" : "Цель " + kgText(goal) + " кг достигнута"; }
+    var days = [], names = ["вс","пн","вт","ср","чт","пт","сб"];
+    for (var i = 6; i >= 0; i--) { var d = shift(-i), k = dkey(d), n = doneOn(k).length; days.push('<div><i class="' + (okDay(k) ? "ok" : "") + '" style="height:' + Math.max(4, n / ITEMS.length * 90) + 'px" title="' + n + ' из ' + ITEMS.length + '"></i><span>' + names[d.getDay()] + "</span></div>"); }
+    return '<div class="stack"><div><h1>Прогресс</h1><p class="sub">Серия: ' + streak() + " дн. подряд с выполненным минимумом</p></div>" +
+      '<section class="card"><h2>Вес</h2>' + chart(w) +
+      (diff || goalTxt ? '<p class="sub" style="margin-top:8px">' + [diff, goalTxt].filter(Boolean).join(" · ") + "</p>" : "") +
+      '<div class="row" style="margin-top:14px"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="200" placeholder="например 52,5" aria-label="Вес в кг"><button class="btn" data-act="addw">Записать</button></div>' +
+      '<p class="note" style="margin-top:8px">Взвешивайся раз в неделю утром, в одинаковых условиях.</p></section>' +
+      '<section class="card"><h2>Последние 7 дней</h2><div class="week">' + days.join("") + '</div><p class="note" style="margin-top:10px">Зелёный столбец: минимум дня выполнен.</p></section></div>';
+  }
+  function base() {
+    return '<div class="stack"><div><h1>База знаний</h1><p class="sub">Каждая статья со ссылкой на исследование</p></div>' +
+      BASE.map(function (a) {
+        return "<details><summary><span><span class='tag'>" + a.tag + "</span><br>" + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" + a.pts.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + '</ul><p class="src">Источник: ' + esc(a.src) + "</p></div></details>";
+      }).join("") + '<p class="note">Это общая информация, а не медицинская рекомендация. При проблемах со здоровьем обращайся к врачу.</p></div>';
+  }
+  var confirmDel = false;
+  function profile() {
+    return '<div class="stack"><div><h1>Профиль</h1><p class="sub">Цели и данные</p></div>' +
+      '<section class="card stack"><label for="p-name"><b>Как тебя зовут</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="имя">' +
+      '<label for="p-goal"><b>Цель по весу, кг</b></label><input id="p-goal" type="number" inputmode="decimal" step="0.5" min="30" max="200" value="' + esc(state.goal || "") + '" placeholder="например 60">' +
+      '<button class="btn" data-act="saveprof">Сохранить</button></section>' +
+      '<section class="card stack"><h2 style="margin:0">Данные</h2><p>' + (cloud ? 'Данные хранятся в облаке твоего Telegram и доступны на всех твоих устройствах.' : 'Данные хранятся только в этом браузере.') + ' Фото и оценки внешности здесь нет и не будет.</p>' +
+      (confirmDel ? '<p><b>Удалить задачи, вес и профиль без возможности вернуть?</b></p><div class="row"><button class="btn ghost" data-act="del">Да, удалить</button><button class="btn" data-act="nodel">Отмена</button></div>' : '<button class="btn ghost" data-act="askdel">Удалить все мои данные</button>') +
+      '<p class="note">Напоминания в Telegram работают через бота: команда /remind 20:30.</p></section></div>';
+  }
+
+  /* ---------- роутинг и события ---------- */
+  var VIEWS = { home: home, tasks: tasks, progress: progress, base: base, profile: profile };
+  function current() { var h = location.hash.replace("#", ""); return VIEWS[h] ? h : "home"; }
+  function render(keepScroll) {
+    var cur = current(), y = window.scrollY;
+    document.getElementById("view").innerHTML = VIEWS[cur]();
+    document.getElementById("nav").innerHTML = TABS.map(function (t) {
+      return '<button data-go="' + t[0] + '"' + (t[0] === cur ? ' aria-current="page"' : "") + ">" + icon(t[2]) + "<span>" + t[1] + "</span></button>";
+    }).join("");
+    window.scrollTo(0, keepScroll ? y : 0);
+  }
+  function go(v) { if (location.hash.replace("#", "") === v) { render(); } else { location.hash = v; } }
+  window.addEventListener("hashchange", function () { confirmDel = false; render(); });
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-go],[data-t],[data-act]");
+    if (!el) return;
+    if (el.dataset.go) { go(el.dataset.go); return; }
+    if (el.dataset.t) {
+      var k = dkey(new Date()), d = state.days[k] || [], i = d.indexOf(el.dataset.t);
+      if (i >= 0) d.splice(i, 1); else d.push(el.dataset.t);
+      state.days[k] = d; saveDay(k); render(true); return;
+    }
+    var a = el.dataset.act;
+    if (a === "addw") {
+      var v = parseFloat(document.getElementById("w-in").value.replace(",", "."));
+      if (!(v >= 30 && v <= 200)) { document.getElementById("w-in").focus(); return; }
+      var wk = dkey(new Date()); state.weights[wk] = Math.round(v * 10) / 10; saveWeight(wk); render(true);
+    } else if (a === "saveprof") {
+      state.name = document.getElementById("p-name").value.trim();
+      state.goal = document.getElementById("p-goal").value.trim(); saveProfile(); go("home");
+    } else if (a === "askdel") { confirmDel = true; render(true); }
+    else if (a === "nodel") { confirmDel = false; render(true); }
+    else if (a === "del") { state = { name: "", goal: "", days: {}, weights: {} }; wipe(); confirmDel = false; go("home"); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.id === "w-in") { e.preventDefault(); document.querySelector("[data-act=addw]").click(); }
+  });
+  render();
+  loadCloud(function (changed) { if (changed) render(true); });
+})();
+</script>
+</body>
+</html>
