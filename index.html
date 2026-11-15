@@ -8,12 +8,12 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
 <style>
-/* Тёмное мобильное приложение: градиентная шапка с кольцом прогресса, плавающая навигация, карточки со стеклянным фоном. */
+/* Мобильное приложение: градиентная шапка с кольцом прогресса, плавающая навигация, карточки. Темы и языки переключаются на лету. */
 :root {
   --bg: #f4f3fb; --card: #ffffff; --card2: #ece9fb; --ink: #17162e; --muted: #67658d; --line: #e2dff3;
   --a1: #6a45f0; --a2: #0e9f8e; --a3: #e0457f; --ok: #12906a; --warn: #b36b00; --bad: #c43a3a;
   --hero: linear-gradient(140deg, #5b3df0 0%, #8a4fff 55%, #1fb5c9 120%);
-  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
   color-scheme: light;
 }
@@ -47,7 +47,17 @@ p { margin: 0; }
 .stack { display: flex; flex-direction: column; gap: 14px; }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 svg { display: block; }
-.ico svg, nav svg, .btn svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ico svg, nav svg, .btn svg, .theme-btn svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* шапка экрана с кнопкой темы */
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.head > div { min-width: 0; }
+.theme-btn { flex: none; width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  display: grid; place-items: center; cursor: pointer; transition: transform .12s; }
+.theme-btn:active { transform: scale(.92) rotate(15deg); }
+.theme-btn svg { width: 22px; height: 22px; }
+.theme-btn .sun { color: var(--warn); }
+.theme-btn .moon { color: var(--a1); }
 
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; min-width: 0; }
 
@@ -66,8 +76,6 @@ svg { display: block; }
 .hero .nums b { display: block; font-size: 25px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.15; }
 .hero .nums span { font-size: 12px; opacity: .85; }
 .hero .msg { position: relative; z-index: 1; margin-top: 16px; padding: 11px 14px; border-radius: 14px; background: rgba(255,255,255,.16); font-size: 14px; font-weight: 500; }
-.hero.pulse { animation: pulse .7s ease; }
-@keyframes pulse { 40% { transform: scale(1.02); } }
 
 /* плитки */
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -79,7 +87,7 @@ svg { display: block; }
 .tile strong { display: block; font-size: 16px; font-weight: 700; }
 .tile small { color: var(--muted); font-size: 13px; line-height: 1.3; display: block; margin-top: 2px; }
 .mini { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: var(--g); }
-.mini svg { width: 22px; height: 22px; }
+.mini svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .g1 { --g: linear-gradient(135deg, #6a45f0, #9a6bff); } .g2 { --g: linear-gradient(135deg, #0ea58f, #35d7c0); }
 .g3 { --g: linear-gradient(135deg, #e0457f, #ff8aa8); } .g4 { --g: linear-gradient(135deg, #e08a1f, #f5c04a); }
 
@@ -108,6 +116,9 @@ input:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px 
 .btn.ghost { background: transparent; color: var(--bad); border: 1px solid var(--bad); }
 .btn.soft { background: var(--card2); color: var(--ink); }
 .btn.wide { width: 100%; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 4px; background: var(--card2); border-radius: 16px; }
+.seg button { font: inherit; font-weight: 600; border: 0; padding: 10px 6px; border-radius: 12px; background: transparent; color: var(--muted); cursor: pointer; transition: background .2s, color .2s; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.18); }
 
 /* график и неделя */
 .chart text { fill: var(--muted); font-size: 11px; font-family: var(--font); }
@@ -163,19 +174,236 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
 </head>
 <body>
 <main id="view" aria-live="polite"></main>
-<nav aria-label="Разделы"><div class="in" id="nav"></div></nav>
+<nav aria-label="Menu"><div class="in" id="nav"></div></nav>
 
 <script>
 (function () {
   var KEY = "glowup-app-v2";
+  var LANGS = ["ru", "en", "zh"];
+  var LANG_NAMES = { ru: "Русский", en: "English", zh: "中文" };
   var DEFAULT_HABITS = [
-    { k: "sleep", t: "Сон 7–9 часов", min: true },
-    { k: "food", t: "Нормальная еда, без пропусков", min: true },
-    { k: "move", t: "Движение 30 минут", min: true },
-    { k: "water", t: "Вода в течение дня" },
-    { k: "read", t: "Чтение или обучение 30 минут" },
-    { k: "skin", t: "Уход за собой" }
+    { k: "sleep", min: true }, { k: "food", min: true }, { k: "move", min: true },
+    { k: "water" }, { k: "read" }, { k: "skin" }
   ];
+  var DEFAULT_KEYS = ["sleep", "food", "move", "water", "read", "skin"];
+
+  /* ---------- переводы интерфейса ---------- */
+  var D = {
+    ru: {
+      nav_home: "Главная", nav_tasks: "Задачи", nav_progress: "Прогресс", nav_base: "База", nav_profile: "Профиль",
+      g_night: "Доброй ночи", g_morning: "Доброе утро", g_day: "Добрый день", g_evening: "Добрый вечер",
+      tagline: "Маленькие шаги каждый день", streak: "серия", today: "сегодня", kg: "кг",
+      msg_none: "Добавь первые привычки в профиле.", msg_left: "До главного на сегодня: {x}",
+      msg_ok: "Главное на сегодня сделано. Остальное бонус.", msg_go: "Отмечай привычки, и серия будет расти.",
+      tile_tasks: "Задачи", tile_tasks_s: "План на сегодня", tile_progress: "Прогресс", tile_progress_s: "Вес и неделя",
+      tile_base: "База знаний", tile_base_s: "С источниками", tile_profile: "Профиль", tile_profile_s: "Привычки и цели",
+      fact: "Факт дня", banner_t: "Иконка на главный экран", banner_s: "Открывай трекер одним нажатием", add: "Добавить",
+      tasks_title: "Задачи на день", done_of: "Выполнено {a} из {b}", main_closed: "главное закрыто", to_main: "до главного: {n}",
+      main_tag: "главное", no_habits: "Привычек пока нет.", add_habits: "Добавить привычки",
+      hard_day: "Тяжёлый день: хватит привычек с пометкой «главное». Один пропуск ничего не ломает.",
+      prog_title: "Прогресс", prog_streak: "Серия: {n} дн. подряд с выполненным главным", weight: "Вес",
+      chart_empty: "Запиши первый вес, и здесь появится график.", chart_aria: "График веса",
+      w_ph: "например 62,5", w_aria: "Вес в кг", w_save: "Записать", w_note: "Взвешивайся раз в неделю утром, в одинаковых условиях.",
+      last7: "Последние 7 дней", week_note: "Зелёный столбец: главное за день выполнено.",
+      since: "{d} кг с {date}", goal_left: "До цели {g} кг: {l} кг", goal_done: "Цель {g} кг достигнута",
+      base_title: "База знаний", base_sub: "Каждая статья со ссылкой на исследование", source: "Источник:",
+      base_note: "Это общая информация, а не медицинская рекомендация. При проблемах со здоровьем обращайся к врачу.",
+      prof_title: "Профиль", prof_sub: "Цели, привычки и данные", name_l: "Как тебя зовут", name_ph: "имя",
+      goal_l: "Цель по весу, кг", goal_ph: "необязательно", save: "Сохранить",
+      habits_h: "Мои привычки", habits_note: "Звёздочка: главное. Серия растёт, когда выполнено всё главное за день.",
+      star_aria: "Главная привычка", rm_aria: "Удалить привычку", new_ph: "новая привычка", new_aria: "Новая привычка", max_ph: "максимум 20 привычек",
+      app_h: "Приложение", add_home: "Добавить иконку на главный экран", home_added: "Иконка на главном экране уже добавлена.",
+      fs_t: "Полный экран", fs_d: "Приложение занимает весь экран. Вступит в силу при следующем открытии.",
+      remind: "Напоминания в Telegram работают через бота: команда /remind 20:30.",
+      data_h: "Данные", data_cloud: "Данные хранятся в облаке твоего Telegram и доступны на всех твоих устройствах.",
+      data_local: "Данные хранятся только в этом браузере.", no_photo: "Фото и оценки внешности здесь нет и не будет.",
+      del_ask: "Удалить все мои данные", del_q: "Удалить задачи, вес и профиль без возможности вернуть?", del_yes: "Да, удалить", cancel: "Отмена",
+      lang_h: "Язык", theme_aria: "Сменить тему",
+      h_sleep: "Сон 7–9 часов", h_food: "Нормальная еда, без пропусков", h_move: "Движение 30 минут",
+      h_water: "Вода в течение дня", h_read: "Чтение или обучение 30 минут", h_skin: "Уход за собой",
+      months: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
+      days: ["вс","пн","вт","ср","чт","пт","сб"]
+    },
+    en: {
+      nav_home: "Home", nav_tasks: "Tasks", nav_progress: "Progress", nav_base: "Library", nav_profile: "Profile",
+      g_night: "Good night", g_morning: "Good morning", g_day: "Good afternoon", g_evening: "Good evening",
+      tagline: "Small steps every day", streak: "streak", today: "today", kg: "kg",
+      msg_none: "Add your first habits in Profile.", msg_left: "Still key for today: {x}",
+      msg_ok: "Key habits done for today. The rest is a bonus.", msg_go: "Tick off your habits and the streak will grow.",
+      tile_tasks: "Tasks", tile_tasks_s: "Today's plan", tile_progress: "Progress", tile_progress_s: "Weight and week",
+      tile_base: "Library", tile_base_s: "With sources", tile_profile: "Profile", tile_profile_s: "Habits and goals",
+      fact: "Fact of the day", banner_t: "Home screen icon", banner_s: "Open the tracker in one tap", add: "Add",
+      tasks_title: "Today's tasks", done_of: "Done {a} of {b}", main_closed: "key habits done", to_main: "key left: {n}",
+      main_tag: "key", no_habits: "No habits yet.", add_habits: "Add habits",
+      hard_day: "Hard day: the habits marked \"key\" are enough. One missed day breaks nothing.",
+      prog_title: "Progress", prog_streak: "Streak: {n} days in a row with all key habits done", weight: "Weight",
+      chart_empty: "Log your first weight and a chart will appear here.", chart_aria: "Weight chart",
+      w_ph: "e.g. 62.5", w_aria: "Weight in kg", w_save: "Log", w_note: "Weigh yourself once a week in the morning, under the same conditions.",
+      last7: "Last 7 days", week_note: "Green bar: key habits done that day.",
+      since: "{d} kg since {date}", goal_left: "To goal {g} kg: {l} kg left", goal_done: "Goal of {g} kg reached",
+      base_title: "Library", base_sub: "Every article cites its research", source: "Source:",
+      base_note: "This is general information, not medical advice. If you have health problems, see a doctor.",
+      prof_title: "Profile", prof_sub: "Goals, habits and data", name_l: "Your name", name_ph: "name",
+      goal_l: "Weight goal, kg", goal_ph: "optional", save: "Save",
+      habits_h: "My habits", habits_note: "Star = key habit. The streak grows when all key habits are done in a day.",
+      star_aria: "Key habit", rm_aria: "Delete habit", new_ph: "new habit", new_aria: "New habit", max_ph: "20 habits maximum",
+      app_h: "App", add_home: "Add icon to home screen", home_added: "The icon is already on your home screen.",
+      fs_t: "Full screen", fs_d: "The app fills the whole screen. Takes effect the next time you open it.",
+      remind: "Reminders in Telegram come from the bot: command /remind 20:30.",
+      data_h: "Data", data_cloud: "Your data is stored in your Telegram cloud and available on all your devices.",
+      data_local: "Your data is stored only in this browser.", no_photo: "There are no photos or appearance ratings here, and there never will be.",
+      del_ask: "Delete all my data", del_q: "Delete tasks, weight and profile permanently?", del_yes: "Yes, delete", cancel: "Cancel",
+      lang_h: "Language", theme_aria: "Switch theme",
+      h_sleep: "Sleep 7–9 hours", h_food: "Proper meals, no skipping", h_move: "30 minutes of movement",
+      h_water: "Water through the day", h_read: "30 minutes of reading or learning", h_skin: "Self-care",
+      months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+      days: ["Su","Mo","Tu","We","Th","Fr","Sa"]
+    },
+    zh: {
+      nav_home: "首页", nav_tasks: "任务", nav_progress: "进度", nav_base: "知识库", nav_profile: "我的",
+      g_night: "夜深了", g_morning: "早上好", g_day: "下午好", g_evening: "晚上好",
+      tagline: "每天进步一小步", streak: "连续", today: "今天", kg: "公斤",
+      msg_none: "先在“我的”里添加习惯吧。", msg_left: "今天的重点还差：{x}",
+      msg_ok: "今天的重点已完成，其余都是加分项。", msg_go: "勾选你的习惯，连续天数就会增长。",
+      tile_tasks: "任务", tile_tasks_s: "今日计划", tile_progress: "进度", tile_progress_s: "体重与本周",
+      tile_base: "知识库", tile_base_s: "附研究来源", tile_profile: "我的", tile_profile_s: "习惯与目标",
+      fact: "每日一知", banner_t: "添加到主屏幕", banner_s: "一键打开打卡工具", add: "添加",
+      tasks_title: "今日任务", done_of: "已完成 {a} / {b}", main_closed: "重点已完成", to_main: "重点还差：{n}",
+      main_tag: "重点", no_habits: "还没有习惯。", add_habits: "添加习惯",
+      hard_day: "状态不好的日子，完成标有“重点”的习惯就够了。漏一天没关系。",
+      prog_title: "进度", prog_streak: "连续 {n} 天完成全部重点习惯", weight: "体重",
+      chart_empty: "记录第一次体重，这里就会出现图表。", chart_aria: "体重图表",
+      w_ph: "例如 62.5", w_aria: "体重（公斤）", w_save: "记录", w_note: "每周早晨在相同条件下称一次体重。",
+      last7: "最近 7 天", week_note: "绿色柱：当天完成了全部重点习惯。",
+      since: "自 {date} 起 {d} 公斤", goal_left: "距目标 {g} 公斤还差 {l} 公斤", goal_done: "已达成目标 {g} 公斤",
+      base_title: "知识库", base_sub: "每篇文章都附有研究来源", source: "来源：",
+      base_note: "以上是一般性信息，不构成医疗建议。如有健康问题，请咨询医生。",
+      prof_title: "我的", prof_sub: "目标、习惯与数据", name_l: "你的名字", name_ph: "名字",
+      goal_l: "目标体重（公斤）", goal_ph: "选填", save: "保存",
+      habits_h: "我的习惯", habits_note: "星标 = 重点习惯。当天完成全部重点习惯，连续天数才会增加。",
+      star_aria: "重点习惯", rm_aria: "删除习惯", new_ph: "新习惯", new_aria: "新习惯", max_ph: "最多 20 个习惯",
+      app_h: "应用", add_home: "添加图标到主屏幕", home_added: "图标已在主屏幕上。",
+      fs_t: "全屏", fs_d: "应用占满整个屏幕，下次打开时生效。",
+      remind: "Telegram 提醒由机器人发送：命令 /remind 20:30。",
+      data_h: "数据", data_cloud: "数据保存在你的 Telegram 云端，所有设备都能看到。",
+      data_local: "数据只保存在此浏览器中。", no_photo: "这里没有照片，也不会给外貌打分。",
+      del_ask: "删除我的所有数据", del_q: "永久删除任务、体重和个人资料？", del_yes: "是，删除", cancel: "取消",
+      lang_h: "语言", theme_aria: "切换主题",
+      h_sleep: "睡 7–9 小时", h_food: "好好吃饭，不漏餐", h_move: "运动 30 分钟",
+      h_water: "全天适量喝水", h_read: "阅读或学习 30 分钟", h_skin: "护理自己",
+      months: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+      days: ["日","一","二","三","四","五","六"]
+    }
+  };
+
+  var TIPS = {
+    ru: [
+      "Недосып снижает тестостерон: неделя по 5 часов сна дала падение на 10–15% у здоровых молодых мужчин (Leproult & Van Cauter, JAMA, 2011).",
+      "Белок лучше делить на 3–5 приёмов по 20–40 г: так мышцы получают сигнал к росту несколько раз за день (Schoenfeld & Aragon, 2018).",
+      "Привычка формируется в среднем за 66 дней, но разброс огромный: от 18 до 254. Один пропуск процесс не ломает (Lally et al., 2010).",
+      "SPF 30 нужен и зимой на открытых участках: ультрафиолет есть при любой температуре, а снег отражает до 80% излучения.",
+      "Проверять себя вопросами эффективнее, чем перечитывать конспект (Dunlosky et al., 2013). Это работает и для языков, и для профессии.",
+      "Вес растёт, только если калорий больше, чем расход. Для набора обычно хватает профицита +300–500 ккал в день (Iraki et al., 2019)."
+    ],
+    en: [
+      "Sleep loss lowers testosterone: a week of 5-hour nights cut it by 10–15% in healthy young men (Leproult & Van Cauter, JAMA, 2011).",
+      "Split protein into 3–5 meals of 20–40 g: that way muscles get a growth signal several times a day (Schoenfeld & Aragon, 2018).",
+      "A habit takes about 66 days to form on average, but the spread is huge: from 18 to 254. One missed day doesn't break the process (Lally et al., 2010).",
+      "You need SPF 30 in winter too on exposed skin: UV is there at any temperature, and snow reflects up to 80% of it.",
+      "Testing yourself with questions beats rereading your notes (Dunlosky et al., 2013). It works for languages and for work skills alike.",
+      "Weight only goes up when calories exceed expenditure. A surplus of +300–500 kcal a day is usually enough for gaining (Iraki et al., 2019)."
+    ],
+    zh: [
+      "睡眠不足会降低睾酮：健康年轻男性连续一周每晚只睡 5 小时，睾酮下降了 10–15%（Leproult & Van Cauter，JAMA，2011）。",
+      "蛋白质最好分 3–5 餐，每餐 20–40 克：这样肌肉一天中能多次获得生长信号（Schoenfeld & Aragon，2018）。",
+      "养成一个习惯平均需要约 66 天，但差异很大：从 18 天到 254 天。漏一天不会毁掉整个过程（Lally 等，2010）。",
+      "冬天暴露的皮肤也需要 SPF 30：任何温度下都有紫外线，而雪能反射高达 80% 的紫外线。",
+      "用提问自测比反复重读笔记更有效（Dunlosky 等，2013）。这对语言学习和职业技能都适用。",
+      "只有摄入热量高于消耗，体重才会增加。增重通常每天多 300–500 千卡就够了（Iraki 等，2019）。"
+    ]
+  };
+
+  var BASE = {
+    ru: [
+      { tag: "Сон", t: "Сон и гормоны", s: "Недосып бьёт по гормонам, восстановлению и настроению.",
+        pts: ["В эксперименте здоровые молодые мужчины около недели спали по 5 часов: тестостерон днём упал на 10–15%.", "Взрослым обычно нужно 7–9 часов сна, подросткам 8–10.", "Практика: фиксированное время отбоя, экран за 30 минут до сна убрать."],
+        src: "Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. JAMA, 2011." },
+      { tag: "Питание", t: "Белок для мышц", s: "Больше белка выше определённого порога почти не добавляет роста.",
+        pts: ["Польза растёт примерно до 1,6 г белка на кг веса в день.", "Для 70 кг это около 110 г в сутки.", "Делить на 3–5 приёмов по 20–40 г. Источники: яйца, творог, курица, рыба, кефир, бобовые."],
+        src: "Morton R.W. et al. A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training. British Journal of Sports Medicine, 2018. Schoenfeld B., Aragon A. How much protein can the body use in a single meal? JISSN, 2018." },
+      { tag: "Питание", t: "Калории для набора массы", s: "Если вес не растёт, значит калорий не хватает.",
+        pts: ["Нужен профицит примерно +300–500 ккал к расходу.", "Темп набора 0,25–0,5 кг в неделю: быстрее обычно значит больше жира.", "Если за 2 недели вес не вырос, добавь 200–300 ккал.", "Нет роста 3–4 недели при честном питании: сходи к врачу."],
+        src: "Iraki J., Fitschen P., Espinar S., Helms E. Nutrition recommendations for bodybuilders in the off-season. Sports, 2019." },
+      { tag: "Здоровье", t: "Сколько пить воды", s: "Достаточное потребление жидкости: около 2,5 л в сутки для мужчин и 2,0 л для женщин, из них примерно пятая часть приходит с едой.",
+        pts: ["Пить стакан воды утром и около тренировки.", "Моча светло-жёлтая: питьё достаточное.", "Больше не значит лучше: гонять литры сверх потребности пользы нет."],
+        src: "EFSA Panel on Dietetic Products, Nutrition and Allergies. Scientific opinion on dietary reference values for water. EFSA Journal, 2010." },
+      { tag: "Кожа", t: "SPF: 30 или 50", s: "Разница в защите небольшая, важнее нанести достаточно и вовремя обновлять.",
+        pts: ["SPF 30 задерживает около 97% UVB, SPF 50 около 98%.", "Люди обычно наносят в 2–4 раза меньше нормы, поэтому реальная защита ниже.", "Выбирай SPF 30+ с защитой от UVA, на день, на лицо, в том числе зимой."],
+        src: "American Academy of Dermatology: рекомендации по солнцезащите (SPF 30 и выше, широкий спектр)." },
+      { tag: "Кожа", t: "Проблемная кожа без фанатизма", s: "Простой уход работает лучше, чем много баночек сразу.",
+        pts: ["Мягкое очищение, увлажняющий крем, SPF: база утром и вечером.", "В рекомендациях по акне первая линия это местные средства (бензоилпероксид, ретиноиды, азелаиновая кислота), а не «сыворотка для всего».", "Новое средство добавляй по одному, раз в 2 недели. Шелушение и жжение: пауза и возврат к базе.", "Воспалённые высыпания, рубцы: к дерматологу."],
+        src: "Reynolds R.V. et al. Guidelines of care for the management of acne vulgaris. Journal of the American Academy of Dermatology, 2024." },
+      { tag: "Привычки", t: "Как закрепить режим", s: "Автоматизм появляется не за 21 день, а в среднем за 66.",
+        pts: ["Привязывай действие к тому, что уже делаешь (после душа: уход, после ужина: прогулка).", "Пропуск одного дня не обнуляет прогресс. Главное вернуться на следующий.", "В тяжёлый день делай только «главное»: пометь звёздочкой 2–3 самых важных привычки."],
+        src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
+      { tag: "Учёба", t: "Как учиться эффективнее", s: "Две самые полезные техники по обзору десяти методов.",
+        pts: ["Проверяй себя вопросами и карточками вместо перечитывания.", "Повторяй с интервалами: сегодня, через 2 дня, через неделю.", "30 минут каждый день лучше, чем 3 часа раз в неделю."],
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+    ],
+    en: [
+      { tag: "Sleep", t: "Sleep and hormones", s: "Sleep loss hits hormones, recovery and mood.",
+        pts: ["In an experiment, healthy young men slept 5 hours a night for about a week: daytime testosterone fell by 10–15%.", "Adults usually need 7–9 hours of sleep, teenagers 8–10.", "In practice: keep a fixed bedtime and put screens away 30 minutes before sleep."],
+        src: "Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. JAMA, 2011." },
+      { tag: "Nutrition", t: "Protein for muscle", s: "Beyond a certain threshold, extra protein adds little growth.",
+        pts: ["The benefit rises up to roughly 1.6 g of protein per kg of body weight per day.", "For 70 kg that is about 110 g a day.", "Split it across 3–5 meals of 20–40 g. Sources: eggs, cottage cheese, chicken, fish, kefir, legumes."],
+        src: "Morton R.W. et al. A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training. British Journal of Sports Medicine, 2018. Schoenfeld B., Aragon A. How much protein can the body use in a single meal? JISSN, 2018." },
+      { tag: "Nutrition", t: "Calories for gaining weight", s: "If your weight isn't going up, you aren't eating enough calories.",
+        pts: ["You need a surplus of about +300–500 kcal over your expenditure.", "Gain 0.25–0.5 kg per week: faster usually means more fat.", "If your weight hasn't grown in 2 weeks, add 200–300 kcal.", "No gain for 3–4 weeks despite eating properly: see a doctor."],
+        src: "Iraki J., Fitschen P., Espinar S., Helms E. Nutrition recommendations for bodybuilders in the off-season. Sports, 2019." },
+      { tag: "Health", t: "How much water to drink", s: "Adequate intake is about 2.5 L of fluid a day for men and 2.0 L for women, roughly a fifth of it coming from food.",
+        pts: ["Drink a glass of water in the morning and around workouts.", "Light-yellow urine means you are drinking enough.", "More is not better: forcing down extra litres has no benefit."],
+        src: "EFSA Panel on Dietetic Products, Nutrition and Allergies. Scientific opinion on dietary reference values for water. EFSA Journal, 2010." },
+      { tag: "Skin", t: "SPF 30 or 50", s: "The difference in protection is small; applying enough and reapplying matters more.",
+        pts: ["SPF 30 blocks about 97% of UVB, SPF 50 about 98%.", "People usually apply 2–4 times less than the tested amount, so real protection is lower.", "Choose SPF 30+ with UVA protection, for daytime, on the face, in winter too."],
+        src: "American Academy of Dermatology: sun protection guidance (SPF 30 or higher, broad spectrum)." },
+      { tag: "Skin", t: "Problem skin without fanaticism", s: "A simple routine works better than many products at once.",
+        pts: ["Gentle cleanser, moisturiser, SPF: the basics morning and evening.", "In acne guidelines the first line is topical treatment (benzoyl peroxide, retinoids, azelaic acid), not a \"serum for everything\".", "Add one new product at a time, every 2 weeks. Peeling or burning: pause and go back to basics.", "Inflamed breakouts or scarring: see a dermatologist."],
+        src: "Reynolds R.V. et al. Guidelines of care for the management of acne vulgaris. Journal of the American Academy of Dermatology, 2024." },
+      { tag: "Habits", t: "Making a routine stick", s: "Automaticity takes not 21 days but about 66 on average.",
+        pts: ["Attach the action to something you already do (after a shower: skincare; after dinner: a walk).", "Missing one day doesn't reset your progress. What matters is getting back the next day.", "On a hard day do only the key habits: mark your 2–3 most important ones with a star."],
+        src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
+      { tag: "Study", t: "Learning more effectively", s: "The two most useful techniques out of ten methods reviewed.",
+        pts: ["Test yourself with questions and flashcards instead of rereading.", "Space your reviews: today, in 2 days, in a week.", "30 minutes every day beats 3 hours once a week."],
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+    ],
+    zh: [
+      { tag: "睡眠", t: "睡眠与激素", s: "睡眠不足会影响激素、恢复和情绪。",
+        pts: ["在一项实验中，健康的年轻男性连续约一周每晚只睡 5 小时：白天睾酮水平下降了 10–15%。", "成年人通常需要 7–9 小时睡眠，青少年需要 8–10 小时。", "实践：固定就寝时间，睡前 30 分钟不看屏幕。"],
+        src: "Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. JAMA, 2011." },
+      { tag: "饮食", t: "肌肉所需的蛋白质", s: "超过一定阈值后，多吃蛋白质对增肌帮助很小。",
+        pts: ["每天每公斤体重摄入蛋白质约 1.6 克以内，收益随摄入量增加。", "70 公斤的人每天约 110 克。", "分 3–5 餐，每餐 20–40 克。来源：鸡蛋、茅屋奶酪、鸡肉、鱼、开菲尔酸奶、豆类。"],
+        src: "Morton R.W. et al. A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training. British Journal of Sports Medicine, 2018. Schoenfeld B., Aragon A. How much protein can the body use in a single meal? JISSN, 2018." },
+      { tag: "饮食", t: "增重所需的热量", s: "如果体重不增加，说明吃的热量不够。",
+        pts: ["需要比消耗多约 300–500 千卡的热量盈余。", "每周增重 0.25–0.5 公斤：更快通常意味着更多脂肪。", "如果 2 周体重没有增加，再多加 200–300 千卡。", "认真吃了 3–4 周仍不增重：请去看医生。"],
+        src: "Iraki J., Fitschen P., Espinar S., Helms E. Nutrition recommendations for bodybuilders in the off-season. Sports, 2019." },
+      { tag: "健康", t: "每天该喝多少水", s: "适宜摄入量：男性每天约 2.5 升液体，女性约 2.0 升，其中约五分之一来自食物。",
+        pts: ["早上喝一杯水，运动前后也喝。", "尿液呈淡黄色说明饮水充足。", "并非越多越好：硬灌超量的水没有益处。"],
+        src: "EFSA Panel on Dietetic Products, Nutrition and Allergies. Scientific opinion on dietary reference values for water. EFSA Journal, 2010." },
+      { tag: "皮肤", t: "防晒：SPF 30 还是 50", s: "两者的防护差别不大，更重要的是涂够量并及时补涂。",
+        pts: ["SPF 30 可阻挡约 97% 的 UVB，SPF 50 约 98%。", "人们通常只涂测试用量的二分之一到四分之一，所以实际防护更低。", "选择 SPF 30 以上并具备 UVA 防护的产品，白天涂在脸上，冬天也一样。"],
+        src: "美国皮肤病学会（American Academy of Dermatology）：防晒建议（SPF 30 及以上，广谱）。" },
+      { tag: "皮肤", t: "问题肌肤不必过度护理", s: "简单的护理比一次用很多产品更有效。",
+        pts: ["温和清洁、保湿霜、防晒：早晚的基础护理。", "痤疮指南中的一线方案是外用药物（过氧化苯甲酰、维A酸类、壬二酸），而不是“万能精华”。", "新产品一次只加一种，每隔 2 周再加。出现脱皮或灼痛：暂停并回到基础护理。", "炎症性痘痘、瘢痕：请看皮肤科医生。"],
+        src: "Reynolds R.V. et al. Guidelines of care for the management of acne vulgaris. Journal of the American Academy of Dermatology, 2024." },
+      { tag: "习惯", t: "如何坚持日常习惯", s: "养成自动化平均需要约 66 天，而不是 21 天。",
+        pts: ["把新行为绑定在已有习惯上（洗澡后：护肤；晚饭后：散步）。", "缺一天不会让进度清零，关键是第二天回到轨道。", "状态不好的日子只做“重点”习惯：给最重要的 2–3 个习惯加星标。"],
+        src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
+      { tag: "学习", t: "如何更高效地学习", s: "在十种学习方法的综述中最有用的两种。",
+        pts: ["用提问和闪卡自测，而不是反复重读。", "间隔复习：今天、2 天后、一周后。", "每天 30 分钟，胜过每周一次 3 小时。"],
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+    ]
+  };
+
   var ICONS = {
     home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
     tasks: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/>',
@@ -183,43 +411,11 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     book: '<path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h12"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
     phone: '<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/>',
-    scale: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9a4 4 0 0 1 8 0M12 9l2-2"/>'
+    scale: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9a4 4 0 0 1 8 0M12 9l2-2"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
   };
-  var TABS = [["home", "Главная", "home"], ["tasks", "Задачи", "tasks"], ["progress", "Прогресс", "chart"], ["base", "База", "book"], ["profile", "Профиль", "user"]];
-  var TIPS = [
-    "Недосып снижает тестостерон: неделя по 5 часов сна дала падение на 10–15% у здоровых молодых мужчин (Leproult & Van Cauter, JAMA, 2011).",
-    "Белок лучше делить на 3–5 приёмов по 20–40 г: так мышцы получают сигнал к росту несколько раз за день (Schoenfeld & Aragon, 2018).",
-    "Привычка формируется в среднем за 66 дней, но разброс огромный: от 18 до 254. Один пропуск процесс не ломает (Lally et al., 2010).",
-    "SPF 30 нужен и зимой на открытых участках: ультрафиолет есть при любой температуре, а снег отражает до 80% излучения.",
-    "Проверять себя вопросами эффективнее, чем перечитывать конспект (Dunlosky et al., 2013). Это работает и для языков, и для профессии.",
-    "Вес растёт, только если калорий больше, чем расход. Для набора обычно хватает профицита +300–500 ккал в день (Iraki et al., 2019)."
-  ];
-  var BASE = [
-    { tag: "Сон", t: "Сон и гормоны", s: "Недосып бьёт по гормонам, восстановлению и настроению.",
-      pts: ["В эксперименте здоровые молодые мужчины 10 дней спали по 5 часов: тестостерон днём упал на 10–15%.", "Взрослым обычно нужно 7–9 часов сна, подросткам 8–10.", "Практика: фиксированное время отбоя, экран за 30 минут до сна убрать."],
-      src: "Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. JAMA, 2011." },
-    { tag: "Питание", t: "Белок для мышц", s: "Больше белка выше определённого порога почти не добавляет роста.",
-      pts: ["Польза растёт примерно до 1,6 г белка на кг веса в день.", "Для 70 кг это около 110 г в сутки.", "Делить на 3–5 приёмов по 20–40 г. Источники: яйца, творог, курица, рыба, кефир, бобовые."],
-      src: "Morton R.W. et al. A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training. British Journal of Sports Medicine, 2018. Schoenfeld B., Aragon A. How much protein can the body use in a single meal? JISSN, 2018." },
-    { tag: "Питание", t: "Калории для набора массы", s: "Если вес не растёт, значит калорий не хватает.",
-      pts: ["Нужен профицит примерно +300–500 ккал к расходу.", "Темп набора 0,25–0,5 кг в неделю: быстрее обычно значит больше жира.", "Если за 2 недели вес не вырос, добавь 200–300 ккал.", "Нет роста 3–4 недели при честном питании: сходи к врачу."],
-      src: "Iraki J., Fitschen P., Espinar S., Helms E. Nutrition recommendations for bodybuilders in the off-season. Sports, 2019." },
-    { tag: "Здоровье", t: "Сколько пить воды", s: "Достаточное потребление жидкости: около 2,5 л в сутки для мужчин и 2,0 л для женщин, из них примерно пятая часть приходит с едой.",
-      pts: ["Пить стакан воды утром и около тренировки.", "Моча светло-жёлтая: питьё достаточное.", "Больше не значит лучше: гонять литры сверх потребности пользы нет."],
-      src: "EFSA Panel on Dietetic Products, Nutrition and Allergies. Scientific opinion on dietary reference values for water. EFSA Journal, 2010." },
-    { tag: "Кожа", t: "SPF: 30 или 50", s: "Разница в защите небольшая, важнее нанести достаточно и вовремя обновлять.",
-      pts: ["SPF 30 задерживает около 97% UVB, SPF 50 около 98%.", "Люди обычно наносят в 2–4 раза меньше нормы, поэтому реальная защита ниже.", "Выбирай SPF 30+ с защитой от UVA, на день, на лицо, в том числе зимой."],
-      src: "American Academy of Dermatology: рекомендации по солнцезащите (SPF 30 и выше, широкий спектр)." },
-    { tag: "Кожа", t: "Проблемная кожа без фанатизма", s: "Простой уход работает лучше, чем много баночек сразу.",
-      pts: ["Мягкое очищение, увлажняющий крем, SPF: база утром и вечером.", "В рекомендациях по акне первая линия это местные средства (бензоилпероксид, ретиноиды, азелаиновая кислота), а не «сыворотка для всего».", "Новое средство добавляй по одному, раз в 2 недели. Шелушение и жжение: пауза и возврат к базе.", "Воспалённые высыпания, рубцы: к дерматологу."],
-      src: "Reynolds R.V. et al. Guidelines of care for the management of acne vulgaris. Journal of the American Academy of Dermatology, 2024." },
-    { tag: "Привычки", t: "Как закрепить режим", s: "Автоматизм появляется не за 21 день, а в среднем за 66.",
-      pts: ["Привязывай действие к тому, что уже делаешь (после душа: уход, после ужина: прогулка).", "Пропуск одного дня не обнуляет прогресс. Главное вернуться на следующий.", "В тяжёлый день делай только «главное»: пометь звёздочкой 2–3 самых важных привычки."],
-      src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
-    { tag: "Учёба", t: "Как учиться эффективнее", s: "Две самые полезные техники по обзору десяти методов.",
-      pts: ["Проверяй себя вопросами и карточками вместо перечитывания.", "Повторяй с интервалами: сегодня, через 2 дня, через неделю.", "30 минут каждый день лучше, чем 3 часа раз в неделю."],
-      src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
-  ];
+  var TABS = [["home", "nav_home", "home"], ["tasks", "nav_tasks", "tasks"], ["progress", "nav_progress", "chart"], ["base", "nav_base", "book"], ["profile", "nav_profile", "user"]];
 
   var tg = window.Telegram && window.Telegram.WebApp;
   var inTg = !!(tg && tg.initData);
@@ -227,8 +423,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
+  function emptyState() { return { name: "", goal: "", fs: true, lang: null, theme: null, habits: null, days: {}, weights: {} }; }
   var state = loadLocal();
-  function emptyState() { return { name: "", goal: "", fs: true, habits: null, days: {}, weights: {} }; }
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
@@ -238,21 +434,45 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function habits() { return Array.isArray(state.habits) ? state.habits : DEFAULT_HABITS; }
 
+  /* ---------- язык ---------- */
+  function detectLang() {
+    var c = "";
+    try { c = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || ""; } catch (e) {}
+    if (!c) c = navigator.language || "ru";
+    c = String(c).toLowerCase();
+    return c.indexOf("ru") === 0 ? "ru" : c.indexOf("zh") === 0 ? "zh" : c.indexOf("en") === 0 ? "en" : "ru";
+  }
+  function lang() { return LANGS.indexOf(state.lang) >= 0 ? state.lang : detectLang(); }
+  function t(k, v) {
+    var s = (D[lang()] && D[lang()][k]) || D.ru[k] || k;
+    if (v) Object.keys(v).forEach(function (n) { s = s.split("{" + n + "}").join(v[n]); });
+    return s;
+  }
+  function hname(h) { return DEFAULT_KEYS.indexOf(h.k) >= 0 ? t("h_" + h.k) : h.t; }
+
+  /* ---------- тема ---------- */
+  function effTheme() {
+    if (state.theme === "light" || state.theme === "dark") return state.theme;
+    if (inTg && tg.colorScheme) return tg.colorScheme === "light" ? "light" : "dark";
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) { return "dark"; }
+  }
   function applyTheme() {
-    var scheme = inTg && tg.colorScheme ? tg.colorScheme : null;
-    if (scheme) document.documentElement.setAttribute("data-theme", scheme);
-    var bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#0b0b1a";
-    if (inTg) {
+    document.documentElement.setAttribute("data-theme", effTheme());
+    var bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
+    if (inTg && bg) {
       try { tg.setHeaderColor(bg); tg.setBackgroundColor(bg); } catch (e) {}
       try { if (ver("7.10")) tg.setBottomBarColor(bg); } catch (e) {}
     }
   }
+  document.documentElement.lang = lang();
+  applyTheme();
+
   function setupTelegram() {
     if (!inTg) return;
     try { tg.ready(); tg.expand(); } catch (e) {}
     try { if (ver("6.9") && tg.CloudStorage) cloud = tg.CloudStorage; } catch (e) { cloud = null; }
     applyTheme();
-    try { tg.onEvent("themeChanged", function () { applyTheme(); }); } catch (e) {}
+    try { tg.onEvent("themeChanged", function () { if (state.theme !== "light" && state.theme !== "dark") { applyTheme(); render(true); } }); } catch (e) {}
     try { if (ver("8.0") && state.fs !== false && /ios|android/.test(tg.platform || "")) tg.requestFullscreen(); } catch (e) {}
     try {
       if (ver("8.0")) {
@@ -266,10 +486,10 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function cset(key, val) { if (cloud) { try { cloud.setItem(key, val, function () {}); } catch (e) {} } }
   function saveDay(k) { saveLocal(); cset("d_" + k, (state.days[k] || []).join(",") || "-"); }
   function saveWeight(k) { saveLocal(); cset("w_" + k, String(state.weights[k])); }
-  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal, fs: state.fs })); }
+  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal, fs: state.fs, lang: state.lang, theme: state.theme })); }
   function saveHabits() {
     saveLocal();
-    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t, h.min ? 1 : 0]; })));
+    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0]; })));
   }
   function wipe() {
     saveLocal();
@@ -286,12 +506,12 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
           var s = emptyState();
           Object.keys(vals).forEach(function (k) {
             var v = vals[k];
-            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; s.fs = p.fs !== false; } catch (e) {} }
+            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; } catch (e) {} }
             else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2] }; }); } catch (e) {} }
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
           });
-          state = s; normalize(); saveLocal(); done(true);
+          state = s; normalize(); saveLocal(); document.documentElement.lang = lang(); applyTheme(); done(true);
         });
       });
     } catch (e) { done(); }
@@ -315,113 +535,122 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function icon(name) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + "</svg>"; }
   function sortedWeights() { return Object.keys(state.weights).sort().map(function (k) { return { d: k, kg: state.weights[k] }; }); }
   function fmtDate(k) { var p = k.split("-"); return p[2] + "." + p[1]; }
-  function kgText(v) { return v.toFixed(1).replace(".", ","); }
-  function greeting() { var h = new Date().getHours(); return h < 5 ? "Доброй ночи" : h < 12 ? "Доброе утро" : h < 18 ? "Добрый день" : "Добрый вечер"; }
+  function num(v) { var s = v.toFixed(1); return lang() === "ru" ? s.replace(".", ",") : s; }
+  function greeting() { var h = new Date().getHours(); return t(h < 5 ? "g_night" : h < 12 ? "g_morning" : h < 18 ? "g_day" : "g_evening"); }
+
+  /* ---------- шапка с кнопкой темы ---------- */
+  function head(title, sub) {
+    var light = effTheme() === "light";
+    return '<div class="head"><div><h1>' + title + '</h1><p class="sub">' + sub + '</p></div>' +
+      '<button class="theme-btn" data-act="theme" aria-label="' + esc(t("theme_aria")) + '"><span class="' + (light ? "sun" : "moon") + '">' + icon(light ? "sun" : "moon") + '</span></button></div>';
+  }
 
   /* ---------- виды ---------- */
   function homeBanner() {
     if (hsStatus !== "missed" && hsStatus !== "unknown") return "";
     if (!inTg || !ver("8.0")) return "";
-    return '<section class="card row" style="flex-wrap:nowrap;gap:14px"><span class="ico g2 mini">' + icon("phone") + '</span><div style="flex:1;min-width:0"><b>Иконка на главный экран</b><p class="note">Открывай трекер одним нажатием</p></div><button class="btn soft" data-act="addhome">Добавить</button></section>';
+    return '<section class="card row" style="flex-wrap:nowrap;gap:14px"><span class="ico g2 mini">' + icon("phone") + '</span><div style="flex:1;min-width:0"><b>' + t("banner_t") + '</b><p class="note">' + t("banner_s") + '</p></div><button class="btn soft" data-act="addhome">' + t("add") + '</button></section>';
   }
   function home() {
     var tk = dkey(new Date()), hs = habits(), done = doneOn(tk).length, total = hs.length;
-    var w = sortedWeights(), last = w.length ? kgText(w[w.length - 1].kg) : "—";
+    var w = sortedWeights(), last = w.length ? num(w[w.length - 1].kg) : "—";
     var pct = total ? Math.round(done / total * 100) : 0, C = 2 * Math.PI * 40, off = C * (1 - (total ? done / total : 0));
-    var tip = TIPS[Math.floor(Date.now() / 86400000) % TIPS.length];
-    var left = hs.filter(function (i) { return i.min && doneOn(tk).indexOf(i.k) < 0; }).map(function (i) { return i.t; });
-    var msg = !total ? "Добавь первые привычки в профиле." : left.length ? "До главного на сегодня: " + esc(left.join(", ").toLowerCase()) : okDay(tk) ? "Главное на сегодня сделано. Остальное бонус." : "Отмечай привычки, и серия будет расти.";
+    var tip = TIPS[lang()][Math.floor(Date.now() / 86400000) % TIPS[lang()].length];
+    var left = hs.filter(function (i) { return i.min && doneOn(tk).indexOf(i.k) < 0; }).map(hname);
+    var msg = !total ? t("msg_none") : left.length ? t("msg_left", { x: esc(left.join(", ").toLowerCase()) }) : okDay(tk) ? t("msg_ok") : t("msg_go");
     return '<div class="stack">' +
-      '<div><h1>' + greeting() + (state.name ? ", " + esc(state.name) : "") + '</h1><p class="sub">Маленькие шаги каждый день</p></div>' +
+      head(greeting() + (state.name ? ", " + esc(state.name) : ""), t("tagline")) +
       '<section class="hero" id="hero"><div class="top"><div class="ring"><svg viewBox="0 0 96 96"><circle class="trk" cx="48" cy="48" r="40"/><circle class="val" cx="48" cy="48" r="40" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/></svg><b>' + pct + '%</b></div>' +
-        '<div class="nums"><div><b>' + streak() + '</b><span>серия</span></div><div><b>' + done + '/' + total + '</b><span>сегодня</span></div><div><b>' + last + '</b><span>кг</span></div></div></div>' +
+        '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + last + '</b><span>' + t("kg") + '</span></div></div></div>' +
         '<p class="msg">' + msg + '</p></section>' +
-      homeBanner() +
       '<div class="tiles">' +
-        tile("tasks", "g1", "Задачи", "План на сегодня") + tile("progress", "g2", "Прогресс", "Вес и неделя") +
-        tile("base", "g3", "База знаний", "С источниками") + tile("profile", "g4", "Профиль", "Привычки и цели") + '</div>' +
-      '<section class="card"><h2>Факт дня</h2><p>' + esc(tip) + '</p></section></div>';
+        tile("tasks", "g1") + tile("progress", "g2") + tile("base", "g3") + tile("profile", "g4") + '</div>' +
+      '<section class="card"><h2>' + t("fact") + '</h2><p>' + esc(tip) + '</p></section>' +
+      homeBanner() + '</div>';
   }
-  function tile(go, cls, t, s) {
+  function tile(go, cls) {
     var ic = { tasks: "tasks", progress: "chart", base: "book", profile: "user" }[go];
-    return '<button class="tile ' + cls + '" data-go="' + go + '"><span class="ico">' + icon(ic) + '</span><span><strong>' + t + '</strong><small>' + s + '</small></span></button>';
+    return '<button class="tile ' + cls + '" data-go="' + go + '"><span class="ico">' + icon(ic) + '</span><span><strong>' + t("tile_" + go) + '</strong><small>' + t("tile_" + go + "_s") + '</small></span></button>';
   }
   function tasks() {
     var tk = dkey(new Date()), d = doneOn(tk), hs = habits(), done = d.length;
     var list = hs.map(function (i) {
       var on = d.indexOf(i.k) >= 0;
-      return '<button class="task" data-t="' + esc(i.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="t">' + esc(i.t) + '</span>' + (i.min ? '<span class="star">главное</span>' : "") + '</button>';
+      return '<button class="task" data-t="' + esc(i.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="t">' + esc(hname(i)) + '</span>' + (i.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
     }).join("");
-    var d0 = new Date(), months = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+    var d0 = new Date(), L = D[lang()];
+    var dateTxt = lang() === "ru" ? d0.getDate() + " " + L.months[d0.getMonth()] : lang() === "en" ? L.months[d0.getMonth()] + " " + d0.getDate() : (d0.getMonth() + 1) + "月" + d0.getDate() + "日";
     var mleft = minKeys().filter(function (k) { return d.indexOf(k) < 0; }).length;
-    return '<div class="stack"><div><h1>Задачи на день</h1><p class="sub">' + d0.getDate() + " " + months[d0.getMonth()] + '</p></div>' +
-      '<div class="card"><div class="row" style="justify-content:space-between"><b>Выполнено ' + done + " из " + hs.length + '</b><span class="sub">' + (okDay(tk) ? "главное закрыто" : "до главного: " + mleft) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (hs.length ? done / hs.length * 100 : 0) + '%"></i></div></div>' +
-      (list || '<div class="card empty">' + '<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>Привычек пока нет.</p><button class="btn" data-go="profile">Добавить привычки</button></div>') +
-      '<p class="note">Тяжёлый день: хватит привычек с пометкой «главное». Один пропуск ничего не ломает.</p></div>';
+    return '<div class="stack">' + head(t("tasks_title"), dateTxt) +
+      '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: done, b: hs.length }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (hs.length ? done / hs.length * 100 : 0) + '%"></i></div></div>' +
+      (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t("no_habits") + '</p><button class="btn" data-go="profile">' + t("add_habits") + '</button></div>') +
+      '<p class="note">' + t("hard_day") + '</p></div>';
   }
   function chart(w) {
-    if (!w.length) return '<div class="empty"><svg viewBox="0 0 24 24">' + ICONS.scale + '</svg><p>Запиши первый вес, и здесь появится график.</p></div>';
-    var pts = w.slice(-12), W = 340, H = 170, L = 38, R = 14, T = 14, B = 26;
+    if (!w.length) return '<div class="empty"><svg viewBox="0 0 24 24">' + ICONS.scale + '</svg><p>' + t("chart_empty") + '</p></div>';
+    var pts = w.slice(-12), W = 340, H = 170, Lm = 38, R = 14, T = 14, B = 26;
     var vals = pts.map(function (p) { return p.kg; }), mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
     var lo = Math.floor((mn - 0.5) * 2) / 2, hi = Math.ceil((mx + 0.5) * 2) / 2; if (hi - lo < 1) { hi = lo + 1; }
-    function X(i) { return pts.length === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (pts.length - 1); }
+    function X(i) { return pts.length === 1 ? (Lm + W - R) / 2 : Lm + i * (W - Lm - R) / (pts.length - 1); }
     function Y(v) { return T + (hi - v) / (hi - lo) * (H - T - B); }
     var g = "", ticks = [lo, (lo + hi) / 2, hi];
-    ticks.forEach(function (t) { g += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(t).toFixed(1) + '" y2="' + Y(t).toFixed(1) + '"/><text x="' + (L - 6) + '" y="' + (Y(t) + 4).toFixed(1) + '" text-anchor="end">' + kgText(t) + "</text>"; });
+    ticks.forEach(function (tk) { g += '<line class="grid" x1="' + Lm + '" x2="' + (W - R) + '" y1="' + Y(tk).toFixed(1) + '" y2="' + Y(tk).toFixed(1) + '"/><text x="' + (Lm - 6) + '" y="' + (Y(tk) + 4).toFixed(1) + '" text-anchor="end">' + num(tk) + "</text>"; });
     var path = pts.map(function (p, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(p.kg).toFixed(1); }).join(" ");
     var area = pts.length > 1 ? '<path d="' + path + " L" + X(pts.length - 1).toFixed(1) + " " + (H - B) + " L" + X(0).toFixed(1) + " " + (H - B) + ' Z" fill="url(#wg)"/>' : "";
     var dots = pts.map(function (p, i) { return '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(p.kg).toFixed(1) + '" r="4.5"/>'; }).join("");
     var xl = '<text x="' + X(0).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + (pts.length === 1 ? "middle" : "start") + '">' + fmtDate(pts[0].d) + "</text>" +
       (pts.length > 1 ? '<text x="' + X(pts.length - 1).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="end">' + fmtDate(pts[pts.length - 1].d) + "</text>" : "");
-    return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="График веса"><defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--a1)" stop-opacity=".28"/><stop offset="1" stop-color="var(--a1)" stop-opacity="0"/></linearGradient></defs>' + g + area + '<path class="ln" d="' + path + '"/>' + dots + xl + "</svg>";
+    return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="' + esc(t("chart_aria")) + '"><defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--a1)" stop-opacity=".28"/><stop offset="1" stop-color="var(--a1)" stop-opacity="0"/></linearGradient></defs>' + g + area + '<path class="ln" d="' + path + '"/>' + dots + xl + "</svg>";
   }
   function progress() {
     var w = sortedWeights(), diff = "";
-    if (w.length > 1) { var c = w[w.length - 1].kg - w[0].kg; diff = (c >= 0 ? "+" : "−") + kgText(Math.abs(c)) + " кг с " + fmtDate(w[0].d); }
+    if (w.length > 1) { var c = w[w.length - 1].kg - w[0].kg; diff = t("since", { d: (c >= 0 ? "+" : "−") + num(Math.abs(c)), date: fmtDate(w[0].d) }); }
     var goal = parseFloat(String(state.goal).replace(",", ".")), goalTxt = "";
-    if (goal && w.length) { var left = goal - w[w.length - 1].kg; goalTxt = Math.abs(left) > 0.05 ? "До цели " + kgText(goal) + " кг: " + kgText(Math.abs(left)) + " кг" : "Цель " + kgText(goal) + " кг достигнута"; }
-    var days = [], names = ["вс","пн","вт","ср","чт","пт","сб"], total = habits().length;
+    if (goal && w.length) { var left = goal - w[w.length - 1].kg; goalTxt = Math.abs(left) > 0.05 ? t("goal_left", { g: num(goal), l: num(Math.abs(left)) }) : t("goal_done", { g: num(goal) }); }
+    var days = [], names = D[lang()].days, total = habits().length;
     for (var i = 6; i >= 0; i--) {
       var d = shift(-i), k = dkey(d), n = doneOn(k).length;
-      days.push('<div><i class="' + (okDay(k) ? "ok" : n ? "part" : "") + '" style="height:' + Math.max(6, total ? n / total * 90 : 0) + 'px" title="' + n + ' из ' + total + '"></i><span>' + names[d.getDay()] + "</span></div>");
+      days.push('<div><i class="' + (okDay(k) ? "ok" : n ? "part" : "") + '" style="height:' + Math.max(6, total ? n / total * 90 : 0) + 'px" title="' + n + ' / ' + total + '"></i><span>' + names[d.getDay()] + "</span></div>");
     }
-    return '<div class="stack"><div><h1>Прогресс</h1><p class="sub">Серия: ' + streak() + ' дн. подряд с выполненным главным</p></div>' +
-      '<section class="card"><h2>Вес</h2>' + chart(w) +
+    return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) +
+      '<section class="card"><h2>' + t("weight") + '</h2>' + chart(w) +
       (diff || goalTxt ? '<p class="sub" style="margin-top:8px">' + [diff, goalTxt].filter(Boolean).join(" · ") + "</p>" : "") +
-      '<div class="row" style="margin-top:14px"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="например 62,5" aria-label="Вес в кг"><button class="btn" data-act="addw">Записать</button></div>' +
-      '<p class="note" style="margin-top:8px">Взвешивайся раз в неделю утром, в одинаковых условиях.</p></section>' +
-      '<section class="card"><h2>Последние 7 дней</h2><div class="week">' + days.join("") + '</div><p class="note" style="margin-top:10px">Зелёный столбец: главное за день выполнено.</p></section></div>';
+      '<div class="row" style="margin-top:14px"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="' + esc(t("w_ph")) + '" aria-label="' + esc(t("w_aria")) + '"><button class="btn" data-act="addw">' + t("w_save") + '</button></div>' +
+      '<p class="note" style="margin-top:8px">' + t("w_note") + '</p></section>' +
+      '<section class="card"><h2>' + t("last7") + '</h2><div class="week">' + days.join("") + '</div><p class="note" style="margin-top:10px">' + t("week_note") + '</p></section></div>';
   }
   function base() {
-    return '<div class="stack"><div><h1>База знаний</h1><p class="sub">Каждая статья со ссылкой на исследование</p></div>' +
-      BASE.map(function (a) {
-        return "<details><summary><span><span class='tag'>" + a.tag + "</span><br>" + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" + a.pts.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + '</ul><p class="src">Источник: ' + esc(a.src) + "</p></div></details>";
-      }).join("") + '<p class="note">Это общая информация, а не медицинская рекомендация. При проблемах со здоровьем обращайся к врачу.</p></div>';
+    return '<div class="stack">' + head(t("base_title"), t("base_sub")) +
+      BASE[lang()].map(function (a) {
+        return "<details><summary><span><span class='tag'>" + esc(a.tag) + "</span><br>" + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" + a.pts.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + '</ul><p class="src">' + t("source") + " " + esc(a.src) + "</p></div></details>";
+      }).join("") + '<p class="note">' + t("base_note") + '</p></div>';
   }
   var confirmDel = false;
   function homeCard() {
     if (!inTg || !ver("8.0") || hsStatus === "unsupported") return "";
-    if (hsStatus === "added") return '<p class="note">Иконка на главном экране уже добавлена.</p>';
-    return '<button class="btn soft wide" data-act="addhome">' + icon("phone") + ' Добавить иконку на главный экран</button>';
+    if (hsStatus === "added") return '<p class="note">' + t("home_added") + '</p>';
+    return '<button class="btn soft wide" data-act="addhome">' + icon("phone") + " " + t("add_home") + '</button>';
   }
   function fsSwitch() {
     if (!inTg || !ver("8.0") || !/ios|android/.test(tg.platform || "")) return "";
-    return '<div class="switch"><div><b>Полный экран</b><p class="note">Приложение занимает весь экран. Вступит в силу при следующем открытии.</p></div><button role="switch" aria-checked="' + (state.fs !== false) + '" aria-label="Полный экран" data-act="fs"></button></div>';
+    return '<div class="switch"><div><b>' + t("fs_t") + '</b><p class="note">' + t("fs_d") + '</p></div><button role="switch" aria-checked="' + (state.fs !== false) + '" aria-label="' + esc(t("fs_t")) + '" data-act="fs"></button></div>';
   }
   function profile() {
     var hs = habits();
     var hlist = hs.map(function (h, i) {
-      return '<div class="hab"><button class="' + (h.min ? "on" : "") + '" data-star="' + i + '" aria-label="Главная привычка" aria-pressed="' + !!h.min + '">' + (h.min ? "★" : "☆") + '</button><span>' + esc(h.t) + '</span><button class="x" data-rm="' + i + '" aria-label="Удалить привычку">×</button></div>';
+      return '<div class="hab"><button class="' + (h.min ? "on" : "") + '" data-star="' + i + '" aria-label="' + esc(t("star_aria")) + '" aria-pressed="' + !!h.min + '">' + (h.min ? "★" : "☆") + '</button><span>' + esc(hname(h)) + '</span><button class="x" data-rm="' + i + '" aria-label="' + esc(t("rm_aria")) + '">×</button></div>';
     }).join("");
-    return '<div class="stack"><div><h1>Профиль</h1><p class="sub">Цели, привычки и данные</p></div>' +
-      '<section class="card stack"><label for="p-name"><b>Как тебя зовут</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="имя">' +
-      '<label for="p-goal"><b>Цель по весу, кг</b></label><input id="p-goal" type="number" inputmode="decimal" step="0.5" min="30" max="250" value="' + esc(state.goal || "") + '" placeholder="необязательно">' +
-      '<button class="btn" data-act="saveprof">Сохранить</button></section>' +
-      '<section class="card"><h2>Мои привычки</h2><p class="note" style="margin-bottom:6px">Звёздочка: главное. Серия растёт, когда выполнено всё главное за день.</p>' + hlist +
-      '<div class="row" style="margin-top:12px"><input id="h-in" type="text" maxlength="60" placeholder="новая привычка" aria-label="Новая привычка"><button class="btn" data-act="addh">Добавить</button></div></section>' +
-      '<section class="card stack"><h2 style="margin:0">Приложение</h2>' + homeCard() + fsSwitch() + '<p class="note">Напоминания в Telegram работают через бота: команда /remind 20:30.</p></section>' +
-      '<section class="card stack"><h2 style="margin:0">Данные</h2><p>' + (cloud ? 'Данные хранятся в облаке твоего Telegram и доступны на всех твоих устройствах.' : 'Данные хранятся только в этом браузере.') + ' Фото и оценки внешности здесь нет и не будет.</p>' +
-      (confirmDel ? '<p><b>Удалить задачи, вес и профиль без возможности вернуть?</b></p><div class="row"><button class="btn ghost" data-act="del">Да, удалить</button><button class="btn soft" data-act="nodel">Отмена</button></div>' : '<button class="btn ghost" data-act="askdel">Удалить все мои данные</button>') + '</section></div>';
+    var seg = LANGS.map(function (l) { return '<button data-lang="' + l + '" aria-pressed="' + (lang() === l) + '">' + LANG_NAMES[l] + "</button>"; }).join("");
+    return '<div class="stack">' + head(t("prof_title"), t("prof_sub")) +
+      '<section class="card stack"><h2 style="margin:0">' + t("lang_h") + '</h2><div class="seg">' + seg + '</div></section>' +
+      '<section class="card stack"><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(t("name_ph")) + '">' +
+      '<label for="p-goal"><b>' + t("goal_l") + '</b></label><input id="p-goal" type="number" inputmode="decimal" step="0.5" min="30" max="250" value="' + esc(state.goal || "") + '" placeholder="' + esc(t("goal_ph")) + '">' +
+      '<button class="btn" data-act="saveprof">' + t("save") + '</button></section>' +
+      '<section class="card"><h2>' + t("habits_h") + '</h2><p class="note" style="margin-bottom:6px">' + t("habits_note") + '</p>' + hlist +
+      '<div class="row" style="margin-top:12px"><input id="h-in" type="text" maxlength="60" placeholder="' + esc(t("new_ph")) + '" aria-label="' + esc(t("new_aria")) + '"><button class="btn" data-act="addh">' + t("add") + '</button></div></section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("app_h") + '</h2>' + homeCard() + fsSwitch() + '<p class="note">' + t("remind") + '</p></section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("data_h") + '</h2><p>' + (cloud ? t("data_cloud") : t("data_local")) + ' ' + t("no_photo") + '</p>' +
+      (confirmDel ? '<p><b>' + t("del_q") + '</b></p><div class="row"><button class="btn ghost" data-act="del">' + t("del_yes") + '</button><button class="btn soft" data-act="nodel">' + t("cancel") + '</button></div>' : '<button class="btn ghost" data-act="askdel">' + t("del_ask") + '</button>') + '</section></div>';
   }
 
   /* ---------- роутинг и события ---------- */
@@ -430,8 +659,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function render(keepScroll) {
     var cur = current(), y = window.scrollY, v = document.getElementById("view");
     v.innerHTML = '<div class="' + (keepScroll ? "" : "view") + '">' + VIEWS[cur]() + "</div>";
-    document.getElementById("nav").innerHTML = TABS.map(function (t) {
-      return '<button data-go="' + t[0] + '"' + (t[0] === cur ? ' aria-current="page"' : "") + ">" + icon(t[2]) + "<span>" + t[1] + "</span></button>";
+    document.getElementById("nav").innerHTML = TABS.map(function (tb) {
+      return '<button data-go="' + tb[0] + '"' + (tb[0] === cur ? ' aria-current="page"' : "") + ">" + icon(tb[2]) + "<span>" + t(tb[1]) + "</span></button>";
     }).join("");
     window.scrollTo(0, keepScroll ? y : 0);
     try { if (inTg && tg.BackButton) { if (cur === "home") tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) {}
@@ -441,9 +670,10 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   try { if (inTg && tg.BackButton) tg.BackButton.onClick(function () { go("home"); }); } catch (e) {}
 
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-star],[data-rm]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-star],[data-rm],[data-lang]");
     if (!el) return;
     if (el.dataset.go) { haptic(); go(el.dataset.go); return; }
+    if (el.dataset.lang) { state.lang = el.dataset.lang; saveProfile(); document.documentElement.lang = lang(); haptic(); render(true); return; }
     if (el.dataset.t) {
       var k = dkey(new Date()), d = state.days[k] || [], i = d.indexOf(el.dataset.t), wasOk = okDay(k);
       if (i >= 0) d.splice(i, 1); else d.push(el.dataset.t);
@@ -461,7 +691,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       saveHabits(); render(true); return;
     }
     var a = el.dataset.act;
-    if (a === "addw") {
+    if (a === "theme") { state.theme = effTheme() === "dark" ? "light" : "dark"; saveProfile(); applyTheme(); haptic(); render(true); }
+    else if (a === "addw") {
       var v = parseFloat(document.getElementById("w-in").value.replace(",", "."));
       if (!(v >= 30 && v <= 250)) { document.getElementById("w-in").focus(); return; }
       var wk = dkey(new Date()); state.weights[wk] = Math.round(v * 10) / 10; saveWeight(wk); haptic("ok"); render(true);
@@ -469,18 +700,18 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       state.name = document.getElementById("p-name").value.trim();
       state.goal = document.getElementById("p-goal").value.trim(); saveProfile(); haptic("ok"); go("home");
     } else if (a === "addh") {
-      var inp = document.getElementById("h-in"), t = inp.value.trim();
-      if (!t) { inp.focus(); return; }
+      var inp = document.getElementById("h-in"), tx = inp.value.trim();
+      if (!tx) { inp.focus(); return; }
       var cur = habits();
-      if (cur.length >= 20) { inp.value = ""; inp.placeholder = "максимум 20 привычек"; return; }
+      if (cur.length >= 20) { inp.value = ""; inp.placeholder = t("max_ph"); return; }
       state.habits = cur.map(function (h) { return { k: h.k, t: h.t, min: h.min }; });
-      state.habits.push({ k: "c" + Date.now().toString(36), t: t.slice(0, 60), min: false });
+      state.habits.push({ k: "c" + Date.now().toString(36), t: tx.slice(0, 60), min: false });
       saveHabits(); render(true);
     } else if (a === "fs") { state.fs = state.fs === false; saveProfile(); render(true); }
     else if (a === "addhome") { try { tg.addToHomeScreen(); } catch (e) {} }
     else if (a === "askdel") { confirmDel = true; render(true); }
     else if (a === "nodel") { confirmDel = false; render(true); }
-    else if (a === "del") { state = emptyState(); wipe(); confirmDel = false; go("home"); }
+    else if (a === "del") { state = emptyState(); wipe(); confirmDel = false; document.documentElement.lang = lang(); applyTheme(); go("home"); }
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter") return;
