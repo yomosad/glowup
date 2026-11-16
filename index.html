@@ -208,6 +208,15 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
 .badge { margin-left: 8px; font-size: 12px; color: var(--warn); }
 .badge[hidden] { display: none; }
 .badge.rd { color: var(--ok); }
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--a1), var(--a2)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; position: relative; overflow: hidden; flex: none; }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.who input { min-width: 0; width: 100%; }
+.who { display: flex; gap: 14px; align-items: center; }
+.goal { display: flex; align-items: center; gap: 6px; }
+.goal .task { flex: 1; }
+.goal .x { flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 22px; cursor: pointer; }
+.grp { margin: 6px 4px 0; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+button.tile-card { text-align: left; font: inherit; color: inherit; cursor: pointer; display: block; width: 100%; border: 0; }
 </style>
 </head>
 <body>
@@ -280,6 +289,32 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       h_sleep: "Сон 7–9 часов", h_food: "Нормальная еда, без пропусков", h_move: "Движение 30 минут",
       h_water: "Вода в течение дня", h_read: "Чтение или обучение 30 минут", h_skin: "Уход за собой",
       months: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
+      goals_h: "Мои цели",
+      goals_ph: "Например: прочитать 10 книг",
+      goals_add: "Добавить",
+      goals_none: "Целей пока нет. Добавь первую.",
+      goals_del: "Удалить цель",
+      rem_h: "Напоминание",
+      rem_t: "Время",
+      rem_set: "Включить в боте",
+      rem_off: "Выключить",
+      rem_note: "Откроется чат с ботом: нажми «Запустить» (Start). Напоминание приходит каждый день в выбранное время твоего часового пояса.",
+      tz_l: "Часовой пояс: {z}",
+      exp_b: "Скопировать мои данные",
+      exp_ok: "Скопировано",
+      exp_note: "Данные приложения в формате JSON: сохрани их, например, в «Избранное».",
+      data_cloud2: "Отметки, привычки и цели приложения хранятся в облаке Telegram (CloudStorage) и доступны на всех твоих устройствах. Команды бота (/today, /weight, /remind) и напоминания хранятся отдельно, в базе на сервере бота.",
+      data_local2: "Сейчас данные хранятся только в этом браузере. В Telegram они сохраняются в облаке Telegram. Команды бота и напоминания хранятся в базе на сервере бота.",
+      del_note: "Кнопка ниже удаляет данные приложения. Данные бота удаляет команда /delete_me в чате.",
+      prof_lvl: "Уровень {n} · {x} XP",
+      prof_ach: "Открыто наград: {a} из {b}",
+      prof_more: "Открыть прогресс",
+      part_l: "Время дня",
+      part_any: "В течение дня",
+      part_m: "Утро",
+      part_e: "Вечер",
+      rout_h: "Рутины",
+      w_priv: "Вес — необязательный личный показатель. Целей по весу здесь нет.",
       days: ["вс","пн","вт","ср","чт","пт","сб"]
     },
     en: {
@@ -334,6 +369,32 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       h_sleep: "Sleep 7–9 hours", h_food: "Proper meals, no skipping", h_move: "30 minutes of movement",
       h_water: "Water through the day", h_read: "30 minutes of reading or learning", h_skin: "Self-care",
       months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+      goals_h: "My goals",
+      goals_ph: "For example: read 10 books",
+      goals_add: "Add",
+      goals_none: "No goals yet. Add the first one.",
+      goals_del: "Delete goal",
+      rem_h: "Reminder",
+      rem_t: "Time",
+      rem_set: "Turn on in the bot",
+      rem_off: "Turn off",
+      rem_note: "This opens the bot chat: press Start. The reminder arrives every day at the chosen time in your time zone.",
+      tz_l: "Time zone: {z}",
+      exp_b: "Copy my data",
+      exp_ok: "Copied",
+      exp_note: "App data as JSON: save it, for example, in Saved Messages.",
+      data_cloud2: "Check-ins, habits and goals in the app are stored in your Telegram cloud (CloudStorage) and available on all your devices. Bot commands (/today, /weight, /remind) and reminders are stored separately, in the database on the bot's server.",
+      data_local2: "Right now your data is stored only in this browser. Inside Telegram it is saved in the Telegram cloud. Bot commands and reminders are stored in the database on the bot's server.",
+      del_note: "The button below deletes the app data. Bot data is deleted by the /delete_me command in the chat.",
+      prof_lvl: "Level {n} · {x} XP",
+      prof_ach: "Awards unlocked: {a} of {b}",
+      prof_more: "Open progress",
+      part_l: "Time of day",
+      part_any: "Any time",
+      part_m: "Morning",
+      part_e: "Evening",
+      rout_h: "Routines",
+      w_priv: "Weight is an optional private metric. There are no weight goals here.",
       days: ["Su","Mo","Tu","We","Th","Fr","Sa"]
     },
     zh: {
@@ -388,6 +449,32 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       h_sleep: "睡 7–9 小时", h_food: "好好吃饭，不漏餐", h_move: "运动 30 分钟",
       h_water: "全天适量喝水", h_read: "阅读或学习 30 分钟", h_skin: "护理自己",
       months: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+      goals_h: "我的目标",
+      goals_ph: "例如：读完10本书",
+      goals_add: "添加",
+      goals_none: "还没有目标，添加第一个吧。",
+      goals_del: "删除目标",
+      rem_h: "提醒",
+      rem_t: "时间",
+      rem_set: "在机器人中开启",
+      rem_off: "关闭",
+      rem_note: "将打开机器人聊天，点击“开始”。提醒每天在你所在时区的所选时间发送。",
+      tz_l: "时区：{z}",
+      exp_b: "复制我的数据",
+      exp_ok: "已复制",
+      exp_note: "应用数据（JSON 格式），可保存到“收藏夹”。",
+      data_cloud2: "应用中的打卡、习惯和目标保存在你的 Telegram 云端（CloudStorage），所有设备可见。机器人命令（/today、/weight、/remind）和提醒另存于机器人服务器的数据库中。",
+      data_local2: "目前数据只保存在此浏览器中。在 Telegram 内会保存到 Telegram 云端。机器人命令和提醒保存在机器人服务器的数据库中。",
+      del_note: "下方按钮删除应用数据。机器人数据请在聊天中发送 /delete_me 删除。",
+      prof_lvl: "等级 {n} · {x} XP",
+      prof_ach: "已解锁奖励：{a}/{b}",
+      prof_more: "查看进度",
+      part_l: "时段",
+      part_any: "全天",
+      part_m: "早晨",
+      part_e: "晚上",
+      rout_h: "日常流程",
+      w_priv: "体重是可选的私人指标，这里没有体重目标。",
       days: ["日","一","二","三","四","五","六"]
     }
   };
@@ -444,7 +531,13 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
         src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
       { tag: "Учёба", t: "Как учиться эффективнее", s: "Две самые полезные техники по обзору десяти методов.",
         pts: ["Проверяй себя вопросами и карточками вместо перечитывания.", "Повторяй с интервалами: сегодня, через 2 дня, через неделю.", "30 минут каждый день лучше, чем 3 часа раз в неделю."],
-        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." },
+      { tag: "Спорт", t: "Сколько движения нужно", s: "ВОЗ даёт простую норму на неделю.",
+        pts: ["Взрослым: 150–300 минут умеренной или 75–150 минут интенсивной аэробной нагрузки в неделю (или равная по нагрузке смесь).", "Силовые упражнения на основные группы мышц: не реже 2 дней в неделю.", "Детям и подросткам (5–17 лет): в среднем не менее 60 минут умеренной и интенсивной активности в день.", "Любое движение лучше, чем ничего: короткие прогулки тоже считаются."],
+        src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
+      { tag: "Планирование", t: "Правило «если — то»", s: "План с конкретным условием помогает довести цель до дела.",
+        pts: ["Формула: «Если наступит ситуация X, я сделаю Y». Например: «После ужина читаю 20 минут».", "В метаанализе 94 исследований такие планы дали эффект d ≈ 0,65 на достижение целей (средний и выше среднего).", "Привяжи новую привычку к событию, которое и так происходит каждый день."],
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
     ],
     en: [
       { tag: "Sleep", t: "Sleep and hormones", s: "Sleep loss hits hormones, recovery and mood.",
@@ -470,7 +563,13 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
         src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
       { tag: "Study", t: "Learning more effectively", s: "The two most useful techniques out of ten methods reviewed.",
         pts: ["Test yourself with questions and flashcards instead of rereading.", "Space your reviews: today, in 2 days, in a week.", "30 minutes every day beats 3 hours once a week."],
-        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." },
+      { tag: "Fitness", t: "How much movement you need", s: "WHO gives a simple weekly target.",
+        pts: ["Adults: 150–300 minutes of moderate or 75–150 minutes of vigorous aerobic activity per week (or an equivalent mix).", "Muscle-strengthening activities for the main muscle groups on at least 2 days per week.", "Children and teens (5–17): on average at least 60 minutes of moderate to vigorous activity a day.", "Any movement beats none: short walks count too."],
+        src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
+      { tag: "Planning", t: "The \"if — then\" rule", s: "A plan with a specific trigger helps turn a goal into action.",
+        pts: ["Formula: \"If situation X happens, I will do Y\". For example: \"After dinner I read for 20 minutes\".", "In a meta-analysis of 94 studies such plans had an effect of d ≈ 0.65 on goal attainment (medium to large).", "Attach a new habit to something that already happens every day."],
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
     ],
     zh: [
       { tag: "睡眠", t: "睡眠与激素", s: "睡眠不足会影响激素、恢复和情绪。",
@@ -496,7 +595,13 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
         src: "Lally P. et al. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology, 2010." },
       { tag: "学习", t: "如何更高效地学习", s: "在十种学习方法的综述中最有用的两种。",
         pts: ["用提问和闪卡自测，而不是反复重读。", "间隔复习：今天、2 天后、一周后。", "每天 30 分钟，胜过每周一次 3 小时。"],
-        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." }
+        src: "Dunlosky J. et al. Improving students' learning with effective learning techniques. Psychological Science in the Public Interest, 2013." },
+      { tag: "运动", t: "每周需要多少运动", s: "世卫组织给出了简单的每周标准。",
+        pts: ["成年人：每周150–300分钟中等强度或75–150分钟高强度有氧活动（或等效组合）。", "主要肌群的力量训练：每周至少2天。", "儿童和青少年（5–17岁）：平均每天至少60分钟中高强度活动。", "有动总比不动好：短时间散步也算。"],
+        src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
+      { tag: "计划", t: "“如果—那么”法则", s: "带有具体触发条件的计划有助于把目标变成行动。",
+        pts: ["公式：“如果出现情境X，我就做Y”。例如：“晚饭后读书20分钟”。", "在94项研究的元分析中，这类计划对目标达成的效应为 d ≈ 0.65（中到大）。", "把新习惯绑定到每天本来就会发生的事情上。"],
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
     ]
   };
 
@@ -519,14 +624,14 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
-  function emptyState() { return { name: "", goal: "", fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
+  function emptyState() { return { name: "", goal: "", goals: [], rem: "", fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
   var state = loadLocal();
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
   }
   function normalize() {
-    state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
+    state.goals = Array.isArray(state.goals) ? state.goals : []; state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
     state.lib = state.lib || {}; state.lib.f = state.lib.f || []; state.lib.r = state.lib.r || [];
     if (state.fs === undefined) state.fs = true;
     if (!state.start) { var ks = Object.keys(state.days).concat(Object.keys(state.weights)).sort(); state.start = ks.length ? ks[0] : todayKey(); }
@@ -590,11 +695,12 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function cset(key, val) { if (cloud) { try { cloud.setItem(key, val, function () {}); } catch (e) {} } }
   function saveDay(k) { saveLocal(); cset("d_" + k, (state.days[k] || []).join(",") || "-"); }
   function saveWeight(k) { saveLocal(); cset("w_" + k, String(state.weights[k])); }
-  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal, fs: state.fs, lang: state.lang, theme: state.theme, start: state.start })); }
+  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, rem: state.rem, fs: state.fs, lang: state.lang, theme: state.theme, start: state.start })); }
   function saveHabits() {
     saveLocal();
-    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0, h.c || "other", h.d ? h.d.join("") : "", h.s || ""]; })));
+    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0, h.c || "other", h.d ? h.d.join("") : "", h.s || "", h.r || ""]; })));
   }
+  function saveGoals() { saveLocal(); cset("g", JSON.stringify(state.goals.map(function (g) { return [g.i, g.t, g.d ? 1 : 0]; }))); }
   function saveLib() { saveLocal(); cset("l", JSON.stringify([state.lib.f, state.lib.r])); }
   function saveNote(k) { saveLocal(); cset("n_" + k, state.notes[k] || "-"); }
   function wipe() {
@@ -612,10 +718,11 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
           var s = emptyState();
           Object.keys(vals).forEach(function (k) {
             var v = vals[k];
-            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; s.start = p.start || ""; } catch (e) {} }
-            else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2], c: a[3] || "other", d: a[4] ? a[4].split("").map(Number) : null, s: a[5] || "" }; }); } catch (e) {} }
+            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.rem = p.rem || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; s.start = p.start || ""; } catch (e) {} }
+            else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2], c: a[3] || "other", d: a[4] ? a[4].split("").map(Number) : null, s: a[5] || "", r: a[6] || "" }; }); } catch (e) {} }
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
+            else if (k === "g") { try { s.goals = JSON.parse(v).map(function (a) { return { i: a[0], t: a[1], d: !!a[2] }; }); } catch (e) {} }
             else if (k === "l") { try { var lb = JSON.parse(v); s.lib = { f: lb[0] || [], r: lb[1] || [] }; } catch (e) {} }
             else if (k.indexOf("n_") === 0) { s.notes[k.slice(2)] = v === "-" ? "" : v; }
           });
@@ -631,7 +738,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function parseKey(k) { var p = k.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function todayKey() { return dkey(new Date()); }
   function daysBetween(a, b) { return Math.round((parseKey(b) - parseKey(a)) / 86400000); }
-  function cloneHabits() { return habits().map(function (h) { return { k: h.k, t: h.t || "", min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null, s: h.s || "" }; }); }
+  function cloneHabits() { return habits().map(function (h) { return { k: h.k, t: h.t || "", min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null, s: h.s || "", r: h.r || "" }; }); }
   function dueHabits(key) {
     var wd = parseKey(key).getDay(), st = state.start || "";
     return habits().filter(function (h) { return key >= (h.s || "") && key >= st && (!h.d || h.d.indexOf(wd) >= 0); });
@@ -704,6 +811,12 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function sortedWeights() { return Object.keys(state.weights).sort().map(function (k) { return { d: k, kg: state.weights[k] }; }); }
   function fmtDate(k) { var p = k.split("-"); return p[2] + "." + p[1]; }
   function num(v) { var s = v.toFixed(1); return lang() === "ru" ? s.replace(".", ",") : s; }
+  function tgUser() { try { return (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null; } catch (e) { return null; } }
+  function dispName() { var u = tgUser(); return state.name || (u && u.first_name) || ""; }
+  function avatar() {
+    var u = tgUser(), n = dispName(), ini = esc((n || "?").trim().charAt(0).toUpperCase() || "?");
+    return '<span class="avatar">' + ini + (u && u.photo_url ? '<img src="' + esc(u.photo_url) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()">' : "") + "</span>";
+  }
   function greeting() { var h = new Date().getHours(); return t(h < 5 ? "g_night" : h < 12 ? "g_morning" : h < 18 ? "g_day" : "g_evening"); }
 
   /* ---------- шапка с кнопкой темы ---------- */
@@ -714,7 +827,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   }
 
   /* ---------- виды ---------- */
-  var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study"];
+  var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study", "fitness", "plan"];
   var editing = null, hsRange = 30, libQ = "", libC = "all", libFav = false, confirmDel = false;
   function catName(c) { return t("cat_" + (CATS.indexOf(c) >= 0 ? c : "other")); }
   function schedTxt(h) {
@@ -739,7 +852,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       okDay(tk) ? t("msg_ok") : t("msg_go");
     var rec = recommendation();
     return '<div class="stack">' +
-      head(greeting() + (state.name ? ", " + esc(state.name) : ""), t("tagline")) +
+      head(greeting() + (dispName() ? ", " + esc(dispName()) : ""), t("tagline")) +
       '<section class="hero" id="hero"><div class="top"><div class="ring"><svg viewBox="0 0 96 96"><circle class="trk" cx="48" cy="48" r="40"/><circle class="val" cx="48" cy="48" r="40" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/></svg><b>' + pct + '%</b></div>' +
         '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + lv.n + '</b><span>' + t("lvl") + '</span></div></div></div>' +
         '<p class="msg">' + msg + '</p></section>' +
@@ -754,9 +867,12 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   }
   function tasks() {
     var tk = todayKey(), due = dueHabits(tk), st = dayStat(tk), L = D[lang()], d0 = new Date();
-    var list = due.map(function (h) {
-      var on = isDone(tk, h.k);
-      return '<button class="task" data-t="' + esc(h.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
+    var rank = { m: 0, "": 1, e: 2 }, hasR = due.some(function (h) { return h.r; });
+    var sorted = hasR ? due.slice().sort(function (a, b) { return rank[a.r || ""] - rank[b.r || ""]; }) : due, lastR = null;
+    var list = sorted.map(function (h) {
+      var on = isDone(tk, h.k), hd = "";
+      if (hasR && (h.r || "") !== lastR) { lastR = h.r || ""; hd = '<h3 class="grp">' + t(lastR === "m" ? "part_m" : lastR === "e" ? "part_e" : "part_any") + "</h3>"; }
+      return hd + '<button class="task" data-t="' + esc(h.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
     }).join("");
     var dateTxt = lang() === "ru" ? d0.getDate() + " " + L.months[d0.getMonth()] : lang() === "en" ? L.months[d0.getMonth()] + " " + d0.getDate() : (d0.getMonth() + 1) + "月" + d0.getDate() + "日";
     var mleft = due.filter(function (h) { return h.min && !isDone(tk, h.k); }).length;
@@ -774,6 +890,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     return '<section class="card stack"><h2 style="margin:0">' + t(editing.i < 0 ? "hab_new" : "hab_edit") + '</h2>' +
       '<label for="f-name"><b>' + t("f_name") + '</b></label><input id="f-name" type="text" maxlength="60" value="' + esc(f.t) + '">' +
       '<b>' + t("f_cat") + '</b><div class="chips wrap">' + cats + '</div>' +
+      '<b>' + t("part_l") + '</b><div class="chips wrap">' + [["", "part_any"], ["m", "part_m"], ["e", "part_e"]].map(function (x) { return '<button class="chip" data-fr="' + x[0] + '" aria-pressed="' + ((f.r || "") === x[0]) + '">' + t(x[1]) + "</button>"; }).join("") + '</div>' +
       '<b>' + t("f_days") + '</b><div class="chips wrap">' + wds + '</div>' +
       '<div class="switch"><b>' + t("f_key") + '</b><button role="switch" aria-checked="' + !!f.min + '" aria-label="' + esc(t("f_key")) + '" data-act="fkey"></button></div>' +
       '<div class="row"><button class="btn" data-act="fsave">' + t("save") + '</button><button class="btn soft" data-act="fcancel">' + t("cancel") + '</button>' +
@@ -781,7 +898,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   }
   function habitsView() {
     var rows = habits().map(function (h, i) {
-      return '<button class="habrow" data-edit="' + i + '"><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + " · " + schedTxt(h) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
+      return '<button class="habrow" data-edit="' + i + '"><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + (h.r ? " · " + t(h.r === "m" ? "part_m" : "part_e") : "") + " · " + schedTxt(h) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
     }).join("");
     return '<div class="stack">' + head(t("hab_title"), t("hab_sub")) + (editing ? form() : "") +
       '<section class="card stack"><div class="stack" style="gap:8px">' + (rows || '<p class="sub">' + t("no_habits") + '</p>') + '</div><button class="btn" data-act="newh">' + t("hab_new") + '</button></section></div>';
@@ -833,10 +950,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     }).join("");
     var hstat = '<section class="card stack"><div class="row" style="justify-content:space-between"><h2 style="margin:0">' + t("hs_h") + '</h2><div class="chips">' + rng + "</div></div>" + (rows || '<p class="sub">' + t("no_habits") + "</p>") + "</section>";
     if (w.length > 1) { var c = w[w.length - 1].kg - w[0].kg; diff = t("since", { d: (c >= 0 ? "+" : "−") + num(Math.abs(c)), date: fmtDate(w[0].d) }); }
-    var goal = parseFloat(String(state.goal).replace(",", ".")), goalTxt = "";
-    if (goal && w.length) { var left = goal - w[w.length - 1].kg; goalTxt = Math.abs(left) > 0.05 ? t("goal_left", { g: num(goal), l: num(Math.abs(left)) }) : t("goal_done", { g: num(goal) }); }
     var weight = "<details><summary><span>" + t("weight_opt") + '</span></summary><div class="body">' + chart(w) +
-      (diff || goalTxt ? '<p class="sub">' + [diff, goalTxt].filter(Boolean).join(" · ") + "</p>" : "") +
+      (diff ? '<p class="sub">' + diff + "</p>" : "") +
       '<div class="row"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="' + esc(t("w_ph")) + '" aria-label="' + esc(t("w_aria")) + '"><button class="btn" data-act="addw">' + t("w_save") + "</button></div>" +
       '<p class="note">' + t("w_neutral") + "</p></div></details>";
     return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) + level + stats + ach + calendar() + report() + hstat + weight + "</div>";
@@ -872,16 +987,31 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     if (!inTg || !ver("8.0") || !/ios|android/.test(tg.platform || "")) return "";
     return '<div class="switch"><div><b>' + t("fs_t") + '</b><p class="note">' + t("fs_d") + '</p></div><button role="switch" aria-checked="' + (state.fs !== false) + '" aria-label="' + esc(t("fs_t")) + '" data-act="fs"></button></div>';
   }
+  function tz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { return ""; } }
+  function remLink(off) {
+    var z = tz(), v = (document.getElementById("p-rem") || {}).value || state.rem || "20:30";
+    var payload = off ? "roff" : "r" + v.replace(":", "") + (z ? "__" + z.replace(/\//g, "__") : "");
+    return { url: "https://t.me/sadglowbot?start=" + payload.replace(/[^A-Za-z0-9_-]/g, "-").slice(0, 64), v: v };
+  }
   function profile() {
     var seg = LANGS.map(function (l) { return '<button data-lang="' + l + '" aria-pressed="' + (lang() === l) + '">' + LANG_NAMES[l] + "</button>"; }).join("");
+    var lv = levelInfo(xpTotal()), ach = achievements(), got = ach.filter(function (a) { return a[1]; }).length;
+    var goals = state.goals.map(function (g, i) {
+      return '<div class="goal"><button class="task" data-gt="' + i + '" aria-pressed="' + !!g.d + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="tt"><span class="t">' + esc(g.t) + '</span></span></button><button class="x" data-gd="' + i + '" aria-label="' + esc(t("goals_del")) + '">×</button></div>';
+    }).join("");
     return '<div class="stack">' + head(t("prof_title"), t("prof_sub")) +
-      '<section class="card stack"><h2 style="margin:0">' + t("lang_h") + '</h2><div class="seg">' + seg + '</div></section>' +
-      '<section class="card stack"><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(t("name_ph")) + '">' +
-      '<label for="p-goal"><b>' + t("goal_l") + '</b></label><input id="p-goal" type="number" inputmode="decimal" step="0.5" min="30" max="250" value="' + esc(state.goal || "") + '" placeholder="' + esc(t("goal_ph")) + '">' +
+      '<section class="card stack"><div class="who">' + avatar() + '<div style="flex:1;min-width:0"><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(dispName() || t("name_ph")) + '"></div></div>' +
       '<button class="btn" data-act="saveprof">' + t("save") + '</button></section>' +
+      '<button class="card tile-card" data-go="progress"><span class="row" style="justify-content:space-between;flex-wrap:nowrap"><b>' + t("prof_lvl", { n: lv.n, x: xpTotal() }) + '</b><span class="sub">' + t("prof_more") + ' ›</span></span><span class="bar" style="margin-top:10px"><i style="width:' + Math.round(lv.into / lv.need * 100) + '%"></i></span><span class="note" style="display:block;margin-top:8px">' + t("prof_ach", { a: got, b: ach.length }) + '</span></button>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("goals_h") + '</h2>' + (goals || '<p class="sub">' + t("goals_none") + '</p>') +
+      '<div class="row" style="flex-wrap:nowrap"><input id="g-in" type="text" maxlength="80" placeholder="' + esc(t("goals_ph")) + '"><button class="btn" data-act="gadd">' + t("goals_add") + '</button></div></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("habits_h") + '</h2><p class="sub">' + t("hab_count", { n: habits().length }) + '</p><button class="btn soft" data-go="habits">' + t("manage") + '</button></section>' +
-      '<section class="card stack"><h2 style="margin:0">' + t("app_h") + '</h2>' + homeCard() + fsSwitch() + '<p class="note">' + t("remind") + '</p></section>' +
-      '<section class="card stack"><h2 style="margin:0">' + t("data_h") + '</h2><p>' + (cloud ? t("data_cloud") : t("data_local")) + ' ' + t("no_photo") + '</p>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("rem_h") + '</h2><div class="row" style="flex-wrap:nowrap"><label for="p-rem"><b>' + t("rem_t") + '</b></label><input id="p-rem" type="time" value="' + esc(state.rem || "20:30") + '"></div>' +
+      '<div class="row"><button class="btn" data-act="remset">' + t("rem_set") + '</button><button class="btn soft" data-act="remoff">' + t("rem_off") + '</button></div><p class="note">' + t("rem_note") + '</p><p class="note">' + t("tz_l", { z: esc(tz() || "—") }) + '</p></section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("lang_h") + '</h2><div class="seg">' + seg + '</div></section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("app_h") + '</h2>' + homeCard() + fsSwitch() + '</section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("data_h") + '</h2><p>' + (cloud ? t("data_cloud2") : t("data_local2")) + ' ' + t("no_photo") + '</p><p class="note">' + t("w_priv") + '</p>' +
+      '<button class="btn soft" data-act="export">' + t("exp_b") + '</button><p class="note">' + t("exp_note") + '</p><p class="note">' + t("del_note") + '</p>' +
       (confirmDel ? '<p><b>' + t("del_q") + '</b></p><div class="row"><button class="btn ghost" data-act="del">' + t("del_yes") + '</button><button class="btn soft" data-act="nodel">' + t("cancel") + '</button></div>' : '<button class="btn ghost" data-act="askdel">' + t("del_ask") + '</button>') + '</section></div>';
   }
 
@@ -904,7 +1034,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
 
   function captureName() { var n = document.getElementById("f-name"); if (n && editing) editing.f.t = n.value; }
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-lang],[data-edit],[data-fc],[data-wd],[data-range],[data-libc],[data-libfav],[data-libtog]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-libfav],[data-libtog]");
     if (!el) return;
     var ds = el.dataset;
     if (ds.go) { editing = null; haptic(); go(ds.go); return; }
@@ -916,7 +1046,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       if (!wasOk && okDay(k) === true) { haptic("ok"); } else { haptic(); }
       render(true); return;
     }
-    if (ds.edit !== undefined) { var h = habits()[+ds.edit]; editing = { i: +ds.edit, f: { t: hname(h), min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null } }; render(true); window.scrollTo(0, 0); return; }
+    if (ds.edit !== undefined) { var h = habits()[+ds.edit]; editing = { i: +ds.edit, f: { t: hname(h), min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null, r: h.r || "" } }; render(true); window.scrollTo(0, 0); return; }
+    if (ds.fr !== undefined) { captureName(); editing.f.r = ds.fr; render(true); return; }
     if (ds.fc) { captureName(); editing.f.c = ds.fc; render(true); return; }
     if (ds.wd !== undefined) {
       captureName(); var n = +ds.wd, f = editing.f;
@@ -926,6 +1057,8 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       if (f.d.length === 7) f.d = null;
       render(true); return;
     }
+    if (ds.gt !== undefined) { var g = state.goals[+ds.gt]; if (g) { g.d = !g.d; saveGoals(); haptic(g.d ? "ok" : null); render(true); } return; }
+    if (ds.gd !== undefined) { state.goals.splice(+ds.gd, 1); saveGoals(); render(true); return; }
     if (ds.range) { hsRange = +ds.range; render(true); return; }
     if (ds.libc) { libC = ds.libc; libFav = false; render(true); return; }
     if (ds.libfav) { libFav = !libFav; render(true); return; }
@@ -946,20 +1079,35 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       render(true); var dt = document.querySelector("details:not([data-i])"); if (dt) dt.open = true;
     } else if (a === "saveprof") {
       state.name = document.getElementById("p-name").value.trim();
-      state.goal = document.getElementById("p-goal").value.trim(); saveProfile(); haptic("ok"); go("home");
+      saveProfile(); haptic("ok"); go("home");
+    } else if (a === "gadd") {
+      var gi = document.getElementById("g-in"), gv = gi.value.trim();
+      if (!gv) { gi.focus(); return; }
+      if (state.goals.length >= 10) return;
+      state.goals.push({ i: "g" + Date.now().toString(36), t: gv.slice(0, 80), d: false }); saveGoals(); haptic("ok"); render(true);
+    } else if (a === "remset" || a === "remoff") {
+      var rl = remLink(a === "remoff");
+      if (a === "remset") { state.rem = rl.v; } else { state.rem = ""; }
+      saveProfile();
+      try { if (inTg && tg.openTelegramLink) tg.openTelegramLink(rl.url); else window.open(rl.url, "_blank"); } catch (e3) {}
+    } else if (a === "export") {
+      var txt = JSON.stringify(state, null, 1), btn = el;
+      function okMsg() { btn.textContent = t("exp_ok"); haptic("ok"); setTimeout(function () { btn.textContent = t("exp_b"); }, 1800); }
+      function fb() { var ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); okMsg(); } catch (e4) {} ta.remove(); }
+      try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(okMsg, fb); else fb(); } catch (e5) { fb(); }
     } else if (a === "newh") {
       if (habits().length >= 20) return;
-      editing = { i: -1, f: { t: "", min: false, c: "other", d: null } }; render(true); window.scrollTo(0, 0);
+      editing = { i: -1, f: { t: "", min: false, c: "other", d: null, r: "" } }; render(true); window.scrollTo(0, 0);
     } else if (a === "fkey") { captureName(); editing.f.min = !editing.f.min; render(true); }
     else if (a === "fcancel") { editing = null; render(true); }
     else if (a === "fsave") {
       captureName(); var f2 = editing.f, name = f2.t.trim();
       if (!name) { document.getElementById("f-name").focus(); return; }
       var hs = cloneHabits();
-      if (editing.i < 0) { hs.push({ k: "c" + Date.now().toString(36), t: name.slice(0, 60), min: f2.min, c: f2.c, d: f2.d, s: todayKey() }); }
+      if (editing.i < 0) { hs.push({ k: "c" + Date.now().toString(36), t: name.slice(0, 60), min: f2.min, c: f2.c, d: f2.d, s: todayKey(), r: f2.r }); }
       else {
         var cur = hs[editing.i], isDef = DEFAULT_KEYS.indexOf(cur.k) >= 0;
-        cur.t = isDef && name === t("h_" + cur.k) ? "" : name.slice(0, 60); cur.min = f2.min; cur.c = f2.c; cur.d = f2.d;
+        cur.t = isDef && name === t("h_" + cur.k) ? "" : name.slice(0, 60); cur.min = f2.min; cur.c = f2.c; cur.d = f2.d; cur.r = f2.r;
       }
       state.habits = hs; saveHabits(); editing = null; haptic("ok"); render(true);
     } else if (a === "fdel") {
@@ -979,6 +1127,7 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter") return;
     if (e.target.id === "w-in") { e.preventDefault(); document.querySelector("[data-act=addw]").click(); }
+    if (e.target.id === "g-in") { e.preventDefault(); document.querySelector("[data-act=gadd]").click(); }
     if (e.target.id === "f-name") { e.preventDefault(); document.querySelector("[data-act=fsave]").click(); }
     if (e.target.id === "note") { e.preventDefault(); e.target.blur(); }
   });
