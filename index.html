@@ -170,6 +170,44 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
 .view { animation: in .28s ease both; }
 @keyframes in { from { opacity: 0; transform: translateY(8px); } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+.lvl { padding: 18px 20px; }
+.bar.light { background: rgba(255,255,255,.25); position: relative; z-index: 1; }
+.bar.light i { background: #fff; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 14px 16px; }
+.stat b { display: block; font-size: 27px; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); }
+.ach { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ach .a { border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: var(--card2); }
+.ach .a b { display: block; font-size: 14px; }
+.ach .a small { color: var(--muted); font-size: 12px; line-height: 1.3; display: block; margin-top: 2px; }
+.ach .a.lock { opacity: .55; }
+.cal-h, .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-h span { text-align: center; font-size: 11px; color: var(--muted); padding-bottom: 6px; }
+.cal i { aspect-ratio: 1; border-radius: 9px; background: var(--card2); display: block; }
+.cal i.l1 { background: color-mix(in srgb, var(--a1) 28%, var(--card2)); }
+.cal i.l2 { background: color-mix(in srgb, var(--a1) 48%, var(--card2)); }
+.cal i.l3 { background: color-mix(in srgb, var(--a1) 72%, var(--card2)); }
+.cal i.l4 { background: var(--a1); }
+.cal i.fut { opacity: .35; }
+.cal i.now { outline: 2px solid var(--a2); outline-offset: 1px; }
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cmp div { background: var(--card2); border-radius: 16px; padding: 12px 14px; }
+.cmp b { display: block; font-size: 26px; font-weight: 800; }
+.cmp span { font-size: 12px; color: var(--muted); }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips.wrap { flex-wrap: wrap; overflow: visible; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { font: inherit; font-size: 13px; font-weight: 600; border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 99px; padding: 7px 14px; white-space: nowrap; cursor: pointer; transition: background .2s, color .2s; }
+.chip[aria-pressed="true"] { background: linear-gradient(135deg, #5b3df0, #8a4fff); color: #fff; border-color: transparent; }
+.chip.wd { min-width: 44px; padding: 7px 10px; text-align: center; }
+.habrow { display: flex; align-items: center; gap: 12px; width: 100%; font: inherit; color: inherit; text-align: left; cursor: pointer; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); background: var(--card2); }
+.habrow .star { margin-left: auto; }
+.tt { display: flex; flex-direction: column; min-width: 0; }
+.tt small { font-size: 12px; color: var(--muted); }
+.badge { margin-left: 8px; font-size: 12px; color: var(--warn); }
+.badge[hidden] { display: none; }
+.badge.rd { color: var(--ok); }
 </style>
 </head>
 <body>
@@ -181,9 +219,10 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   var KEY = "glowup-app-v2";
   var LANGS = ["ru", "en", "zh"];
   var LANG_NAMES = { ru: "Русский", en: "English", zh: "中文" };
+  var CATS = ["skin", "hair", "fit", "sleep", "food", "style", "focus", "other"];
   var DEFAULT_HABITS = [
-    { k: "sleep", min: true }, { k: "food", min: true }, { k: "move", min: true },
-    { k: "water" }, { k: "read" }, { k: "skin" }
+    { k: "sleep", min: true, c: "sleep" }, { k: "food", min: true, c: "food" }, { k: "move", min: true, c: "fit" },
+    { k: "water", c: "food" }, { k: "read", c: "focus" }, { k: "skin", c: "skin" }
   ];
   var DEFAULT_KEYS = ["sleep", "food", "move", "water", "read", "skin"];
 
@@ -219,6 +258,25 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       data_local: "Данные хранятся только в этом браузере.", no_photo: "Фото и оценки внешности здесь нет и не будет.",
       del_ask: "Удалить все мои данные", del_q: "Удалить задачи, вес и профиль без возможности вернуть?", del_yes: "Да, удалить", cancel: "Отмена",
       lang_h: "Язык", theme_aria: "Сменить тему",
+      lvl: "уровень", msg_back: "С возвращением! Один пропущенный день не в счёт, главное, что ты здесь.", msg_rest: "Сегодня по расписанию отдых. Хорошего дня!",
+      rec_t: "Совет дня", rec_skip: "Ты часто пропускаешь «{h}» ({p}% за 2 недели). Упрости её или перенеси на удобное время.",
+      rec_good: "Серия {n} дн. подряд. Продолжай в том же духе.", rec_start: "Начни с одной маленькой привычки сегодня.",
+      manage: "Управлять привычками", note_l: "Как самочувствие?", note_ph: "короткая заметка",
+      cat_skin: "Кожа", cat_hair: "Волосы", cat_fit: "Спорт", cat_sleep: "Сон", cat_food: "Питание", cat_style: "Стиль", cat_focus: "Продуктивность", cat_other: "Другое",
+      hab_title: "Привычки", hab_sub: "Свои привычки, категории и расписание", hab_new: "Новая привычка", hab_edit: "Редактировать привычку",
+      f_name: "Название", f_cat: "Категория", f_days: "Повторять", f_every: "каждый день", f_key: "Главная привычка", f_del: "Удалить",
+      lvl_t: "Уровень {n}", xp_to: "{x} XP до уровня {n}", xp_note: "10 XP за каждую отметку и ещё 25 за день с выполненным главным. Пропуск никогда не снимает XP.",
+      st_week: "Привычки за неделю", st_streak: "Серия, дн.", st_best: "Лучшая серия", st_active: "Активных дней",
+      ach_h: "Достижения", ach_first: "Первый шаг", achd_first: "Первая отметка", ach_cons: "Постоянство", achd_cons: "7 активных дней",
+      ach_disc: "Дисциплина", achd_disc: "30 активных дней", ach_org: "Организованность", achd_org: "50 выполненных задач",
+      ach_new: "Новая глава", achd_new: "90 дней с приложением", ach_back: "Возвращение", achd_back: "Вернулся после перерыва",
+      cal_h: "Календарь активности", cal_note: "Чем ярче клетка, тем больше привычек выполнено.",
+      rep_h: "Отчёт за неделю", rep_this: "Последние 7 дней", rep_last: "Предыдущие 7 дней", rep_best: "Самая стабильная: {h}", rep_worst: "Чаще всего пропускается: {h}",
+      rep_up: "На {d} п.п. лучше предыдущих 7 дней.", rep_down: "На {d} п.п. ниже предыдущих 7 дней. Это нормально, главное вернуться.", rep_same: "Так же, как в предыдущие 7 дней.",
+      rep_none: "Пока мало данных для отчёта.", hs_h: "Статистика привычек", rng_7: "7 дн.", rng_30: "30 дн.", rng_90: "90 дн.",
+      weight_opt: "Вес (по желанию)", w_neutral: "Вес не показатель успеха. Следи за самочувствием, а не за цифрой.",
+      lib_all: "Все", lib_fav: "Избранное", search_ph: "Поиск по статьям", lib_none: "Ничего не найдено.",
+      fav_add: "В избранное", fav_on: "В избранном", read_mark: "Отметить прочитанным", read_on: "Прочитано", hab_count: "Привычек: {n}",
       h_sleep: "Сон 7–9 часов", h_food: "Нормальная еда, без пропусков", h_move: "Движение 30 минут",
       h_water: "Вода в течение дня", h_read: "Чтение или обучение 30 минут", h_skin: "Уход за собой",
       months: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
@@ -254,6 +312,25 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       data_local: "Your data is stored only in this browser.", no_photo: "There are no photos or appearance ratings here, and there never will be.",
       del_ask: "Delete all my data", del_q: "Delete tasks, weight and profile permanently?", del_yes: "Yes, delete", cancel: "Cancel",
       lang_h: "Language", theme_aria: "Switch theme",
+      lvl: "level", msg_back: "Welcome back! One missed day doesn't count, what matters is that you're here.", msg_rest: "Rest day on your schedule today. Enjoy it!",
+      rec_t: "Tip of the day", rec_skip: "You often skip \"{h}\" ({p}% over 2 weeks). Make it easier or move it to a better time.",
+      rec_good: "{n}-day streak. Keep it up.", rec_start: "Start with one small habit today.",
+      manage: "Manage habits", note_l: "How do you feel?", note_ph: "a short note",
+      cat_skin: "Skincare", cat_hair: "Haircare", cat_fit: "Fitness", cat_sleep: "Sleep", cat_food: "Nutrition", cat_style: "Style", cat_focus: "Productivity", cat_other: "Other",
+      hab_title: "Habits", hab_sub: "Your habits, categories and schedule", hab_new: "New habit", hab_edit: "Edit habit",
+      f_name: "Name", f_cat: "Category", f_days: "Repeat on", f_every: "every day", f_key: "Key habit", f_del: "Delete",
+      lvl_t: "Level {n}", xp_to: "{x} XP to level {n}", xp_note: "10 XP per check, plus 25 for a day with all key habits done. Missing a day never removes XP.",
+      st_week: "Habits this week", st_streak: "Streak, days", st_best: "Best streak", st_active: "Active days",
+      ach_h: "Achievements", ach_first: "First Step", achd_first: "First check-in", ach_cons: "Consistency", achd_cons: "7 active days",
+      ach_disc: "Discipline", achd_disc: "30 active days", ach_org: "Organized", achd_org: "50 completed tasks",
+      ach_new: "New Chapter", achd_new: "90 days with the app", ach_back: "Comeback", achd_back: "Returned after a break",
+      cal_h: "Activity calendar", cal_note: "The brighter the cell, the more habits done.",
+      rep_h: "Weekly report", rep_this: "Last 7 days", rep_last: "Previous 7 days", rep_best: "Most consistent: {h}", rep_worst: "Most skipped: {h}",
+      rep_up: "{d} points better than the previous 7 days.", rep_down: "{d} points lower than the previous 7 days. That's fine, just get back on track.", rep_same: "Same as the previous 7 days.",
+      rep_none: "Not enough data for a report yet.", hs_h: "Habit stats", rng_7: "7d", rng_30: "30d", rng_90: "90d",
+      weight_opt: "Weight (optional)", w_neutral: "Weight is not a measure of success. Pay attention to how you feel, not the number.",
+      lib_all: "All", lib_fav: "Favorites", search_ph: "Search articles", lib_none: "Nothing found.",
+      fav_add: "Add to favorites", fav_on: "Favorited", read_mark: "Mark as read", read_on: "Read", hab_count: "Habits: {n}",
       h_sleep: "Sleep 7–9 hours", h_food: "Proper meals, no skipping", h_move: "30 minutes of movement",
       h_water: "Water through the day", h_read: "30 minutes of reading or learning", h_skin: "Self-care",
       months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -289,6 +366,25 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       data_local: "数据只保存在此浏览器中。", no_photo: "这里没有照片，也不会给外貌打分。",
       del_ask: "删除我的所有数据", del_q: "永久删除任务、体重和个人资料？", del_yes: "是，删除", cancel: "取消",
       lang_h: "语言", theme_aria: "切换主题",
+      lvl: "等级", msg_back: "欢迎回来！漏一天不算什么，重要的是你回来了。", msg_rest: "今天按计划休息，好好享受！",
+      rec_t: "今日建议", rec_skip: "你经常漏掉“{h}”（两周完成 {p}%）。把它变简单些，或换到更合适的时间。",
+      rec_good: "已连续 {n} 天，继续保持。", rec_start: "今天先从一个小习惯开始。",
+      manage: "管理习惯", note_l: "今天感觉如何？", note_ph: "简短备注",
+      cat_skin: "护肤", cat_hair: "护发", cat_fit: "运动", cat_sleep: "睡眠", cat_food: "饮食", cat_style: "形象", cat_focus: "效率", cat_other: "其他",
+      hab_title: "习惯", hab_sub: "自定义习惯、分类和日程", hab_new: "新习惯", hab_edit: "编辑习惯",
+      f_name: "名称", f_cat: "分类", f_days: "重复", f_every: "每天", f_key: "重点习惯", f_del: "删除",
+      lvl_t: "等级 {n}", xp_to: "距 {n} 级还差 {x} XP", xp_note: "每次打卡 10 XP，当天完成全部重点习惯再 +25。漏一天不会扣 XP。",
+      st_week: "本周习惯", st_streak: "连续天数", st_best: "最长连续", st_active: "活跃天数",
+      ach_h: "成就", ach_first: "第一步", achd_first: "第一次打卡", ach_cons: "持之以恒", achd_cons: "7 个活跃日",
+      ach_disc: "自律", achd_disc: "30 个活跃日", ach_org: "井井有条", achd_org: "完成 50 项任务",
+      ach_new: "崭新篇章", achd_new: "使用满 90 天", ach_back: "重新出发", achd_back: "中断后回归",
+      cal_h: "活动日历", cal_note: "格子越亮，完成的习惯越多。",
+      rep_h: "每周报告", rep_this: "最近 7 天", rep_last: "前 7 天", rep_best: "最稳定：{h}", rep_worst: "最常漏掉：{h}",
+      rep_up: "比前 7 天高 {d} 个百分点。", rep_down: "比前 7 天低 {d} 个百分点，没关系，回到轨道就好。", rep_same: "与前 7 天持平。",
+      rep_none: "数据还不足以生成报告。", hs_h: "习惯统计", rng_7: "7天", rng_30: "30天", rng_90: "90天",
+      weight_opt: "体重（选填）", w_neutral: "体重不是成功的衡量标准。关注感觉，而不是数字。",
+      lib_all: "全部", lib_fav: "收藏", search_ph: "搜索文章", lib_none: "没有找到。",
+      fav_add: "加入收藏", fav_on: "已收藏", read_mark: "标为已读", read_on: "已读", hab_count: "习惯：{n}",
       h_sleep: "睡 7–9 小时", h_food: "好好吃饭，不漏餐", h_move: "运动 30 分钟",
       h_water: "全天适量喝水", h_read: "阅读或学习 30 分钟", h_skin: "护理自己",
       months: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
@@ -423,13 +519,18 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
-  function emptyState() { return { name: "", goal: "", fs: true, lang: null, theme: null, habits: null, days: {}, weights: {} }; }
+  function emptyState() { return { name: "", goal: "", fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
   var state = loadLocal();
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
   }
-  function normalize() { state.days = state.days || {}; state.weights = state.weights || {}; if (state.fs === undefined) state.fs = true; }
+  function normalize() {
+    state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
+    state.lib = state.lib || {}; state.lib.f = state.lib.f || []; state.lib.r = state.lib.r || [];
+    if (state.fs === undefined) state.fs = true;
+    if (!state.start) { var ks = Object.keys(state.days).concat(Object.keys(state.weights)).sort(); state.start = ks.length ? ks[0] : todayKey(); }
+  }
   normalize();
   function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function habits() { return Array.isArray(state.habits) ? state.habits : DEFAULT_HABITS; }
@@ -448,7 +549,10 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     if (v) Object.keys(v).forEach(function (n) { s = s.split("{" + n + "}").join(v[n]); });
     return s;
   }
-  function hname(h) { return DEFAULT_KEYS.indexOf(h.k) >= 0 ? t("h_" + h.k) : h.t; }
+  function hname(h) {
+    if (DEFAULT_KEYS.indexOf(h.k) >= 0 && (!h.t || ["ru", "en", "zh"].some(function (l) { return D[l]["h_" + h.k] === h.t; }))) return t("h_" + h.k);
+    return h.t;
+  }
 
   /* ---------- тема ---------- */
   function effTheme() {
@@ -486,11 +590,13 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function cset(key, val) { if (cloud) { try { cloud.setItem(key, val, function () {}); } catch (e) {} } }
   function saveDay(k) { saveLocal(); cset("d_" + k, (state.days[k] || []).join(",") || "-"); }
   function saveWeight(k) { saveLocal(); cset("w_" + k, String(state.weights[k])); }
-  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal, fs: state.fs, lang: state.lang, theme: state.theme })); }
+  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, goal: state.goal, fs: state.fs, lang: state.lang, theme: state.theme, start: state.start })); }
   function saveHabits() {
     saveLocal();
-    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0]; })));
+    if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0, h.c || "other", h.d ? h.d.join("") : "", h.s || ""]; })));
   }
+  function saveLib() { saveLocal(); cset("l", JSON.stringify([state.lib.f, state.lib.r])); }
+  function saveNote(k) { saveLocal(); cset("n_" + k, state.notes[k] || "-"); }
   function wipe() {
     saveLocal();
     if (!cloud) return;
@@ -506,10 +612,12 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
           var s = emptyState();
           Object.keys(vals).forEach(function (k) {
             var v = vals[k];
-            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; } catch (e) {} }
-            else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2] }; }); } catch (e) {} }
+            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.goal = p.goal || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; s.start = p.start || ""; } catch (e) {} }
+            else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2], c: a[3] || "other", d: a[4] ? a[4].split("").map(Number) : null, s: a[5] || "" }; }); } catch (e) {} }
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
+            else if (k === "l") { try { var lb = JSON.parse(v); s.lib = { f: lb[0] || [], r: lb[1] || [] }; } catch (e) {} }
+            else if (k.indexOf("n_") === 0) { s.notes[k.slice(2)] = v === "-" ? "" : v; }
           });
           state = s; normalize(); saveLocal(); document.documentElement.lang = lang(); applyTheme(); done(true);
         });
@@ -520,17 +628,77 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   function dkey(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function shift(n) { var d = new Date(); d.setDate(d.getDate() + n); return d; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function keysNow() { return habits().map(function (h) { return h.k; }); }
-  function doneOn(key) { var ks = keysNow(); return (state.days[key] || []).filter(function (k) { return ks.indexOf(k) >= 0; }); }
-  function minKeys() { return habits().filter(function (h) { return h.min; }).map(function (h) { return h.k; }); }
+  function parseKey(k) { var p = k.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function todayKey() { return dkey(new Date()); }
+  function daysBetween(a, b) { return Math.round((parseKey(b) - parseKey(a)) / 86400000); }
+  function cloneHabits() { return habits().map(function (h) { return { k: h.k, t: h.t || "", min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null, s: h.s || "" }; }); }
+  function dueHabits(key) {
+    var wd = parseKey(key).getDay(), st = state.start || "";
+    return habits().filter(function (h) { return key >= (h.s || "") && key >= st && (!h.d || h.d.indexOf(wd) >= 0); });
+  }
+  function isDone(key, k) { return (state.days[key] || []).indexOf(k) >= 0; }
+  function dayStat(key) {
+    var due = dueHabits(key);
+    return { due: due.length, done: due.filter(function (h) { return isDone(key, h.k); }).length };
+  }
+  /* true: главное выполнено, false: нет, null: по расписанию отдых */
   function okDay(key) {
-    var d = doneOn(key), m = minKeys();
-    return m.length ? m.every(function (k) { return d.indexOf(k) >= 0; }) : d.length > 0;
+    var due = dueHabits(key); if (!due.length) return null;
+    var m = due.filter(function (h) { return h.min; });
+    if (m.length) return m.every(function (h) { return isDone(key, h.k); });
+    return due.some(function (h) { return isDone(key, h.k); });
   }
   function streak() {
-    var n = 0, off = okDay(dkey(new Date())) ? 0 : -1;
-    while (n < 3650 && okDay(dkey(shift(off - n)))) n++;
+    var n = 0, i = okDay(todayKey()) === true ? 0 : 1, st = state.start || "";
+    for (; i < 3650; i++) {
+      var k = dkey(shift(-i)); if (k < st) break;
+      var s = okDay(k); if (s === null) continue;
+      if (s) n++; else break;
+    }
     return n;
+  }
+  function bestStreak() {
+    var best = 0, run = 0, d = parseKey(state.start || todayKey()), end = todayKey();
+    for (var g = 0; g < 4000; g++) {
+      var k = dkey(d); if (k > end) break;
+      var s = okDay(k);
+      if (s === true) { run++; if (run > best) best = run; } else if (s === false && k !== end) { run = 0; }
+      d.setDate(d.getDate() + 1);
+    }
+    return best;
+  }
+  function activeKeys() { return Object.keys(state.days).filter(function (k) { return state.days[k] && state.days[k].length; }).sort(); }
+  function checksTotal() { return Object.keys(state.days).reduce(function (a, k) { return a + (state.days[k] ? state.days[k].length : 0); }, 0); }
+  function xpTotal() { return checksTotal() * 10 + activeKeys().filter(function (k) { return okDay(k) === true; }).length * 25; }
+  function levelInfo(xp) {
+    var n = Math.floor((1 + Math.sqrt(1 + 4 * xp / 50)) / 2), base = 50 * n * (n - 1), next = 50 * (n + 1) * n;
+    return { n: n, into: xp - base, need: next - base, left: next - xp };
+  }
+  function weekStats(off) {
+    var due = 0, done = 0;
+    for (var i = 0; i < 7; i++) { var s = dayStat(dkey(shift(-(i + 7 * -off)))); due += s.due; done += s.done; }
+    return { due: due, done: done, pct: due ? Math.round(done / due * 100) : 0 };
+  }
+  function habitStats(n) {
+    var out = habits().map(function (h) { return { h: h, tot: 0, hit: 0 }; });
+    for (var i = 0; i < n; i++) {
+      var k = dkey(shift(-i)), due = dueHabits(k);
+      out.forEach(function (o) { if (due.indexOf(o.h) >= 0) { o.tot++; if (isDone(k, o.h.k)) o.hit++; } });
+    }
+    out.forEach(function (o) { o.pct = o.tot ? Math.round(o.hit / o.tot * 100) : null; });
+    return out;
+  }
+  function achievements() {
+    var ak = activeKeys(), checks = checksTotal(), used = daysBetween(state.start || todayKey(), todayKey()) + 1, back = false;
+    for (var i = 1; i < ak.length; i++) { if (daysBetween(ak[i - 1], ak[i]) >= 4) back = true; }
+    return [["first", checks >= 1], ["cons", ak.length >= 7], ["disc", ak.length >= 30], ["org", checks >= 50], ["new", used >= 90], ["back", back]];
+  }
+  function recommendation() {
+    var st = habitStats(14).filter(function (o) { return o.tot >= 5 && o.pct < 40; }).sort(function (a, b) { return a.pct - b.pct; });
+    if (st.length) return t("rec_skip", { h: esc(hname(st[0].h)), p: st[0].pct });
+    var s = streak(); if (s >= 3) return t("rec_good", { n: s });
+    if (!checksTotal()) return t("rec_start");
+    return "";
   }
   function icon(name) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + "</svg>"; }
   function sortedWeights() { return Object.keys(state.weights).sort().map(function (k) { return { d: k, kg: state.weights[k] }; }); }
@@ -546,25 +714,37 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
   }
 
   /* ---------- виды ---------- */
+  var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study"];
+  var editing = null, hsRange = 30, libQ = "", libC = "all", libFav = false, confirmDel = false;
+  function catName(c) { return t("cat_" + (CATS.indexOf(c) >= 0 ? c : "other")); }
+  function schedTxt(h) {
+    if (!h.d) return t("f_every");
+    var names = D[lang()].days;
+    return [1, 2, 3, 4, 5, 6, 0].filter(function (n) { return h.d.indexOf(n) >= 0; }).map(function (n) { return names[n]; }).join(", ");
+  }
   function homeBanner() {
     if (hsStatus !== "missed" && hsStatus !== "unknown") return "";
     if (!inTg || !ver("8.0")) return "";
     return '<section class="card row" style="flex-wrap:nowrap;gap:14px"><span class="ico g2 mini">' + icon("phone") + '</span><div style="flex:1;min-width:0"><b>' + t("banner_t") + '</b><p class="note">' + t("banner_s") + '</p></div><button class="btn soft" data-act="addhome">' + t("add") + '</button></section>';
   }
   function home() {
-    var tk = dkey(new Date()), hs = habits(), done = doneOn(tk).length, total = hs.length;
-    var w = sortedWeights(), last = w.length ? num(w[w.length - 1].kg) : "—";
+    var tk = todayKey(), st = dayStat(tk), done = st.done, total = st.due, lv = levelInfo(xpTotal());
     var pct = total ? Math.round(done / total * 100) : 0, C = 2 * Math.PI * 40, off = C * (1 - (total ? done / total : 0));
     var tip = TIPS[lang()][Math.floor(Date.now() / 86400000) % TIPS[lang()].length];
-    var left = hs.filter(function (i) { return i.min && doneOn(tk).indexOf(i.k) < 0; }).map(hname);
-    var msg = !total ? t("msg_none") : left.length ? t("msg_left", { x: esc(left.join(", ").toLowerCase()) }) : okDay(tk) ? t("msg_ok") : t("msg_go");
+    var left = dueHabits(tk).filter(function (h) { return h.min && !isDone(tk, h.k); }).map(hname);
+    var lastKey = activeKeys().filter(function (k) { return k < tk; }).pop(), gap = lastKey ? daysBetween(lastKey, tk) : 0;
+    var msg = !total ? t(habits().length ? "msg_rest" : "msg_none") :
+      (!(state.days[tk] || []).length && gap >= 2) ? t("msg_back") :
+      left.length ? t("msg_left", { x: esc(left.join(lang() === "zh" ? "、" : ", ").toLowerCase()) }) :
+      okDay(tk) ? t("msg_ok") : t("msg_go");
+    var rec = recommendation();
     return '<div class="stack">' +
       head(greeting() + (state.name ? ", " + esc(state.name) : ""), t("tagline")) +
       '<section class="hero" id="hero"><div class="top"><div class="ring"><svg viewBox="0 0 96 96"><circle class="trk" cx="48" cy="48" r="40"/><circle class="val" cx="48" cy="48" r="40" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/></svg><b>' + pct + '%</b></div>' +
-        '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + last + '</b><span>' + t("kg") + '</span></div></div></div>' +
+        '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + lv.n + '</b><span>' + t("lvl") + '</span></div></div></div>' +
         '<p class="msg">' + msg + '</p></section>' +
-      '<div class="tiles">' +
-        tile("tasks", "g1") + tile("progress", "g2") + tile("base", "g3") + tile("profile", "g4") + '</div>' +
+      '<div class="tiles">' + tile("tasks", "g1") + tile("progress", "g2") + tile("base", "g3") + tile("profile", "g4") + '</div>' +
+      (rec ? '<section class="card"><h2>' + t("rec_t") + '</h2><p>' + rec + '</p></section>' : "") +
       '<section class="card"><h2>' + t("fact") + '</h2><p>' + esc(tip) + '</p></section>' +
       homeBanner() + '</div>';
   }
@@ -573,18 +753,38 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     return '<button class="tile ' + cls + '" data-go="' + go + '"><span class="ico">' + icon(ic) + '</span><span><strong>' + t("tile_" + go) + '</strong><small>' + t("tile_" + go + "_s") + '</small></span></button>';
   }
   function tasks() {
-    var tk = dkey(new Date()), d = doneOn(tk), hs = habits(), done = d.length;
-    var list = hs.map(function (i) {
-      var on = d.indexOf(i.k) >= 0;
-      return '<button class="task" data-t="' + esc(i.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="t">' + esc(hname(i)) + '</span>' + (i.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
+    var tk = todayKey(), due = dueHabits(tk), st = dayStat(tk), L = D[lang()], d0 = new Date();
+    var list = due.map(function (h) {
+      var on = isDone(tk, h.k);
+      return '<button class="task" data-t="' + esc(h.k) + '" aria-pressed="' + on + '"><span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
     }).join("");
-    var d0 = new Date(), L = D[lang()];
     var dateTxt = lang() === "ru" ? d0.getDate() + " " + L.months[d0.getMonth()] : lang() === "en" ? L.months[d0.getMonth()] + " " + d0.getDate() : (d0.getMonth() + 1) + "月" + d0.getDate() + "日";
-    var mleft = minKeys().filter(function (k) { return d.indexOf(k) < 0; }).length;
+    var mleft = due.filter(function (h) { return h.min && !isDone(tk, h.k); }).length;
     return '<div class="stack">' + head(t("tasks_title"), dateTxt) +
-      '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: done, b: hs.length }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (hs.length ? done / hs.length * 100 : 0) + '%"></i></div></div>' +
-      (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t("no_habits") + '</p><button class="btn" data-go="profile">' + t("add_habits") + '</button></div>') +
+      '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: st.done, b: st.due }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (st.due ? st.done / st.due * 100 : 0) + '%"></i></div></div>' +
+      (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t(habits().length ? "msg_rest" : "no_habits") + '</p></div>') +
+      '<section class="card stack"><label for="note"><b>' + t("note_l") + '</b></label><input id="note" type="text" maxlength="120" value="' + esc(state.notes[tk] || "") + '" placeholder="' + esc(t("note_ph")) + '"></section>' +
+      '<button class="btn soft wide" data-go="habits">' + t("manage") + '</button>' +
       '<p class="note">' + t("hard_day") + '</p></div>';
+  }
+  function form() {
+    var f = editing.f, names = D[lang()].days;
+    var cats = CATS.map(function (c) { return '<button class="chip" data-fc="' + c + '" aria-pressed="' + (f.c === c) + '">' + t("cat_" + c) + "</button>"; }).join("");
+    var wds = [1, 2, 3, 4, 5, 6, 0].map(function (n) { return '<button class="chip wd" data-wd="' + n + '" aria-pressed="' + (!f.d || f.d.indexOf(n) >= 0) + '">' + names[n] + "</button>"; }).join("");
+    return '<section class="card stack"><h2 style="margin:0">' + t(editing.i < 0 ? "hab_new" : "hab_edit") + '</h2>' +
+      '<label for="f-name"><b>' + t("f_name") + '</b></label><input id="f-name" type="text" maxlength="60" value="' + esc(f.t) + '">' +
+      '<b>' + t("f_cat") + '</b><div class="chips wrap">' + cats + '</div>' +
+      '<b>' + t("f_days") + '</b><div class="chips wrap">' + wds + '</div>' +
+      '<div class="switch"><b>' + t("f_key") + '</b><button role="switch" aria-checked="' + !!f.min + '" aria-label="' + esc(t("f_key")) + '" data-act="fkey"></button></div>' +
+      '<div class="row"><button class="btn" data-act="fsave">' + t("save") + '</button><button class="btn soft" data-act="fcancel">' + t("cancel") + '</button>' +
+      (editing.i >= 0 ? '<button class="btn ghost" data-act="fdel">' + t("f_del") + '</button>' : "") + '</div></section>';
+  }
+  function habitsView() {
+    var rows = habits().map(function (h, i) {
+      return '<button class="habrow" data-edit="' + i + '"><span class="tt"><span class="t">' + esc(hname(h)) + '</span><small>' + catName(h.c) + " · " + schedTxt(h) + '</small></span>' + (h.min ? '<span class="star">' + t("main_tag") + '</span>' : "") + '</button>';
+    }).join("");
+    return '<div class="stack">' + head(t("hab_title"), t("hab_sub")) + (editing ? form() : "") +
+      '<section class="card stack"><div class="stack" style="gap:8px">' + (rows || '<p class="sub">' + t("no_habits") + '</p>') + '</div><button class="btn" data-act="newh">' + t("hab_new") + '</button></section></div>';
   }
   function chart(w) {
     if (!w.length) return '<div class="empty"><svg viewBox="0 0 24 24">' + ICONS.scale + '</svg><p>' + t("chart_empty") + '</p></div>';
@@ -602,30 +802,67 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
       (pts.length > 1 ? '<text x="' + X(pts.length - 1).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="end">' + fmtDate(pts[pts.length - 1].d) + "</text>" : "");
     return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="' + esc(t("chart_aria")) + '"><defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--a1)" stop-opacity=".28"/><stop offset="1" stop-color="var(--a1)" stop-opacity="0"/></linearGradient></defs>' + g + area + '<path class="ln" d="' + path + '"/>' + dots + xl + "</svg>";
   }
+  function calendar() {
+    var tk = todayKey(), d = new Date(), names = D[lang()].days, cells = "";
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7) - 28);
+    var hdr = [1, 2, 3, 4, 5, 6, 0].map(function (n) { return "<span>" + names[n] + "</span>"; }).join("");
+    for (var i = 0; i < 35; i++) {
+      var k = dkey(d), s = dayStat(k), r = s.due ? s.done / s.due : 0;
+      var cls = k > tk ? "fut" : s.done === 0 ? "" : r >= 1 ? "l4" : r >= 0.6 ? "l3" : r >= 0.3 ? "l2" : "l1";
+      cells += '<i class="' + cls + (k === tk ? " now" : "") + '" title="' + k + '"></i>';
+      d.setDate(d.getDate() + 1);
+    }
+    return '<section class="card"><h2>' + t("cal_h") + '</h2><div class="cal-h">' + hdr + '</div><div class="cal">' + cells + '</div><p class="note" style="margin-top:10px">' + t("cal_note") + '</p></section>';
+  }
+  function report() {
+    var wk = weekStats(0), pw = weekStats(-1), hs = habitStats(14).filter(function (o) { return o.tot >= 3; }).sort(function (a, b) { return b.pct - a.pct; });
+    if (!wk.due && !pw.due) return '<section class="card"><h2>' + t("rep_h") + '</h2><p class="sub">' + t("rep_none") + '</p></section>';
+    var diff = wk.pct - pw.pct, line = !pw.due ? "" : diff > 0 ? t("rep_up", { d: diff }) : diff < 0 ? t("rep_down", { d: -diff }) : t("rep_same");
+    return '<section class="card stack"><h2 style="margin:0">' + t("rep_h") + '</h2><div class="cmp"><div><b>' + wk.pct + '%</b><span>' + t("rep_this") + '</span></div><div><b>' + pw.pct + '%</b><span>' + t("rep_last") + '</span></div></div>' +
+      (line ? "<p>" + line + "</p>" : "") +
+      (hs.length ? '<p class="note">' + t("rep_best", { h: esc(hname(hs[0].h)) }) + "</p>" + (hs.length > 1 && hs[hs.length - 1].pct < 100 ? '<p class="note">' + t("rep_worst", { h: esc(hname(hs[hs.length - 1].h)) }) + "</p>" : "") : "") + "</section>";
+  }
   function progress() {
-    var w = sortedWeights(), diff = "";
+    var xpv = xpTotal(), lv = levelInfo(xpv), wk = weekStats(0), w = sortedWeights(), diff = "";
+    var level = '<section class="hero lvl"><div class="row" style="justify-content:space-between;position:relative;z-index:1"><b style="font-size:22px">' + t("lvl_t", { n: lv.n }) + '</b><span>' + xpv + ' XP</span></div><div class="bar light" style="margin-top:12px"><i style="width:' + Math.round(lv.into / lv.need * 100) + '%"></i></div><p class="msg">' + t("xp_to", { x: lv.left, n: lv.n + 1 }) + '</p></section>';
+    var stats = '<div class="stats">' + [[wk.pct + "%", "st_week"], [streak(), "st_streak"], [bestStreak(), "st_best"], [activeKeys().length, "st_active"]].map(function (a) { return '<div class="stat"><b>' + a[0] + "</b><span>" + t(a[1]) + "</span></div>"; }).join("") + "</div>";
+    var ach = '<section class="card"><h2>' + t("ach_h") + '</h2><div class="ach">' + achievements().map(function (a) { return '<div class="a' + (a[1] ? "" : " lock") + '"><b>' + (a[1] ? "★ " : "○ ") + t("ach_" + a[0]) + "</b><small>" + t("achd_" + a[0]) + "</small></div>"; }).join("") + '</div><p class="note" style="margin-top:10px">' + t("xp_note") + "</p></section>";
+    var rng = [7, 30, 90].map(function (n) { return '<button class="chip" data-range="' + n + '" aria-pressed="' + (hsRange === n) + '">' + t("rng_" + n) + "</button>"; }).join("");
+    var rows = habitStats(hsRange).map(function (o) {
+      return '<div><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><span>' + esc(hname(o.h)) + "</span><b>" + (o.pct === null ? "–" : o.pct + "%") + '</b></div><div class="bar" style="margin-top:6px"><i style="width:' + (o.pct || 0) + '%"></i></div></div>';
+    }).join("");
+    var hstat = '<section class="card stack"><div class="row" style="justify-content:space-between"><h2 style="margin:0">' + t("hs_h") + '</h2><div class="chips">' + rng + "</div></div>" + (rows || '<p class="sub">' + t("no_habits") + "</p>") + "</section>";
     if (w.length > 1) { var c = w[w.length - 1].kg - w[0].kg; diff = t("since", { d: (c >= 0 ? "+" : "−") + num(Math.abs(c)), date: fmtDate(w[0].d) }); }
     var goal = parseFloat(String(state.goal).replace(",", ".")), goalTxt = "";
     if (goal && w.length) { var left = goal - w[w.length - 1].kg; goalTxt = Math.abs(left) > 0.05 ? t("goal_left", { g: num(goal), l: num(Math.abs(left)) }) : t("goal_done", { g: num(goal) }); }
-    var days = [], names = D[lang()].days, total = habits().length;
-    for (var i = 6; i >= 0; i--) {
-      var d = shift(-i), k = dkey(d), n = doneOn(k).length;
-      days.push('<div><i class="' + (okDay(k) ? "ok" : n ? "part" : "") + '" style="height:' + Math.max(6, total ? n / total * 90 : 0) + 'px" title="' + n + ' / ' + total + '"></i><span>' + names[d.getDay()] + "</span></div>");
-    }
-    return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) +
-      '<section class="card"><h2>' + t("weight") + '</h2>' + chart(w) +
-      (diff || goalTxt ? '<p class="sub" style="margin-top:8px">' + [diff, goalTxt].filter(Boolean).join(" · ") + "</p>" : "") +
-      '<div class="row" style="margin-top:14px"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="' + esc(t("w_ph")) + '" aria-label="' + esc(t("w_aria")) + '"><button class="btn" data-act="addw">' + t("w_save") + '</button></div>' +
-      '<p class="note" style="margin-top:8px">' + t("w_note") + '</p></section>' +
-      '<section class="card"><h2>' + t("last7") + '</h2><div class="week">' + days.join("") + '</div><p class="note" style="margin-top:10px">' + t("week_note") + '</p></section></div>';
+    var weight = "<details><summary><span>" + t("weight_opt") + '</span></summary><div class="body">' + chart(w) +
+      (diff || goalTxt ? '<p class="sub">' + [diff, goalTxt].filter(Boolean).join(" · ") + "</p>" : "") +
+      '<div class="row"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="' + esc(t("w_ph")) + '" aria-label="' + esc(t("w_aria")) + '"><button class="btn" data-act="addw">' + t("w_save") + "</button></div>" +
+      '<p class="note">' + t("w_neutral") + "</p></div></details>";
+    return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) + level + stats + ach + calendar() + report() + hstat + weight + "</div>";
   }
   function base() {
+    var arts = BASE[lang()], seen = {}, order = [];
+    arts.forEach(function (a, i) { var c = CAT_ART[i]; if (!seen[c]) { seen[c] = a.tag; order.push(c); } });
+    var chips = '<button class="chip" data-libc="all" aria-pressed="' + (libC === "all" && !libFav) + '">' + t("lib_all") + '</button><button class="chip" data-libfav="1" aria-pressed="' + libFav + '">★ ' + t("lib_fav") + "</button>" +
+      order.map(function (c) { return '<button class="chip" data-libc="' + c + '" aria-pressed="' + (libC === c && !libFav) + '">' + esc(seen[c]) + "</button>"; }).join("");
+    var list = arts.map(function (a, i) {
+      var fav = state.lib.f.indexOf(i) >= 0, rd = state.lib.r.indexOf(i) >= 0, txt = (a.tag + " " + a.t + " " + a.s + " " + a.pts.join(" ")).toLowerCase();
+      return '<details data-i="' + i + '" data-c="' + CAT_ART[i] + '" data-txt="' + esc(txt) + '"><summary><span><span class="tag">' + esc(a.tag) + '</span><span class="badge fav"' + (fav ? "" : " hidden") + '>★</span><span class="badge rd"' + (rd ? "" : " hidden") + '>✓</span><br>' + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" +
+        a.pts.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + '</ul><p class="src">' + t("source") + " " + esc(a.src) + '</p><div class="row"><button class="btn soft" data-libtog="f" aria-pressed="' + fav + '">' + t(fav ? "fav_on" : "fav_add") + '</button><button class="btn soft" data-libtog="r" aria-pressed="' + rd + '">' + t(rd ? "read_on" : "read_mark") + "</button></div></div></details>";
+    }).join("");
     return '<div class="stack">' + head(t("base_title"), t("base_sub")) +
-      BASE[lang()].map(function (a) {
-        return "<details><summary><span><span class='tag'>" + esc(a.tag) + "</span><br>" + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" + a.pts.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + '</ul><p class="src">' + t("source") + " " + esc(a.src) + "</p></div></details>";
-      }).join("") + '<p class="note">' + t("base_note") + '</p></div>';
+      '<input id="lib-q" type="text" value="' + esc(libQ) + '" placeholder="' + esc(t("search_ph")) + '" aria-label="' + esc(t("search_ph")) + '">' +
+      '<div class="chips">' + chips + "</div>" + list + '<p id="lib-none" class="sub" hidden>' + t("lib_none") + '</p><p class="note">' + t("base_note") + "</p></div>";
   }
-  var confirmDel = false;
+  function applyLibFilter() {
+    var q = libQ.trim().toLowerCase(), any = false;
+    Array.prototype.forEach.call(document.querySelectorAll("details[data-i]"), function (el) {
+      var i = +el.dataset.i, show = (libFav ? state.lib.f.indexOf(i) >= 0 : (libC === "all" || el.dataset.c === libC)) && (!q || el.dataset.txt.indexOf(q) >= 0);
+      el.style.display = show ? "" : "none"; if (show) any = true;
+    });
+    var n = document.getElementById("lib-none"); if (n) n.hidden = any;
+  }
   function homeCard() {
     if (!inTg || !ver("8.0") || hsStatus === "unsupported") return "";
     if (hsStatus === "added") return '<p class="note">' + t("home_added") + '</p>';
@@ -636,87 +873,114 @@ nav button[aria-current="page"] { color: #fff; background: linear-gradient(135de
     return '<div class="switch"><div><b>' + t("fs_t") + '</b><p class="note">' + t("fs_d") + '</p></div><button role="switch" aria-checked="' + (state.fs !== false) + '" aria-label="' + esc(t("fs_t")) + '" data-act="fs"></button></div>';
   }
   function profile() {
-    var hs = habits();
-    var hlist = hs.map(function (h, i) {
-      return '<div class="hab"><button class="' + (h.min ? "on" : "") + '" data-star="' + i + '" aria-label="' + esc(t("star_aria")) + '" aria-pressed="' + !!h.min + '">' + (h.min ? "★" : "☆") + '</button><span>' + esc(hname(h)) + '</span><button class="x" data-rm="' + i + '" aria-label="' + esc(t("rm_aria")) + '">×</button></div>';
-    }).join("");
     var seg = LANGS.map(function (l) { return '<button data-lang="' + l + '" aria-pressed="' + (lang() === l) + '">' + LANG_NAMES[l] + "</button>"; }).join("");
     return '<div class="stack">' + head(t("prof_title"), t("prof_sub")) +
       '<section class="card stack"><h2 style="margin:0">' + t("lang_h") + '</h2><div class="seg">' + seg + '</div></section>' +
       '<section class="card stack"><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(t("name_ph")) + '">' +
       '<label for="p-goal"><b>' + t("goal_l") + '</b></label><input id="p-goal" type="number" inputmode="decimal" step="0.5" min="30" max="250" value="' + esc(state.goal || "") + '" placeholder="' + esc(t("goal_ph")) + '">' +
       '<button class="btn" data-act="saveprof">' + t("save") + '</button></section>' +
-      '<section class="card"><h2>' + t("habits_h") + '</h2><p class="note" style="margin-bottom:6px">' + t("habits_note") + '</p>' + hlist +
-      '<div class="row" style="margin-top:12px"><input id="h-in" type="text" maxlength="60" placeholder="' + esc(t("new_ph")) + '" aria-label="' + esc(t("new_aria")) + '"><button class="btn" data-act="addh">' + t("add") + '</button></div></section>' +
+      '<section class="card stack"><h2 style="margin:0">' + t("habits_h") + '</h2><p class="sub">' + t("hab_count", { n: habits().length }) + '</p><button class="btn soft" data-go="habits">' + t("manage") + '</button></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("app_h") + '</h2>' + homeCard() + fsSwitch() + '<p class="note">' + t("remind") + '</p></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("data_h") + '</h2><p>' + (cloud ? t("data_cloud") : t("data_local")) + ' ' + t("no_photo") + '</p>' +
       (confirmDel ? '<p><b>' + t("del_q") + '</b></p><div class="row"><button class="btn ghost" data-act="del">' + t("del_yes") + '</button><button class="btn soft" data-act="nodel">' + t("cancel") + '</button></div>' : '<button class="btn ghost" data-act="askdel">' + t("del_ask") + '</button>') + '</section></div>';
   }
 
   /* ---------- роутинг и события ---------- */
-  var VIEWS = { home: home, tasks: tasks, progress: progress, base: base, profile: profile };
+  var VIEWS = { home: home, tasks: tasks, habits: habitsView, progress: progress, base: base, profile: profile };
   function current() { var h = location.hash.replace("#", ""); return VIEWS[h] ? h : "home"; }
   function render(keepScroll) {
     var cur = current(), y = window.scrollY, v = document.getElementById("view");
     v.innerHTML = '<div class="' + (keepScroll ? "" : "view") + '">' + VIEWS[cur]() + "</div>";
     document.getElementById("nav").innerHTML = TABS.map(function (tb) {
-      return '<button data-go="' + tb[0] + '"' + (tb[0] === cur ? ' aria-current="page"' : "") + ">" + icon(tb[2]) + "<span>" + t(tb[1]) + "</span></button>";
+      return '<button data-go="' + tb[0] + '"' + (tb[0] === (cur === "habits" ? "tasks" : cur) ? ' aria-current="page"' : "") + ">" + icon(tb[2]) + "<span>" + t(tb[1]) + "</span></button>";
     }).join("");
     window.scrollTo(0, keepScroll ? y : 0);
+    if (cur === "base") applyLibFilter();
     try { if (inTg && tg.BackButton) { if (cur === "home") tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) {}
   }
   function go(v) { if (location.hash.replace("#", "") === v) { render(); } else { location.hash = v; } }
-  window.addEventListener("hashchange", function () { confirmDel = false; render(); });
+  window.addEventListener("hashchange", function () { confirmDel = false; editing = null; render(); });
   try { if (inTg && tg.BackButton) tg.BackButton.onClick(function () { go("home"); }); } catch (e) {}
 
+  function captureName() { var n = document.getElementById("f-name"); if (n && editing) editing.f.t = n.value; }
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-star],[data-rm],[data-lang]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-lang],[data-edit],[data-fc],[data-wd],[data-range],[data-libc],[data-libfav],[data-libtog]");
     if (!el) return;
-    if (el.dataset.go) { haptic(); go(el.dataset.go); return; }
-    if (el.dataset.lang) { state.lang = el.dataset.lang; saveProfile(); document.documentElement.lang = lang(); haptic(); render(true); return; }
-    if (el.dataset.t) {
-      var k = dkey(new Date()), d = state.days[k] || [], i = d.indexOf(el.dataset.t), wasOk = okDay(k);
-      if (i >= 0) d.splice(i, 1); else d.push(el.dataset.t);
+    var ds = el.dataset;
+    if (ds.go) { editing = null; haptic(); go(ds.go); return; }
+    if (ds.lang) { state.lang = ds.lang; saveProfile(); document.documentElement.lang = lang(); haptic(); render(true); return; }
+    if (ds.t) {
+      var k = todayKey(), d = state.days[k] || [], i = d.indexOf(ds.t), wasOk = okDay(k) === true;
+      if (i >= 0) d.splice(i, 1); else d.push(ds.t);
       state.days[k] = d; saveDay(k);
-      if (!wasOk && okDay(k)) { haptic("ok"); } else { haptic(); }
+      if (!wasOk && okDay(k) === true) { haptic("ok"); } else { haptic(); }
       render(true); return;
     }
-    if (el.dataset.star !== undefined) {
-      state.habits = habits().map(function (h) { return { k: h.k, t: h.t, min: h.min }; });
-      var s = state.habits[+el.dataset.star]; s.min = !s.min; saveHabits(); render(true); return;
+    if (ds.edit !== undefined) { var h = habits()[+ds.edit]; editing = { i: +ds.edit, f: { t: hname(h), min: !!h.min, c: h.c || "other", d: h.d ? h.d.slice() : null } }; render(true); window.scrollTo(0, 0); return; }
+    if (ds.fc) { captureName(); editing.f.c = ds.fc; render(true); return; }
+    if (ds.wd !== undefined) {
+      captureName(); var n = +ds.wd, f = editing.f;
+      if (!f.d) f.d = [0, 1, 2, 3, 4, 5, 6];
+      var p = f.d.indexOf(n);
+      if (p >= 0) { if (f.d.length > 1) f.d.splice(p, 1); } else f.d.push(n);
+      if (f.d.length === 7) f.d = null;
+      render(true); return;
     }
-    if (el.dataset.rm !== undefined) {
-      state.habits = habits().map(function (h) { return { k: h.k, t: h.t, min: h.min }; });
-      state.habits.splice(+el.dataset.rm, 1);
-      saveHabits(); render(true); return;
+    if (ds.range) { hsRange = +ds.range; render(true); return; }
+    if (ds.libc) { libC = ds.libc; libFav = false; render(true); return; }
+    if (ds.libfav) { libFav = !libFav; render(true); return; }
+    if (ds.libtog) {
+      var det = el.closest("details"), idx = +det.dataset.i, arr = ds.libtog === "f" ? state.lib.f : state.lib.r, pos = arr.indexOf(idx);
+      if (pos >= 0) arr.splice(pos, 1); else arr.push(idx);
+      var on = arr.indexOf(idx) >= 0;
+      el.setAttribute("aria-pressed", on); el.textContent = t(ds.libtog === "f" ? (on ? "fav_on" : "fav_add") : (on ? "read_on" : "read_mark"));
+      det.querySelector(ds.libtog === "f" ? ".badge.fav" : ".badge.rd").hidden = !on;
+      saveLib(); haptic(); if (libFav) applyLibFilter(); return;
     }
-    var a = el.dataset.act;
+    var a = ds.act;
     if (a === "theme") { state.theme = effTheme() === "dark" ? "light" : "dark"; saveProfile(); applyTheme(); haptic(); render(true); }
     else if (a === "addw") {
       var v = parseFloat(document.getElementById("w-in").value.replace(",", "."));
       if (!(v >= 30 && v <= 250)) { document.getElementById("w-in").focus(); return; }
-      var wk = dkey(new Date()); state.weights[wk] = Math.round(v * 10) / 10; saveWeight(wk); haptic("ok"); render(true);
+      var wk = todayKey(); state.weights[wk] = Math.round(v * 10) / 10; saveWeight(wk); haptic("ok");
+      render(true); var dt = document.querySelector("details:not([data-i])"); if (dt) dt.open = true;
     } else if (a === "saveprof") {
       state.name = document.getElementById("p-name").value.trim();
       state.goal = document.getElementById("p-goal").value.trim(); saveProfile(); haptic("ok"); go("home");
-    } else if (a === "addh") {
-      var inp = document.getElementById("h-in"), tx = inp.value.trim();
-      if (!tx) { inp.focus(); return; }
-      var cur = habits();
-      if (cur.length >= 20) { inp.value = ""; inp.placeholder = t("max_ph"); return; }
-      state.habits = cur.map(function (h) { return { k: h.k, t: h.t, min: h.min }; });
-      state.habits.push({ k: "c" + Date.now().toString(36), t: tx.slice(0, 60), min: false });
-      saveHabits(); render(true);
+    } else if (a === "newh") {
+      if (habits().length >= 20) return;
+      editing = { i: -1, f: { t: "", min: false, c: "other", d: null } }; render(true); window.scrollTo(0, 0);
+    } else if (a === "fkey") { captureName(); editing.f.min = !editing.f.min; render(true); }
+    else if (a === "fcancel") { editing = null; render(true); }
+    else if (a === "fsave") {
+      captureName(); var f2 = editing.f, name = f2.t.trim();
+      if (!name) { document.getElementById("f-name").focus(); return; }
+      var hs = cloneHabits();
+      if (editing.i < 0) { hs.push({ k: "c" + Date.now().toString(36), t: name.slice(0, 60), min: f2.min, c: f2.c, d: f2.d, s: todayKey() }); }
+      else {
+        var cur = hs[editing.i], isDef = DEFAULT_KEYS.indexOf(cur.k) >= 0;
+        cur.t = isDef && name === t("h_" + cur.k) ? "" : name.slice(0, 60); cur.min = f2.min; cur.c = f2.c; cur.d = f2.d;
+      }
+      state.habits = hs; saveHabits(); editing = null; haptic("ok"); render(true);
+    } else if (a === "fdel") {
+      var hs2 = cloneHabits(); hs2.splice(editing.i, 1); state.habits = hs2; saveHabits(); editing = null; render(true);
     } else if (a === "fs") { state.fs = state.fs === false; saveProfile(); render(true); }
-    else if (a === "addhome") { try { tg.addToHomeScreen(); } catch (e) {} }
+    else if (a === "addhome") { try { tg.addToHomeScreen(); } catch (e2) {} }
     else if (a === "askdel") { confirmDel = true; render(true); }
     else if (a === "nodel") { confirmDel = false; render(true); }
-    else if (a === "del") { state = emptyState(); wipe(); confirmDel = false; document.documentElement.lang = lang(); applyTheme(); go("home"); }
+    else if (a === "del") { state = emptyState(); normalize(); wipe(); confirmDel = false; document.documentElement.lang = lang(); applyTheme(); go("home"); }
+  });
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "note") { var k = todayKey(), v = e.target.value.trim(); state.notes[k] = v; saveNote(k); }
+  });
+  document.addEventListener("input", function (e) {
+    if (e.target.id === "lib-q") { libQ = e.target.value; applyLibFilter(); }
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter") return;
     if (e.target.id === "w-in") { e.preventDefault(); document.querySelector("[data-act=addw]").click(); }
-    if (e.target.id === "h-in") { e.preventDefault(); document.querySelector("[data-act=addh]").click(); }
+    if (e.target.id === "f-name") { e.preventDefault(); document.querySelector("[data-act=fsave]").click(); }
+    if (e.target.id === "note") { e.preventDefault(); e.target.blur(); }
   });
   setupTelegram();
   render();
