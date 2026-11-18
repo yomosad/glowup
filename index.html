@@ -263,34 +263,37 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
 .stat b { font-size: 30px; }
 .lvl.hero { background: linear-gradient(120deg, rgba(122,88,245,.55), rgba(63,220,198,.28)); border: 1px solid var(--line); color: #fff; }
 
-/* ===== свечение, полупрозрачный акцент и живые пятна света за стеклом ===== */
+/* ===== лёгкое свечение, полупрозрачный акцент и пятна света за стеклом ===== */
 :root:not([data-theme="light"]) body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; width: 120vmax; height: 120vmax; left: -30vmax; top: -20vmax;
   background:
-    radial-gradient(closest-side at 28% 30%, rgba(140,96,255,.8), transparent 70%),
-    radial-gradient(closest-side at 78% 62%, rgba(40,214,196,.5), transparent 70%),
-    radial-gradient(closest-side at 40% 86%, rgba(255,110,170,.42), transparent 70%);
-  filter: blur(30px); opacity: 1; animation: drift 22s ease-in-out infinite alternate; }
+    radial-gradient(closest-side at 28% 30%, rgba(140,96,255,.42), transparent 70%),
+    radial-gradient(closest-side at 78% 62%, rgba(40,214,196,.24), transparent 70%),
+    radial-gradient(closest-side at 40% 86%, rgba(255,110,170,.2), transparent 70%);
+  filter: blur(36px); opacity: .8; animation: drift 22s ease-in-out infinite alternate; }
 @keyframes drift { from { transform: translate3d(0,0,0) rotate(0deg) scale(1); } to { transform: translate3d(-8vmax,6vmax,0) rotate(14deg) scale(1.12); } }
-:root:not([data-theme="light"]) h1 { text-shadow: 0 0 22px rgba(154,125,255,.65), 0 0 2px rgba(255,255,255,.35); }
-:root:not([data-theme="light"]) .hero .nums b, :root:not([data-theme="light"]) .stat b, :root:not([data-theme="light"]) .ring b, :root:not([data-theme="light"]) .cmp b, :root:not([data-theme="light"]) .lvl b { text-shadow: 0 0 16px rgba(154,125,255,.75); }
-:root:not([data-theme="light"]) .tile strong, :root:not([data-theme="light"]) .card h2, :root:not([data-theme="light"]) .tag { text-shadow: 0 0 12px rgba(154,125,255,.45); }
-:root:not([data-theme="light"]) .ring .val { filter: drop-shadow(0 0 7px rgba(154,125,255,.9)); }
-:root:not([data-theme="light"]) .bar i { box-shadow: 0 0 12px rgba(154,125,255,.8); }
+:root:not([data-theme="light"]) h1 { text-shadow: 0 0 10px rgba(154,125,255,.32); }
+:root:not([data-theme="light"]) .hero .nums b, :root:not([data-theme="light"]) .stat b, :root:not([data-theme="light"]) .ring b, :root:not([data-theme="light"]) .cmp b, :root:not([data-theme="light"]) .lvl b { text-shadow: 0 0 7px rgba(154,125,255,.35); }
+:root:not([data-theme="light"]) .ring .val { filter: drop-shadow(0 0 3px rgba(154,125,255,.5)); }
+:root:not([data-theme="light"]) .bar i { box-shadow: 0 0 6px rgba(154,125,255,.4); }
 :root:not([data-theme="light"]) .btn, :root:not([data-theme="light"]) .chip[aria-pressed="true"], :root:not([data-theme="light"]) nav button[aria-current="page"] {
-  background: linear-gradient(135deg, rgba(122,88,245,.42), rgba(166,123,255,.26)); border: 1px solid rgba(166,123,255,.6);
-  box-shadow: 0 0 20px -2px rgba(140,100,255,.55), inset 0 1px 0 rgba(255,255,255,.18); text-shadow: 0 0 10px rgba(200,180,255,.8);
+  background: linear-gradient(135deg, rgba(122,88,245,.4), rgba(166,123,255,.24)); border: 1px solid rgba(166,123,255,.5);
+  box-shadow: 0 0 9px -2px rgba(140,100,255,.3), inset 0 1px 0 rgba(255,255,255,.14);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-:root:not([data-theme="light"]) .btn.soft { background: var(--card2); border: 1px solid var(--line); box-shadow: none; text-shadow: none; }
-:root:not([data-theme="light"]) .btn.ghost { background: rgba(255,110,110,.08); border: 1px solid rgba(255,125,125,.55); box-shadow: 0 0 16px -4px rgba(255,100,100,.45); }
-:root:not([data-theme="light"]) .switch button[aria-checked="true"] { background: rgba(154,125,255,.55); box-shadow: 0 0 14px rgba(154,125,255,.7); }
-:root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, rgba(140,100,255,.16), rgba(255,255,255,.04)); border-color: rgba(166,123,255,.3); box-shadow: 0 0 36px -12px rgba(140,100,255,.55); }
-:root:not([data-theme="light"]) .card, :root:not([data-theme="light"]) .stat, :root:not([data-theme="light"]) .tile, :root:not([data-theme="light"]) details { box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 30px -18px rgba(140,100,255,.5); }
-:root:not([data-theme="light"]) .tile .banner { opacity: .92; box-shadow: 0 10px 28px -10px currentColor; }
-:root:not([data-theme="light"]) .task[aria-pressed="true"] { box-shadow: 0 0 18px -6px rgba(79,216,162,.6); }
-:root:not([data-theme="light"]) .task[aria-pressed="true"] .box { box-shadow: 0 0 12px rgba(79,216,162,.8); }
-:root:not([data-theme="light"]) .cal i.l4 { box-shadow: 0 0 10px rgba(154,125,255,.75); }
-:root:not([data-theme="light"]) input:focus-visible { box-shadow: 0 0 0 3px rgba(154,125,255,.3), 0 0 18px rgba(154,125,255,.35); outline: 0; }
-:root[data-theme="light"] h1 { text-shadow: 0 0 18px rgba(106,69,240,.18); }
+:root:not([data-theme="light"]) .btn.soft { background: var(--card2); border: 1px solid var(--line); box-shadow: none; }
+:root:not([data-theme="light"]) .btn.ghost { background: rgba(255,110,110,.07); border: 1px solid rgba(255,125,125,.5); box-shadow: none; }
+:root:not([data-theme="light"]) .switch button[aria-checked="true"] { background: rgba(154,125,255,.55); box-shadow: 0 0 6px rgba(154,125,255,.4); }
+:root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, rgba(140,100,255,.14), rgba(255,255,255,.04)); border-color: rgba(166,123,255,.25); box-shadow: none; }
+:root:not([data-theme="light"]) .task[aria-pressed="true"] .box { box-shadow: 0 0 6px rgba(79,216,162,.5); }
+:root:not([data-theme="light"]) .cal i.l4 { box-shadow: 0 0 5px rgba(154,125,255,.45); }
+:root:not([data-theme="light"]) input:focus-visible { box-shadow: 0 0 0 3px rgba(154,125,255,.25); outline: 0; }
+:root[data-theme="light"] h1 { text-shadow: none; }
+[hidden] { display: none !important; }
+.tile.cat .banner { height: 54px; } .tile.cat .banner .ico { width: 38px; height: 38px; bottom: -12px; } .tile.cat .tb { padding: 24px 12px 12px; }
+.tile.cat .tb strong { font-size: 15px; }
+.pdots { display: grid; grid-template-columns: repeat(auto-fill, minmax(14px, 1fr)); gap: 5px; }
+.pdots i { aspect-ratio: 1; border-radius: 5px; background: var(--card2); display: block; }
+.pdots i.on { background: var(--a1); } .pdots i.now { outline: 2px solid var(--a2); outline-offset: 1px; } .pdots i.fut { opacity: .4; }
+.dgrp { margin: 4px 4px 0; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 </style>
 </head>
 <body>
@@ -389,6 +392,35 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
       part_e: "Вечер",
       rout_h: "Рутины",
       w_priv: "Вес — необязательный личный показатель. Целей по весу здесь нет.",
+      tt_today: "Сегодня",
+      tt_daily: "Daily",
+      tt_prog: "Программы",
+      dly_ph: "Разовая задача",
+      dly_today: "На сегодня",
+      dly_tom: "На завтра",
+      dly_none: "Разовых задач нет. Добавь первую выше.",
+      dly_h_late: "Просрочено",
+      dly_h_today: "Сегодня",
+      dly_h_tom: "Завтра",
+      dly_note: "Разовые задачи не влияют на серию и XP: они для дел, которые не нужно повторять.",
+      dly_del: "Удалить задачу",
+      prog_intro: "Готовые планы на 7, 14 и 30 дней: по одному маленькому шагу в день.",
+      prog_start: "Начать",
+      prog_day: "День {d} из {n}",
+      prog_today: "Задача на сегодня",
+      prog_stop: "Закончить программу",
+      prog_finished_s: "Пройдено",
+      prog_finished: "Программа пройдена.",
+      prog_done_n: "Выполнено дней: {a} из {n}.",
+      prog_new: "Выбрать другую программу",
+      prog_miss: "Пропуск не страшен: просто делай задачу текущего дня.",
+      prog_days: "{n} дн.",
+      prog_plus: "Добавь 5 минут к привычной нагрузке.",
+      rem_days: "Дни недели",
+      lib_n: "Статей: {n}",
+      lib_back: "Все категории",
+      lib_allart: "Все статьи",
+      lib_favt: "Избранное",
       days: ["вс","пн","вт","ср","чт","пт","сб"]
     },
     en: {
@@ -469,6 +501,35 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
       part_e: "Evening",
       rout_h: "Routines",
       w_priv: "Weight is an optional private metric. There are no weight goals here.",
+      tt_today: "Today",
+      tt_daily: "Daily",
+      tt_prog: "Programs",
+      dly_ph: "One-off task",
+      dly_today: "For today",
+      dly_tom: "For tomorrow",
+      dly_none: "No one-off tasks. Add the first one above.",
+      dly_h_late: "Overdue",
+      dly_h_today: "Today",
+      dly_h_tom: "Tomorrow",
+      dly_note: "One-off tasks do not affect your streak or XP: they are for things you do not need to repeat.",
+      dly_del: "Delete task",
+      prog_intro: "Ready-made plans for 7, 14 and 30 days: one small step a day.",
+      prog_start: "Start",
+      prog_day: "Day {d} of {n}",
+      prog_today: "Today's task",
+      prog_stop: "End program",
+      prog_finished_s: "Finished",
+      prog_finished: "Program finished.",
+      prog_done_n: "Days completed: {a} of {n}.",
+      prog_new: "Choose another program",
+      prog_miss: "Missing a day is fine: just do the task for the current day.",
+      prog_days: "{n} days",
+      prog_plus: "Add 5 minutes to your usual load.",
+      rem_days: "Days of the week",
+      lib_n: "Articles: {n}",
+      lib_back: "All categories",
+      lib_allart: "All articles",
+      lib_favt: "Favorites",
       days: ["Su","Mo","Tu","We","Th","Fr","Sa"]
     },
     zh: {
@@ -549,6 +610,35 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
       part_e: "晚上",
       rout_h: "日常流程",
       w_priv: "体重是可选的私人指标，这里没有体重目标。",
+      tt_today: "今天",
+      tt_daily: "待办",
+      tt_prog: "计划",
+      dly_ph: "一次性任务",
+      dly_today: "今天",
+      dly_tom: "明天",
+      dly_none: "还没有一次性任务，在上方添加第一个。",
+      dly_h_late: "已过期",
+      dly_h_today: "今天",
+      dly_h_tom: "明天",
+      dly_note: "一次性任务不影响连续天数和 XP，适合不需要重复的事。",
+      dly_del: "删除任务",
+      prog_intro: "7、14、30 天的现成计划：每天一小步。",
+      prog_start: "开始",
+      prog_day: "第 {d} 天 / 共 {n} 天",
+      prog_today: "今日任务",
+      prog_stop: "结束计划",
+      prog_finished_s: "已完成",
+      prog_finished: "计划已完成。",
+      prog_done_n: "完成天数：{a}/{n}。",
+      prog_new: "选择其他计划",
+      prog_miss: "漏掉一天没关系，继续做当天的任务即可。",
+      prog_days: "{n} 天",
+      prog_plus: "在平时的基础上增加5分钟。",
+      rem_days: "星期",
+      lib_n: "文章：{n}",
+      lib_back: "全部分类",
+      lib_allart: "全部文章",
+      lib_favt: "收藏",
       days: ["日","一","二","三","四","五","六"]
     }
   };
@@ -679,6 +769,40 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
     ]
   };
 
+
+  /* ---------- программы на 7/14/30 дней ---------- */
+  var PROGS = ["sleep", "move", "habit"], PROG_N = { sleep: 7, move: 14, habit: 30 };
+  var PT = {
+    ru: {
+      sleep: { n: "Сон: 7 дней", s: "Семь маленьких шагов к стабильному режиму сна.", src: "Практические приёмы гигиены сна, не лечение. Если плохо спишь больше месяца, обратись к врачу.",
+        t: ["Выбери время отбоя и поставь будильник на один и тот же час.", "За 30 минут до сна убери экран и приглуши свет.", "Утром выйди на дневной свет хотя бы на 10 минут.", "Проветри комнату, сделай её темнее и прохладнее.", "Не пей кофе и энергетики во второй половине дня.", "Ложись в выбранное время, даже если выходной.", "Подведи итог: что помогло? Оставь 2 приёма насовсем."] },
+      move: { n: "Движение: 14 дней", s: "Две недели мягкого старта: прогулки, силовые и растяжка.", src: "Нагрузка ориентирована на нормы ВОЗ 2020 (статья в базе). При болезни или травме посоветуйся с врачом.",
+        t: ["Прогулка 20 минут в быстром темпе.", "Силовая 15 минут: приседания, отжимания, планка.", "Растяжка и мобильность 10 минут.", "Прогулка 30 минут.", "Силовая 15 минут: те же упражнения, на один подход больше.", "Любая активность, которая нравится: 30 минут.", "Отдых или лёгкая прогулка. Запиши, как себя чувствуешь."] },
+      habit: { n: "Привычка: 30 дней", s: "Закрепи одну маленькую привычку с помощью правила «если — то».", src: "Основа: Lally et al. 2010 и Gollwitzer & Sheeran 2006 (обе статьи в базе).",
+        t: ["Выбери одну маленькую привычку, на которую уходит не больше 2 минут.", "Придумай правило «если — то»: «После X я делаю Y».", "Подготовь всё заранее: оставь нужное на виду.", "Сделай привычку сразу после выбранного события.", "Сделай привычку и отметь её в трекере.", "Сделай привычку. Если вчера пропустил, просто продолжай.", "Оцени неделю: что мешало? Поправь событие-триггер.",
+          "Сделай привычку по своему триггеру.", "Сделай привычку и отметь её в трекере.", "Сделай привычку. Если хочешь, добавь чуть больше.", "Если режим сбился, перенеси привычку на другое время или место.", "Сделай привычку и отметь её в трекере.", "Сделай привычку, даже если день тяжёлый: хватит минимума.", "Обзор недели: что получается, что поправить?"] }
+    },
+    en: {
+      sleep: { n: "Sleep: 7 days", s: "Seven small steps toward a steady sleep schedule.", src: "Practical sleep-hygiene tips, not treatment. If you sleep badly for over a month, see a doctor.",
+        t: ["Pick a bedtime and set an alarm for the same hour every morning.", "30 minutes before bed, put screens away and dim the lights.", "Get at least 10 minutes of daylight in the morning.", "Air out the room and make it darker and cooler.", "No coffee or energy drinks in the afternoon.", "Go to bed at your chosen time, even on a day off.", "Review: what helped? Keep 2 tricks for good."] },
+      move: { n: "Movement: 14 days", s: "Two weeks of a gentle start: walks, strength and stretching.", src: "Load is based on the WHO 2020 guidelines (article in the library). If you are ill or injured, ask a doctor.",
+        t: ["20-minute brisk walk.", "15-minute strength: squats, push-ups, plank.", "10 minutes of stretching and mobility.", "30-minute walk.", "15-minute strength: same exercises, one more set.", "Any activity you enjoy: 30 minutes.", "Rest or an easy walk. Note how you feel."] },
+      habit: { n: "Habit: 30 days", s: "Lock in one small habit with the \"if — then\" rule.", src: "Based on Lally et al. 2010 and Gollwitzer & Sheeran 2006 (both in the library).",
+        t: ["Pick one small habit that takes 2 minutes or less.", "Write an \"if — then\" rule: \"After X, I do Y\".", "Prepare in advance: leave what you need in sight.", "Do the habit right after the chosen event.", "Do the habit and tick it in the tracker.", "Do the habit. If you missed yesterday, just carry on.", "Review the week: what got in the way? Adjust the trigger.",
+          "Do the habit at your trigger.", "Do the habit and tick it in the tracker.", "Do the habit. Add a little more if you like.", "If your routine slipped, move the habit to another time or place.", "Do the habit and tick it in the tracker.", "Do the habit even on a hard day: the minimum is enough.", "Weekly review: what works, what to adjust?"] }
+    },
+    zh: {
+      sleep: { n: "睡眠：7天", s: "七个小步骤，建立稳定的作息。", src: "实用的睡眠卫生建议，不是治疗。如果长期（超过一个月）睡不好，请看医生。",
+        t: ["选定就寝时间，并把闹钟设在每天同一时刻。", "睡前30分钟收起屏幕，调暗灯光。", "早晨至少晒10分钟自然光。", "开窗通风，让房间更暗、更凉爽。", "下午不喝咖啡和能量饮料。", "按选定的时间睡觉，休息日也一样。", "总结：什么有效？永久保留2个做法。"] },
+      move: { n: "运动：14天", s: "两周温和起步：散步、力量和拉伸。", src: "运动量参考世卫组织2020指南（见知识库）。生病或受伤时请咨询医生。",
+        t: ["快走20分钟。", "力量训练15分钟：深蹲、俯卧撑、平板支撑。", "拉伸与灵活性训练10分钟。", "散步30分钟。", "力量训练15分钟：同样的动作，多做一组。", "任何你喜欢的活动：30分钟。", "休息或轻松散步，记录自己的感受。"] },
+      habit: { n: "习惯：30天", s: "用“如果—那么”法则巩固一个小习惯。", src: "依据 Lally 等 2010 和 Gollwitzer & Sheeran 2006（均见知识库）。",
+        t: ["选一个只需2分钟以内的小习惯。", "写下“如果—那么”规则：“做完X之后，我就做Y”。", "提前准备：把需要的东西放在显眼处。", "在选定事件之后立刻做这个习惯。", "做这个习惯，并在打卡里勾选。", "做这个习惯。昨天漏了也没关系，继续即可。", "回顾这一周：什么妨碍了你？调整触发事件。",
+          "在触发事件后做这个习惯。", "做这个习惯，并在打卡里勾选。", "做这个习惯，想的话可以稍微多做一点。", "如果节奏被打乱，把习惯换到别的时间或地点。", "做这个习惯，并在打卡里勾选。", "即使今天很难也做这个习惯：最低限度就够了。", "每周回顾：哪些有效？哪些要调整？"] }
+    }
+  };
+  function progTask(id, d) { var a = PT[lang()][id].t, L = a.length; return a[d <= L ? d - 1 : L - 7 + (d - L - 1) % 7]; }
+
   var ICONS = {
     home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
     tasks: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/>',
@@ -698,14 +822,14 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
-  function emptyState() { return { name: "", goal: "", goals: [], rem: "", fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
+  function emptyState() { return { name: "", goal: "", goals: [], rem: "", remd: null, todo: [], prog: null, fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
   var state = loadLocal();
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
   }
   function normalize() {
-    state.goals = Array.isArray(state.goals) ? state.goals : []; state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
+    state.goals = Array.isArray(state.goals) ? state.goals : []; state.todo = (Array.isArray(state.todo) ? state.todo : []).filter(function (a) { return !(a.x && daysBetween(a.d, todayKey()) > 14); }).slice(-30); state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
     state.lib = state.lib || {}; state.lib.f = state.lib.f || []; state.lib.r = state.lib.r || [];
     if (state.fs === undefined) state.fs = true;
     if (!state.start) { var ks = Object.keys(state.days).concat(Object.keys(state.weights)).sort(); state.start = ks.length ? ks[0] : todayKey(); }
@@ -769,12 +893,14 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
   function cset(key, val) { if (cloud) { try { cloud.setItem(key, val, function () {}); } catch (e) {} } }
   function saveDay(k) { saveLocal(); cset("d_" + k, (state.days[k] || []).join(",") || "-"); }
   function saveWeight(k) { saveLocal(); cset("w_" + k, String(state.weights[k])); }
-  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, rem: state.rem, fs: state.fs, lang: state.lang, theme: state.theme, start: state.start })); }
+  function saveProfile() { saveLocal(); cset("p", JSON.stringify({ name: state.name, rem: state.rem, rd: state.remd, fs: state.fs, lang: state.lang, theme: state.theme, start: state.start })); }
   function saveHabits() {
     saveLocal();
     if (state.habits) cset("h", JSON.stringify(state.habits.map(function (h) { return [h.k, h.t || "", h.min ? 1 : 0, h.c || "other", h.d ? h.d.join("") : "", h.s || "", h.r || ""]; })));
   }
   function saveGoals() { saveLocal(); cset("g", JSON.stringify(state.goals.map(function (g) { return [g.i, g.t, g.d ? 1 : 0]; }))); }
+  function saveTodo() { saveLocal(); cset("o", JSON.stringify(state.todo.map(function (a) { return [a.i, a.t, a.d, a.x ? 1 : 0]; }))); }
+  function saveProg() { saveLocal(); cset("r", state.prog ? JSON.stringify([state.prog.id, state.prog.s, state.prog.x || []]) : "-"); }
   function saveLib() { saveLocal(); cset("l", JSON.stringify([state.lib.f, state.lib.r])); }
   function saveNote(k) { saveLocal(); cset("n_" + k, state.notes[k] || "-"); }
   function wipe() {
@@ -792,11 +918,13 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
           var s = emptyState();
           Object.keys(vals).forEach(function (k) {
             var v = vals[k];
-            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.rem = p.rem || ""; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; s.start = p.start || ""; } catch (e) {} }
+            if (k === "p") { try { var p = JSON.parse(v); s.name = p.name || ""; s.rem = p.rem || ""; s.remd = Array.isArray(p.rd) ? p.rd : null; s.fs = p.fs !== false; s.lang = p.lang || null; s.theme = p.theme || null; s.start = p.start || ""; } catch (e) {} }
             else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2], c: a[3] || "other", d: a[4] ? a[4].split("").map(Number) : null, s: a[5] || "", r: a[6] || "" }; }); } catch (e) {} }
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
             else if (k === "g") { try { s.goals = JSON.parse(v).map(function (a) { return { i: a[0], t: a[1], d: !!a[2] }; }); } catch (e) {} }
+            else if (k === "o") { try { s.todo = JSON.parse(v).map(function (a) { return { i: a[0], t: a[1], d: a[2], x: !!a[3] }; }); } catch (e) {} }
+            else if (k === "r") { try { var pr = v === "-" ? null : JSON.parse(v); s.prog = pr ? { id: pr[0], s: pr[1], x: pr[2] || [] } : null; } catch (e) {} }
             else if (k === "l") { try { var lb = JSON.parse(v); s.lib = { f: lb[0] || [], r: lb[1] || [] }; } catch (e) {} }
             else if (k.indexOf("n_") === 0) { s.notes[k.slice(2)] = v === "-" ? "" : v; }
           });
@@ -902,7 +1030,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
 
   /* ---------- виды ---------- */
   var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study", "fitness", "plan"];
-  var editing = null, hsRange = 30, libQ = "", libC = "all", libFav = false, confirmDel = false;
+  var tasksTab = "today", libAll = false, editing = null, hsRange = 30, libQ = "", libC = "all", libFav = false, confirmDel = false;
   function catName(c) { return t("cat_" + (CATS.indexOf(c) >= 0 ? c : "other")); }
   function schedTxt(h) {
     if (!h.d) return t("f_every");
@@ -950,12 +1078,51 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
     }).join("");
     var dateTxt = lang() === "ru" ? d0.getDate() + " " + L.months[d0.getMonth()] : lang() === "en" ? L.months[d0.getMonth()] + " " + d0.getDate() : (d0.getMonth() + 1) + "月" + d0.getDate() + "日";
     var mleft = due.filter(function (h) { return h.min && !isDone(tk, h.k); }).length;
-    return '<div class="stack">' + head(t("tasks_title"), dateTxt) +
+    if (tasksTab === "daily") return dailyView(dateTxt);
+    if (tasksTab === "prog") return progView(dateTxt);
+    return '<div class="stack">' + head(t("tasks_title"), dateTxt) + tabsBar() +
       '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: st.done, b: st.due }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (st.due ? st.done / st.due * 100 : 0) + '%"></i></div></div>' +
       (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t(habits().length ? "msg_rest" : "no_habits") + '</p></div>') +
       '<section class="card stack"><label for="note"><b>' + t("note_l") + '</b></label><input id="note" type="text" maxlength="120" value="' + esc(state.notes[tk] || "") + '" placeholder="' + esc(t("note_ph")) + '"></section>' +
       '<button class="btn soft wide" data-go="habits">' + t("manage") + '</button>' +
       '<p class="note">' + t("hard_day") + '</p></div>';
+  }
+  function tabsBar() {
+    return '<div class="seg">' + [["today", "tt_today"], ["daily", "tt_daily"], ["prog", "tt_prog"]].map(function (x) { return '<button data-tt="' + x[0] + '" aria-pressed="' + (tasksTab === x[0]) + '">' + t(x[1]) + "</button>"; }).join("") + "</div>";
+  }
+  var CHECK = '<span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span>';
+  function dailyView(dt) {
+    var tk = todayKey(), tm = dkey(shift(1)), A = state.todo;
+    function grp(label, arr) {
+      if (!arr.length) return "";
+      return '<h3 class="dgrp">' + label + "</h3>" + arr.map(function (a) {
+        return '<div class="goal"><button class="task" data-ot="' + esc(a.i) + '" aria-pressed="' + !!a.x + '">' + CHECK + '<span class="tt"><span class="t">' + esc(a.t) + '</span></span></button><button class="x" data-od="' + esc(a.i) + '" aria-label="' + esc(t("dly_del")) + '">×</button></div>';
+      }).join("");
+    }
+    var list = grp(t("dly_h_late"), A.filter(function (a) { return a.d < tk && !a.x; })) + grp(t("dly_h_today"), A.filter(function (a) { return a.d === tk; })) + grp(t("dly_h_tom"), A.filter(function (a) { return a.d === tm; }));
+    return '<div class="stack">' + head(t("tasks_title"), dt) + tabsBar() +
+      '<section class="card stack"><input id="o-in" type="text" maxlength="60" placeholder="' + esc(t("dly_ph")) + '" aria-label="' + esc(t("dly_ph")) + '"><div class="row"><button class="btn" data-act="oadd" data-day="0">' + t("dly_today") + '</button><button class="btn soft" data-act="oadd" data-day="1">' + t("dly_tom") + '</button></div></section>' +
+      (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t("dly_none") + "</p></div>") +
+      '<p class="note">' + t("dly_note") + "</p></div>";
+  }
+  function progView(dt) {
+    var tk = todayKey(), pr = state.prog, body = "", L = PT[lang()];
+    if (!pr || !L[pr.id]) {
+      body = '<p class="note">' + t("prog_intro") + "</p>" + PROGS.map(function (id) {
+        var m = L[id];
+        return '<section class="card stack"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h2 style="margin:0">' + esc(m.n) + '</h2><span class="star">' + t("prog_days", { n: PROG_N[id] }) + "</span></div><p>" + esc(m.s) + '</p><p class="note">' + esc(m.src) + '</p><button class="btn" data-pstart="' + id + '">' + t("prog_start") + "</button></section>";
+      }).join("");
+    } else {
+      var m = L[pr.id], n = PROG_N[pr.id], d = daysBetween(pr.s, tk) + 1, fin = d > n, dd = Math.min(d, n), done = pr.x || [], dots = "";
+      for (var i = 1; i <= n; i++) dots += '<i class="' + (done.indexOf(i) >= 0 ? "on" : (i === dd && !fin) ? "now" : i > d ? "fut" : "") + '"></i>';
+      body = '<section class="card stack"><div class="row" style="justify-content:space-between"><h2 style="margin:0">' + esc(m.n) + "</h2><b>" + (fin ? t("prog_finished_s") : t("prog_day", { d: dd, n: n })) + '</b></div><div class="bar"><i style="width:' + Math.round(done.length / n * 100) + '%"></i></div><div class="pdots">' + dots + "</div></section>";
+      if (!fin) {
+        var on = done.indexOf(d) >= 0;
+        body += '<section class="card stack"><h2 style="margin:0">' + t("prog_today") + '</h2><button class="task" data-act="pdone" aria-pressed="' + on + '">' + CHECK + '<span class="tt"><span class="t">' + esc(progTask(pr.id, d) + (d > 7 && pr.id === "move" ? " " + t("prog_plus") : "")) + '</span></span></button><p class="note">' + t("prog_miss") + "</p></section>";
+      } else body += '<section class="card"><p>' + t("prog_finished") + " " + t("prog_done_n", { a: done.length, n: n }) + "</p></section>";
+      body += '<button class="btn soft wide" data-act="pstop">' + t(fin ? "prog_new" : "prog_stop") + "</button>";
+    }
+    return '<div class="stack">' + head(t("tasks_title"), dt) + tabsBar() + body + "</div>";
   }
   function form() {
     var f = editing.f, names = D[lang()].days;
@@ -1030,11 +1197,14 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
       '<p class="note">' + t("w_neutral") + "</p></div></details>";
     return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) + level + stats + ach + calendar() + report() + hstat + weight + "</div>";
   }
+  function libGrid() { return libC === "all" && !libAll && !libFav && !libQ.trim(); }
   function base() {
-    var arts = BASE[lang()], seen = {}, order = [];
-    arts.forEach(function (a, i) { var c = CAT_ART[i]; if (!seen[c]) { seen[c] = a.tag; order.push(c); } });
-    var chips = '<button class="chip" data-libc="all" aria-pressed="' + (libC === "all" && !libFav) + '">' + t("lib_all") + '</button><button class="chip" data-libfav="1" aria-pressed="' + libFav + '">★ ' + t("lib_fav") + "</button>" +
-      order.map(function (c) { return '<button class="chip" data-libc="' + c + '" aria-pressed="' + (libC === c && !libFav) + '">' + esc(seen[c]) + "</button>"; }).join("");
+    var arts = BASE[lang()], seen = {}, order = [], cnt = {};
+    arts.forEach(function (a, i) { var c = CAT_ART[i]; cnt[c] = (cnt[c] || 0) + 1; if (!seen[c]) { seen[c] = a.tag; order.push(c); } });
+    var CI = { sleep: "moon", nutrition: "scale", health: "user", skin: "sun", habits: "tasks", study: "book", fitness: "chart", plan: "tasks" }, G = ["g1", "g2", "g3", "g4"];
+    function tl(cls, attr, ico, name, small) { return '<button class="tile cat ' + cls + '" ' + attr + '><span class="banner"><span class="ico">' + ico + '</span></span><span class="tb"><strong>' + esc(name) + "</strong><small>" + small + "</small></span></button>"; }
+    var tiles = order.map(function (c, i) { return tl(G[i % 4], 'data-libc="' + c + '"', icon(CI[c] || "book"), seen[c], t("lib_n", { n: cnt[c] })); }).join("") +
+      tl("g3", 'data-libfav="1"', "★", t("lib_favt"), t("lib_n", { n: state.lib.f.length })) + tl("g1", 'data-liball="1"', icon("book"), t("lib_allart"), t("lib_n", { n: arts.length }));
     var list = arts.map(function (a, i) {
       var fav = state.lib.f.indexOf(i) >= 0, rd = state.lib.r.indexOf(i) >= 0, txt = (a.tag + " " + a.t + " " + a.s + " " + a.pts.join(" ")).toLowerCase();
       return '<details data-i="' + i + '" data-c="' + CAT_ART[i] + '" data-txt="' + esc(txt) + '"><summary><span><span class="tag">' + esc(a.tag) + '</span><span class="badge fav"' + (fav ? "" : " hidden") + '>★</span><span class="badge rd"' + (rd ? "" : " hidden") + '>✓</span><br>' + esc(a.t) + '</span></summary><div class="body"><p>' + esc(a.s) + "</p><ul>" +
@@ -1042,15 +1212,17 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
     }).join("");
     return '<div class="stack">' + head(t("base_title"), t("base_sub")) +
       '<input id="lib-q" type="text" value="' + esc(libQ) + '" placeholder="' + esc(t("search_ph")) + '" aria-label="' + esc(t("search_ph")) + '">' +
-      '<div class="chips">' + chips + "</div>" + list + '<p id="lib-none" class="sub" hidden>' + t("lib_none") + '</p><p class="note">' + t("base_note") + "</p></div>";
+      '<button class="btn soft" id="lib-back" data-libback="1" hidden>← ' + t("lib_back") + '</button>' +
+      '<div id="lib-grid" class="tiles">' + tiles + '</div><div id="lib-list" class="stack">' + list + '<p id="lib-none" class="sub" hidden>' + t("lib_none") + '</p></div><p class="note">' + t("base_note") + "</p></div>";
   }
   function applyLibFilter() {
-    var q = libQ.trim().toLowerCase(), any = false;
+    var q = libQ.trim().toLowerCase(), any = false, grid = libGrid();
     Array.prototype.forEach.call(document.querySelectorAll("details[data-i]"), function (el) {
       var i = +el.dataset.i, show = (libFav ? state.lib.f.indexOf(i) >= 0 : (libC === "all" || el.dataset.c === libC)) && (!q || el.dataset.txt.indexOf(q) >= 0);
       el.style.display = show ? "" : "none"; if (show) any = true;
     });
-    var n = document.getElementById("lib-none"); if (n) n.hidden = any;
+    var g = document.getElementById("lib-grid"), l = document.getElementById("lib-list"), bk = document.getElementById("lib-back"), n = document.getElementById("lib-none");
+    if (g) g.hidden = !grid; if (l) l.hidden = grid; if (bk) bk.hidden = grid; if (n) n.hidden = any;
   }
   function homeCard() {
     if (!inTg || !ver("8.0") || hsStatus === "unsupported") return "";
@@ -1064,7 +1236,8 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
   function tz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { return ""; } }
   function remLink(off) {
     var z = tz(), v = (document.getElementById("p-rem") || {}).value || state.rem || "20:30";
-    var payload = off ? "roff" : "r" + v.replace(":", "") + (z ? "__" + z.replace(/\//g, "__") : "");
+    var dd = (!state.remd || state.remd.length >= 7) ? "" : "d" + state.remd.slice().sort().join("");
+    var payload = off ? "roff" : "r" + v.replace(":", "") + dd + (z ? "__" + z.replace(/\//g, "__") : "");
     return { url: "https://t.me/sadglowbot?start=" + payload.replace(/[^A-Za-z0-9_-]/g, "-").slice(0, 64), v: v };
   }
   function profile() {
@@ -1081,6 +1254,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
       '<div class="row" style="flex-wrap:nowrap"><input id="g-in" type="text" maxlength="80" placeholder="' + esc(t("goals_ph")) + '"><button class="btn" data-act="gadd">' + t("goals_add") + '</button></div></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("habits_h") + '</h2><p class="sub">' + t("hab_count", { n: habits().length }) + '</p><button class="btn soft" data-go="habits">' + t("manage") + '</button></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("rem_h") + '</h2><div class="row" style="flex-wrap:nowrap"><label for="p-rem"><b>' + t("rem_t") + '</b></label><input id="p-rem" type="time" value="' + esc(state.rem || "20:30") + '"></div>' +
+      '<b>' + t("rem_days") + '</b><div class="chips wrap">' + [1, 2, 3, 4, 5, 6, 0].map(function (n) { return '<button class="chip wd" data-rd="' + n + '" aria-pressed="' + (!state.remd || state.remd.indexOf(n) >= 0) + '">' + D[lang()].days[n] + "</button>"; }).join("") + '</div>' +
       '<div class="row"><button class="btn" data-act="remset">' + t("rem_set") + '</button><button class="btn soft" data-act="remoff">' + t("rem_off") + '</button></div><p class="note">' + t("rem_note") + '</p><p class="note">' + t("tz_l", { z: esc(tz() || "—") }) + '</p></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("lang_h") + '</h2><div class="seg">' + seg + '</div></section>' +
       '<section class="card stack"><h2 style="margin:0">' + t("app_h") + '</h2>' + homeCard() + fsSwitch() + '</section>' +
@@ -1108,7 +1282,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
 
   function captureName() { var n = document.getElementById("f-name"); if (n && editing) editing.f.t = n.value; }
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-libfav],[data-libtog]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-liball],[data-libback],[data-tt],[data-ot],[data-od],[data-pstart],[data-rd],[data-libfav],[data-libtog]");
     if (!el) return;
     var ds = el.dataset;
     if (ds.go) { editing = null; haptic(); go(ds.go); return; }
@@ -1134,8 +1308,20 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
     if (ds.gt !== undefined) { var g = state.goals[+ds.gt]; if (g) { g.d = !g.d; saveGoals(); haptic(g.d ? "ok" : null); render(true); } return; }
     if (ds.gd !== undefined) { state.goals.splice(+ds.gd, 1); saveGoals(); render(true); return; }
     if (ds.range) { hsRange = +ds.range; render(true); return; }
-    if (ds.libc) { libC = ds.libc; libFav = false; render(true); return; }
-    if (ds.libfav) { libFav = !libFav; render(true); return; }
+    if (ds.libc) { libC = ds.libc; libFav = false; libAll = false; render(true); window.scrollTo(0, 0); return; }
+    if (ds.libfav) { libFav = !libFav; libAll = false; render(true); window.scrollTo(0, 0); return; }
+    if (ds.liball) { libAll = true; libC = "all"; libFav = false; render(true); window.scrollTo(0, 0); return; }
+    if (ds.libback) { libC = "all"; libAll = false; libFav = false; libQ = ""; render(true); window.scrollTo(0, 0); return; }
+    if (ds.tt) { tasksTab = ds.tt; haptic(); render(true); return; }
+    if (ds.ot) { var oa = state.todo.filter(function (x) { return x.i === ds.ot; })[0]; if (oa) { oa.x = !oa.x; saveTodo(); haptic(oa.x ? "ok" : null); render(true); } return; }
+    if (ds.od) { state.todo = state.todo.filter(function (x) { return x.i !== ds.od; }); saveTodo(); render(true); return; }
+    if (ds.pstart) { state.prog = { id: ds.pstart, s: todayKey(), x: [] }; saveProg(); haptic("ok"); render(true); window.scrollTo(0, 0); return; }
+    if (ds.rd !== undefined) {
+      var rv = document.getElementById("p-rem"); if (rv && rv.value) state.rem = rv.value;
+      var rn = +ds.rd, rl2 = state.remd ? state.remd.slice() : [0, 1, 2, 3, 4, 5, 6], rp = rl2.indexOf(rn);
+      if (rp >= 0) { if (rl2.length > 1) rl2.splice(rp, 1); } else rl2.push(rn);
+      state.remd = rl2.length === 7 ? null : rl2; saveProfile(); render(true); return;
+    }
     if (ds.libtog) {
       var det = el.closest("details"), idx = +det.dataset.i, arr = ds.libtog === "f" ? state.lib.f : state.lib.r, pos = arr.indexOf(idx);
       if (pos >= 0) arr.splice(pos, 1); else arr.push(idx);
@@ -1154,7 +1340,15 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
     } else if (a === "saveprof") {
       state.name = document.getElementById("p-name").value.trim();
       saveProfile(); haptic("ok"); go("home");
-    } else if (a === "gadd") {
+    } else if (a === "oadd") {
+      var oi = document.getElementById("o-in"), ov = oi.value.trim();
+      if (!ov) { oi.focus(); return; }
+      if (state.todo.length >= 30) return;
+      state.todo.push({ i: "o" + Date.now().toString(36), t: ov.slice(0, 60), d: dkey(shift(+ds.day || 0)), x: false }); saveTodo(); haptic("ok"); render(true);
+    } else if (a === "pdone") {
+      var pr2 = state.prog; if (pr2) { var pd = daysBetween(pr2.s, todayKey()) + 1; pr2.x = pr2.x || []; var pi = pr2.x.indexOf(pd); if (pi >= 0) pr2.x.splice(pi, 1); else pr2.x.push(pd); saveProg(); haptic(pi >= 0 ? null : "ok"); render(true); }
+    } else if (a === "pstop") { state.prog = null; saveProg(); render(true); window.scrollTo(0, 0); }
+    else if (a === "gadd") {
       var gi = document.getElementById("g-in"), gv = gi.value.trim();
       if (!gv) { gi.focus(); return; }
       if (state.goals.length >= 10) return;
@@ -1201,6 +1395,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter") return;
     if (e.target.id === "w-in") { e.preventDefault(); document.querySelector("[data-act=addw]").click(); }
+    if (e.target.id === "o-in") { e.preventDefault(); document.querySelector("[data-act=oadd][data-day=\"0\"]").click(); }
     if (e.target.id === "g-in") { e.preventDefault(); document.querySelector("[data-act=gadd]").click(); }
     if (e.target.id === "f-name") { e.preventDefault(); document.querySelector("[data-act=fsave]").click(); }
     if (e.target.id === "note") { e.preventDefault(); e.target.blur(); }
