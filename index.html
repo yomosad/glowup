@@ -222,8 +222,8 @@ button.tile-card { text-align: left; font: inherit; color: inherit; cursor: poin
 :root { --glass: blur(14px) saturate(1.2); }
 :root[data-theme="dark"] body::before, :root:not([data-theme="light"]) body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(120% 60% at 15% -5%, rgba(140,100,255,.22), transparent 60%),
-    radial-gradient(90% 50% at 100% 35%, rgba(63,220,198,.10), transparent 60%),
+    radial-gradient(120% 60% at 15% -5%, color-mix(in srgb, var(--a1) 22%, transparent), transparent 60%),
+    radial-gradient(90% 50% at 100% 35%, color-mix(in srgb, var(--a2) 10%, transparent), transparent 60%),
     repeating-radial-gradient(ellipse 140% 90% at 50% 110%, rgba(255,255,255,.035) 0 1px, transparent 1px 22px); }
 :root[data-theme="light"] body::before { content: none; }
 .card, .tile, .task, .stat, details, .theme-btn, .habrow, .chip { backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
@@ -244,8 +244,8 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
 .g3 { --g: linear-gradient(120deg, #f6c39a, #e8955f); } .g4 { --g: linear-gradient(120deg, #f4b0cf, #c98ae0); }
 .mini { color: #fff; }
 .hero { background: var(--card); color: var(--ink); border: 1px solid var(--line); box-shadow: none; backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
-:root[data-theme="light"] .hero { background: var(--hero); color: #fff; border: 0; box-shadow: 0 14px 34px -14px rgba(106,69,240,.6); }
-:root:not([data-theme="light"]) .hero::after, :root[data-theme="dark"] .hero::after { background: radial-gradient(circle, rgba(154,125,255,.35), transparent 70%); }
+:root[data-theme="light"] .hero { background: var(--hero); color: #fff; border: 0; box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--a1) 60%, transparent); }
+:root:not([data-theme="light"]) .hero::after, :root[data-theme="dark"] .hero::after { background: radial-gradient(circle, color-mix(in srgb, var(--a1) 35%, transparent), transparent 70%); }
 :root:not([data-theme="light"]) .ring .trk, :root[data-theme="dark"] .ring .trk { stroke: rgba(255,255,255,.1); }
 :root:not([data-theme="light"]) .ring .val, :root[data-theme="dark"] .ring .val { stroke: url(#rg); stroke: var(--a1); }
 .hero .nums > div { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 9px 4px; }
@@ -256,36 +256,36 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
 .tag { color: var(--a2); }
 .task { border-radius: 16px; }
 .task[aria-pressed="true"] { background: color-mix(in srgb, var(--ok) 12%, transparent); }
-.chip[aria-pressed="true"], .btn, nav button[aria-current="page"] { background: linear-gradient(135deg, #7a58f5, #a67bff); }
+.chip[aria-pressed="true"], .btn, nav button[aria-current="page"] { background: linear-gradient(135deg, var(--a1), color-mix(in srgb, var(--a1) 65%, #fff)); }
 .btn.soft { background: var(--card2); }
 .btn.ghost { background: transparent; }
 .stat { text-align: left; }
 .stat b { font-size: 30px; }
-.lvl.hero { background: linear-gradient(120deg, rgba(122,88,245,.55), rgba(63,220,198,.28)); border: 1px solid var(--line); color: #fff; }
+.lvl.hero { background: linear-gradient(120deg, color-mix(in srgb, var(--a1) 55%, transparent), color-mix(in srgb, var(--a2) 28%, transparent)); border: 1px solid var(--line); color: #fff; }
 
 /* ===== лёгкое свечение, полупрозрачный акцент и пятна света за стеклом ===== */
 :root:not([data-theme="light"]) body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; width: 120vmax; height: 120vmax; left: -30vmax; top: -20vmax;
   background:
-    radial-gradient(closest-side at 28% 30%, rgba(140,96,255,.42), transparent 70%),
-    radial-gradient(closest-side at 78% 62%, rgba(40,214,196,.24), transparent 70%),
+    radial-gradient(closest-side at 28% 30%, color-mix(in srgb, var(--a1) 42%, transparent), transparent 70%),
+    radial-gradient(closest-side at 78% 62%, color-mix(in srgb, var(--a2) 24%, transparent), transparent 70%),
     radial-gradient(closest-side at 40% 86%, rgba(255,110,170,.2), transparent 70%);
   filter: blur(36px); opacity: .8; animation: drift 22s ease-in-out infinite alternate; }
 @keyframes drift { from { transform: translate3d(0,0,0) rotate(0deg) scale(1); } to { transform: translate3d(-8vmax,6vmax,0) rotate(14deg) scale(1.12); } }
-:root:not([data-theme="light"]) h1 { text-shadow: 0 0 10px rgba(154,125,255,.32); }
-:root:not([data-theme="light"]) .hero .nums b, :root:not([data-theme="light"]) .stat b, :root:not([data-theme="light"]) .ring b, :root:not([data-theme="light"]) .cmp b, :root:not([data-theme="light"]) .lvl b { text-shadow: 0 0 7px rgba(154,125,255,.35); }
-:root:not([data-theme="light"]) .ring .val { filter: drop-shadow(0 0 3px rgba(154,125,255,.5)); }
-:root:not([data-theme="light"]) .bar i { box-shadow: 0 0 6px rgba(154,125,255,.4); }
+:root:not([data-theme="light"]) h1 { text-shadow: 0 0 10px color-mix(in srgb, var(--a1) 32%, transparent); }
+:root:not([data-theme="light"]) .hero .nums b, :root:not([data-theme="light"]) .stat b, :root:not([data-theme="light"]) .ring b, :root:not([data-theme="light"]) .cmp b, :root:not([data-theme="light"]) .lvl b { text-shadow: 0 0 7px color-mix(in srgb, var(--a1) 35%, transparent); }
+:root:not([data-theme="light"]) .ring .val { filter: drop-shadow(0 0 3px color-mix(in srgb, var(--a1) 50%, transparent)); }
+:root:not([data-theme="light"]) .bar i { box-shadow: 0 0 6px color-mix(in srgb, var(--a1) 40%, transparent); }
 :root:not([data-theme="light"]) .btn, :root:not([data-theme="light"]) .chip[aria-pressed="true"], :root:not([data-theme="light"]) nav button[aria-current="page"] {
-  background: linear-gradient(135deg, rgba(122,88,245,.4), rgba(166,123,255,.24)); border: 1px solid rgba(166,123,255,.5);
-  box-shadow: 0 0 9px -2px rgba(140,100,255,.3), inset 0 1px 0 rgba(255,255,255,.14);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--a1) 40%, transparent), color-mix(in srgb, var(--a1) 24%, transparent)); border: 1px solid color-mix(in srgb, var(--a1) 50%, transparent);
+  box-shadow: 0 0 9px -2px color-mix(in srgb, var(--a1) 30%, transparent), inset 0 1px 0 rgba(255,255,255,.14);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 :root:not([data-theme="light"]) .btn.soft { background: var(--card2); border: 1px solid var(--line); box-shadow: none; }
 :root:not([data-theme="light"]) .btn.ghost { background: rgba(255,110,110,.07); border: 1px solid rgba(255,125,125,.5); box-shadow: none; }
-:root:not([data-theme="light"]) .switch button[aria-checked="true"] { background: rgba(154,125,255,.55); box-shadow: 0 0 6px rgba(154,125,255,.4); }
-:root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, rgba(140,100,255,.14), rgba(255,255,255,.04)); border-color: rgba(166,123,255,.25); box-shadow: none; }
+:root:not([data-theme="light"]) .switch button[aria-checked="true"] { background: color-mix(in srgb, var(--a1) 55%, transparent); box-shadow: 0 0 6px color-mix(in srgb, var(--a1) 40%, transparent); }
+:root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, color-mix(in srgb, var(--a1) 14%, transparent), rgba(255,255,255,.04)); border-color: color-mix(in srgb, var(--a1) 25%, transparent); box-shadow: none; }
 :root:not([data-theme="light"]) .task[aria-pressed="true"] .box { box-shadow: 0 0 6px rgba(79,216,162,.5); }
-:root:not([data-theme="light"]) .cal i.l4 { box-shadow: 0 0 5px rgba(154,125,255,.45); }
-:root:not([data-theme="light"]) input:focus-visible { box-shadow: 0 0 0 3px rgba(154,125,255,.25); outline: 0; }
+:root:not([data-theme="light"]) .cal i.l4 { box-shadow: 0 0 5px color-mix(in srgb, var(--a1) 45%, transparent); }
+:root:not([data-theme="light"]) input:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--a1) 25%, transparent); outline: 0; }
 :root[data-theme="light"] h1 { text-shadow: none; }
 [hidden] { display: none !important; }
 input[type=date], input[type=time] { font: inherit; color: var(--ink); background: var(--card2); border: 1px solid transparent; border-radius: 14px; padding: 12px 14px; min-width: 0; color-scheme: light dark; }
@@ -310,6 +310,15 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
 .pdots i { aspect-ratio: 1; border-radius: 5px; background: var(--card2); display: block; }
 .pdots i.on { background: var(--a1); } .pdots i.now { outline: 2px solid var(--a2); outline-offset: 1px; } .pdots i.fut { opacity: .4; }
 .dgrp { margin: 4px 4px 0; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+.pts { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 14px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 600; color: inherit; cursor: pointer; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); }
+.stack > .pts { align-self: flex-start; margin-top: 0; color: var(--ink); background: var(--card); border-color: var(--line); }
+.ptsbig { font-size: 20px; font-variant-numeric: tabular-nums; }
+.shopi { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; }
+.shopi .btn { padding: 8px 14px; font-size: 13px; width: auto; flex: none; }
+.shopi .btn[disabled] { opacity: .5; }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; vertical-align: -2px; }
+.sw-default { background: #9a7dff; } .sw-teal { background: #3fdcc6; } .sw-pink { background: #ff7aa8; } .sw-orange { background: #ffb15c; } .sw-blue { background: #7fb0ff; }
 </style>
 </head>
 <body>
@@ -491,6 +500,28 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_open: "Открыть задачи программы",
       myprog_card: "Мои программы",
       myprog_idle: "Сейчас программы нет. Можно выбрать одну.",
+      pts_h: "Очки и награды",
+      pts_bal: "Очки: {n}",
+      pts_rule: "3 очка за каждую отметку привычки. XP остаётся навсегда и даёт уровень, а очки можно тратить в магазине.",
+      pts_today: "сегодня +{n}",
+      pts_acc: "Цвет приложения",
+      pts_ttl: "Звания",
+      pts_buy: "Купить за {n}",
+      pts_use: "Выбрать",
+      pts_on: "Выбрано",
+      pts_need: "Не хватает очков",
+      pts_home: "Очки: {n}",
+      pts_title_l: "Звание",
+      acc_default: "Фиолетовый",
+      acc_teal: "Бирюзовый",
+      acc_pink: "Розовый",
+      acc_orange: "Оранжевый",
+      acc_blue: "Синий",
+      ttl_0: "Новичок",
+      ttl_1: "Огонёк",
+      ttl_2: "Стойкий",
+      ttl_3: "Мастер режима",
+      ttl_4: "Легенда glow",
       days: ["вс","пн","вт","ср","чт","пт","сб"]
     },
     en: {
@@ -654,6 +685,28 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_open: "Open program tasks",
       myprog_card: "My programs",
       myprog_idle: "No program right now. You can pick one.",
+      pts_h: "Points and rewards",
+      pts_bal: "Points: {n}",
+      pts_rule: "3 points for every habit check-in. XP stays forever and sets your level, while points can be spent in the shop.",
+      pts_today: "today +{n}",
+      pts_acc: "App color",
+      pts_ttl: "Titles",
+      pts_buy: "Buy for {n}",
+      pts_use: "Select",
+      pts_on: "Selected",
+      pts_need: "Not enough points",
+      pts_home: "Points: {n}",
+      pts_title_l: "Title",
+      acc_default: "Purple",
+      acc_teal: "Teal",
+      acc_pink: "Pink",
+      acc_orange: "Orange",
+      acc_blue: "Blue",
+      ttl_0: "Newcomer",
+      ttl_1: "Spark",
+      ttl_2: "Steadfast",
+      ttl_3: "Routine master",
+      ttl_4: "Glow legend",
       days: ["Su","Mo","Tu","We","Th","Fr","Sa"]
     },
     zh: {
@@ -817,6 +870,28 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_open: "打开计划任务",
       myprog_card: "我的计划",
       myprog_idle: "目前没有计划，可以选一个。",
+      pts_h: "积分与奖励",
+      pts_bal: "积分：{n}",
+      pts_rule: "每次习惯打卡得3分。XP永久保留并决定等级，积分可以在商店消费。",
+      pts_today: "今天 +{n}",
+      pts_acc: "应用颜色",
+      pts_ttl: "称号",
+      pts_buy: "花费 {n} 购买",
+      pts_use: "选用",
+      pts_on: "已选用",
+      pts_need: "积分不足",
+      pts_home: "积分：{n}",
+      pts_title_l: "称号",
+      acc_default: "紫色",
+      acc_teal: "青绿色",
+      acc_pink: "粉色",
+      acc_orange: "橙色",
+      acc_blue: "蓝色",
+      ttl_0: "新手",
+      ttl_1: "小火花",
+      ttl_2: "坚持者",
+      ttl_3: "习惯大师",
+      ttl_4: "glow 传奇",
       days: ["日","一","二","三","四","五","六"]
     }
   };
@@ -879,7 +954,37 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
         src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
       { tag: "Планирование", t: "Правило «если — то»", s: "План с конкретным условием помогает довести цель до дела.",
         pts: ["Формула: «Если наступит ситуация X, я сделаю Y». Например: «После ужина читаю 20 минут».", "В метаанализе 94 исследований такие планы дали эффект d ≈ 0,65 на достижение целей (средний и выше среднего).", "Привяжи новую привычку к событию, которое и так происходит каждый день."],
-        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." },
+      { tag: "Сон", t: "Кофеин и сон", s: "Кофе за 6 часов до сна всё равно может сократить сон.",
+        pts: ["В эксперименте участники получали 400 мг кофеина за 0, 3 или 6 часов до обычного времени сна, а в контроле плацебо.", "По данным датчика общее время сна сокращалось примерно на 1,1–1,2 часа при каждом из трёх вариантов, включая 6 часов.", "По дневникам сна разница в варианте за 6 часов была около 41 минуты и не достигла статистической значимости: сам человек потерю сна замечает хуже.", "Практика: если плохо спишь, не пей кофе и энергетики во второй половине дня."],
+        src: "Drake C., Roehrs T., Shambroom J., Roth T. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. Journal of Clinical Sleep Medicine, 2013; 9(11): 1195–1200." },
+      { tag: "Сон", t: "Экраны перед сном", s: "Светящийся экран вечером сдвигает внутренние часы.",
+        pts: ["Участники перед сном читали либо с устройства со светящимся экраном, либо бумажную книгу.", "Чтение со светящегося экрана подавляло выработку мелатонина, участники дольше засыпали, а внутренние часы смещались на более позднее время.", "Утром после светящегося экрана бодрость была ниже.", "Практика: вечером замени экран бумажной книгой или хотя бы приглуши свет и яркость."],
+        src: "Chang A.-M., Aeschbach D., Duffy J.F., Czeisler C.A. Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. PNAS, 2015; 112(4): 1232–1237." },
+      { tag: "Питание", t: "Овощи и соль по нормам ВОЗ", s: "Два простых ориентира для рациона.",
+        pts: ["Овощи и фрукты: не менее 400 г в день (для людей старше 10 лет).", "Соль: менее 5 г в день, это около 2 г натрия.", "Свободные сахара: менее 10% суточной энергии.", "Это ориентиры для населения, а не индивидуальный план питания."],
+        src: "World Health Organization. Healthy diet (fact sheet). who.int/news-room/fact-sheets/detail/healthy-diet" },
+      { tag: "Питание", t: "Сколько сахара много", s: "ВОЗ ограничивает именно свободные сахара.",
+        pts: ["Свободные сахара: менее 10% суточной энергии (сильная рекомендация ВОЗ).", "Менее 5%, примерно 25 г или 6 чайных ложек в день, может дать дополнительную пользу (условная рекомендация, доказательства слабее).", "К свободным сахарам относятся добавленные сахара, а также сахара в мёде, сиропах, соках и концентратах. Сахара в цельных фруктах, овощах и молоке сюда не входят.", "Практика: смотри состав напитков и соусов, сахар часто спрятан там."],
+        src: "World Health Organization. Guideline: Sugars intake for adults and children. Geneva, 2015." },
+      { tag: "Здоровье", t: "Друзья и здоровье", s: "Крепкие отношения связаны с более высокой выживаемостью.",
+        pts: ["Метаанализ 148 исследований, 308 849 участников, наблюдение в среднем 7,5 года.", "У людей с более крепкими социальными связями вероятность выжить была выше на 50% (OR = 1,50).", "Это связь, а не доказанная причина: людям со здоровьем проще поддерживать контакты.", "Практика: общение с друзьями и семьёй стоит держать такой же привычкой, как сон и движение."],
+        src: "Holt-Lunstad J., Smith T.B., Layton J.B. Social relationships and mortality risk: a meta-analytic review. PLoS Medicine, 2010; 7(7): e1000316." },
+      { tag: "Спорт", t: "Шаги в день", s: "Сколько шагов связано с меньшим риском.",
+        pts: ["Метаанализ 15 когортных исследований, 47 471 взрослый.", "Риск смерти от любых причин снижался до 6000–8000 шагов в день у людей 60+ и до 8000–10 000 у людей младше 60.", "По сравнению с четвертью людей с наименьшим числом шагов у остальных риск был ниже: HR 0,60, 0,55 и 0,47 для квартилей 2, 3 и 4.", "Это наблюдательные данные: они показывают связь, а не доказывают причину."],
+        src: "Paluch A.E. et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. The Lancet Public Health, 2022; 7(3): e219–e228." },
+      { tag: "Спорт", t: "Как часто тренировать мышцы", s: "Частота тренировок влияет на рост мышц.",
+        pts: ["Метаанализ 10 исследований.", "Более частые тренировки давали больший эффект на мышечную массу: 0,49 против 0,30 (P = 0,002).", "Авторы заключают: при одинаковом объёме тренировка каждой группы мышц 2 раза в неделю лучше, чем 1 раз.", "Даёт ли 3 раза в неделю дополнительную пользу, пока неясно."],
+        src: "Schoenfeld B.J., Ogborn D., Krieger J.W. Effects of resistance training frequency on measures of muscle hypertrophy: a systematic review and meta-analysis. Sports Medicine, 2016; 46(11): 1689–1697." },
+      { tag: "Психика", t: "Движение и настроение", s: "Физическая активность снижает симптомы депрессии и тревоги.",
+        pts: ["Обзор обзоров: 97 систематических обзоров, 1039 испытаний, 128 119 участников.", "Средний эффект по сравнению с обычным уходом: депрессия −0,43, тревога −0,42, психологический дистресс −0,60.", "Более интенсивная активность давала больший эффект.", "Это не замена лечения: если подавленность или тревога держатся долго, обратись к врачу или психологу."],
+        src: "Singh B. et al. Effectiveness of physical activity interventions for improving depression, anxiety and distress: an overview of systematic reviews. British Journal of Sports Medicine, 2023." },
+      { tag: "Психика", t: "Осознанность: что известно", s: "Практики осознанности помогают умеренно, а не чудесно.",
+        pts: ["Метаанализ 47 испытаний, 3515 участников.", "Умеренные доказательства улучшения тревоги (эффект 0,38 через 8 недель), депрессии (0,30, но доверительный интервал включает 0) и боли (0,33).", "Для стресса и качества жизни доказательства слабые.", "Преимущества перед другими активными методами лечения не показано."],
+        src: "Goyal M. et al. Meditation programs for psychological stress and well-being: a systematic review and meta-analysis. JAMA Internal Medicine, 2014; 174(3): 357–368." },
+      { tag: "Учёба", t: "Проверяй себя, а не перечитывай", s: "Тест по памяти запоминается лучше, чем повторное чтение.",
+        pts: ["Студенты изучали тексты, потом либо перечитывали их, либо проходили тесты по памяти без подсказок.", "Через 5 минут лучше работало перечитывание, но через 2 дня и неделю тест давал существенно лучшее запоминание.", "Практика: закрой конспект, перескажи материал или ответь на вопросы по памяти, потом проверь себя."],
+        src: "Roediger H.L., Karpicke J.D. Test-enhanced learning: taking memory tests improves long-term retention. Psychological Science, 2006; 17(3): 249–255." }
     ],
     en: [
       { tag: "Sleep", t: "Sleep and hormones", s: "Sleep loss hits hormones, recovery and mood.",
@@ -911,7 +1016,37 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
         src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
       { tag: "Planning", t: "The \"if — then\" rule", s: "A plan with a specific trigger helps turn a goal into action.",
         pts: ["Formula: \"If situation X happens, I will do Y\". For example: \"After dinner I read for 20 minutes\".", "In a meta-analysis of 94 studies such plans had an effect of d ≈ 0.65 on goal attainment (medium to large).", "Attach a new habit to something that already happens every day."],
-        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." },
+      { tag: "Sleep", t: "Caffeine and sleep", s: "Coffee 6 hours before bed can still cut your sleep.",
+        pts: ["In the experiment, participants took 400 mg of caffeine 0, 3 or 6 hours before their usual bedtime, versus placebo.", "By a sleep monitor, total sleep time fell by about 1.1–1.2 hours in each of the three conditions, including 6 hours.", "In sleep diaries, the 6-hour condition showed about 41 minutes less sleep, which did not reach statistical significance: people notice lost sleep less than a monitor does.", "Practice: if you sleep badly, skip coffee and energy drinks in the afternoon."],
+        src: "Drake C., Roehrs T., Shambroom J., Roth T. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. Journal of Clinical Sleep Medicine, 2013; 9(11): 1195–1200." },
+      { tag: "Sleep", t: "Screens before bed", s: "A glowing screen in the evening shifts your body clock.",
+        pts: ["Participants read before bed either on a light-emitting device or from a printed book.", "Reading on the glowing screen suppressed melatonin, delayed falling asleep and shifted the body clock later.", "Alertness the next morning was lower after the glowing screen.", "Practice: swap the screen for a paper book in the evening, or at least dim the light and brightness."],
+        src: "Chang A.-M., Aeschbach D., Duffy J.F., Czeisler C.A. Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. PNAS, 2015; 112(4): 1232–1237." },
+      { tag: "Nutrition", t: "Vegetables and salt: WHO targets", s: "Two simple benchmarks for your diet.",
+        pts: ["Fruit and vegetables: at least 400 g a day (for people over 10).", "Salt: less than 5 g a day, about 2 g of sodium.", "Free sugars: less than 10% of daily energy.", "These are population targets, not a personal meal plan."],
+        src: "World Health Organization. Healthy diet (fact sheet). who.int/news-room/fact-sheets/detail/healthy-diet" },
+      { tag: "Nutrition", t: "How much sugar is too much", s: "WHO limits free sugars specifically.",
+        pts: ["Free sugars: under 10% of daily energy (a strong WHO recommendation).", "Under 5%, about 25 g or 6 teaspoons a day, may give extra benefit (a conditional recommendation, weaker evidence).", "Free sugars include added sugars plus sugars in honey, syrups, juices and concentrates. Sugars in whole fruit, vegetables and milk are not counted.", "Practice: read the labels of drinks and sauces; sugar is often hidden there."],
+        src: "World Health Organization. Guideline: Sugars intake for adults and children. Geneva, 2015." },
+      { tag: "Health", t: "Friends and health", s: "Stronger relationships are linked to higher survival.",
+        pts: ["A meta-analysis of 148 studies with 308,849 participants, followed for 7.5 years on average.", "People with stronger social relationships had a 50% higher likelihood of survival (OR = 1.50).", "This is an association, not proven causation: healthier people may find it easier to keep in touch.", "Practice: treat time with friends and family as a habit, like sleep and movement."],
+        src: "Holt-Lunstad J., Smith T.B., Layton J.B. Social relationships and mortality risk: a meta-analytic review. PLoS Medicine, 2010; 7(7): e1000316." },
+      { tag: "Fitness", t: "Steps per day", s: "How many steps are linked to lower risk.",
+        pts: ["A meta-analysis of 15 cohort studies with 47,471 adults.", "All-cause mortality risk fell up to 6,000–8,000 steps a day in people 60 and over, and up to 8,000–10,000 in people under 60.", "Compared with the quarter taking the fewest steps, the others had lower risk: HR 0.60, 0.55 and 0.47 for quartiles 2, 3 and 4.", "These are observational data: they show an association, not cause."],
+        src: "Paluch A.E. et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. The Lancet Public Health, 2022; 7(3): e219–e228." },
+      { tag: "Fitness", t: "How often to train muscles", s: "Training frequency affects muscle growth.",
+        pts: ["A meta-analysis of 10 studies.", "More frequent training gave a larger effect on muscle mass: 0.49 versus 0.30 (P = 0.002).", "The authors conclude that with equal volume, training each muscle group twice a week beats once a week.", "Whether three times a week adds more benefit is still unclear."],
+        src: "Schoenfeld B.J., Ogborn D., Krieger J.W. Effects of resistance training frequency on measures of muscle hypertrophy: a systematic review and meta-analysis. Sports Medicine, 2016; 46(11): 1689–1697." },
+      { tag: "Mind", t: "Movement and mood", s: "Physical activity reduces symptoms of depression and anxiety.",
+        pts: ["An overview of reviews: 97 systematic reviews, 1,039 trials, 128,119 participants.", "Median effect versus usual care: depression −0.43, anxiety −0.42, psychological distress −0.60.", "Higher-intensity activity gave larger effects.", "This is not a substitute for treatment: if low mood or anxiety lasts, see a doctor or psychologist."],
+        src: "Singh B. et al. Effectiveness of physical activity interventions for improving depression, anxiety and distress: an overview of systematic reviews. British Journal of Sports Medicine, 2023." },
+      { tag: "Mind", t: "Mindfulness: what is known", s: "Mindfulness helps moderately, not miraculously.",
+        pts: ["A meta-analysis of 47 trials with 3,515 participants.", "Moderate evidence of improved anxiety (effect 0.38 at 8 weeks), depression (0.30, but the confidence interval includes 0) and pain (0.33).", "Evidence for stress and quality of life was low.", "No advantage over other active treatments was shown."],
+        src: "Goyal M. et al. Meditation programs for psychological stress and well-being: a systematic review and meta-analysis. JAMA Internal Medicine, 2014; 174(3): 357–368." },
+      { tag: "Study", t: "Test yourself, do not just reread", s: "A memory test sticks better than rereading.",
+        pts: ["Students studied texts, then either reread them or took memory tests without hints.", "After 5 minutes rereading worked better, but after 2 days and a week testing gave substantially better retention.", "Practice: close your notes, retell the material or answer questions from memory, then check yourself."],
+        src: "Roediger H.L., Karpicke J.D. Test-enhanced learning: taking memory tests improves long-term retention. Psychological Science, 2006; 17(3): 249–255." }
     ],
     zh: [
       { tag: "睡眠", t: "睡眠与激素", s: "睡眠不足会影响激素、恢复和情绪。",
@@ -943,7 +1078,37 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
         src: "Bull F.C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. British Journal of Sports Medicine, 2020; 54: 1451–1462." },
       { tag: "计划", t: "“如果—那么”法则", s: "带有具体触发条件的计划有助于把目标变成行动。",
         pts: ["公式：“如果出现情境X，我就做Y”。例如：“晚饭后读书20分钟”。", "在94项研究的元分析中，这类计划对目标达成的效应为 d ≈ 0.65（中到大）。", "把新习惯绑定到每天本来就会发生的事情上。"],
-        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." }
+        src: "Gollwitzer P.M., Sheeran P. Implementation intentions and goal attainment: a meta-analysis of effects and processes. Advances in Experimental Social Psychology, 2006; 38: 69–119." },
+      { tag: "睡眠", t: "咖啡因与睡眠", s: "睡前6小时喝咖啡仍可能减少睡眠。",
+        pts: ["实验中，参与者在平时就寝前0、3或6小时服用400毫克咖啡因，对照组为安慰剂。", "按睡眠监测仪记录，三种情况下总睡眠时间都减少了约1.1–1.2小时，包括提前6小时的情况。", "按睡眠日记，提前6小时组少睡约41分钟，未达到统计显著：人自己比仪器更难察觉睡眠减少。", "做法：如果睡不好，下午不要喝咖啡和能量饮料。"],
+        src: "Drake C., Roehrs T., Shambroom J., Roth T. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. Journal of Clinical Sleep Medicine, 2013; 9(11): 1195–1200." },
+      { tag: "睡眠", t: "睡前看屏幕", s: "晚上的发光屏幕会推迟生物钟。",
+        pts: ["参与者睡前用发光设备或纸质书阅读。", "在发光屏幕上阅读会抑制褪黑素分泌、延长入睡时间，并使生物钟向后推迟。", "使用发光屏幕后，第二天早晨的警觉性更低。", "做法：晚上用纸质书代替屏幕，或至少调暗灯光和亮度。"],
+        src: "Chang A.-M., Aeschbach D., Duffy J.F., Czeisler C.A. Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. PNAS, 2015; 112(4): 1232–1237." },
+      { tag: "饮食", t: "蔬菜和盐：世卫组织标准", s: "饮食的两个简单参考。",
+        pts: ["蔬菜水果：每天至少400克（10岁以上）。", "盐：每天少于5克，约相当于2克钠。", "游离糖：低于每日能量的10%。", "这是面向人群的参考值，不是个人饮食方案。"],
+        src: "World Health Organization. Healthy diet (fact sheet). who.int/news-room/fact-sheets/detail/healthy-diet" },
+      { tag: "饮食", t: "糖多少算多", s: "世卫组织限制的是游离糖。",
+        pts: ["游离糖：低于每日能量的10%（世卫组织强推荐）。", "低于5%，约每天25克或6茶匙，可能带来额外益处（有条件推荐，证据较弱）。", "游离糖包括添加糖，以及蜂蜜、糖浆、果汁和浓缩汁中的糖。整颗水果、蔬菜和牛奶中的糖不计入。", "做法：看饮料和酱料的成分表，糖常常藏在里面。"],
+        src: "World Health Organization. Guideline: Sugars intake for adults and children. Geneva, 2015." },
+      { tag: "健康", t: "朋友与健康", s: "更牢固的人际关系与更高的生存率相关。",
+        pts: ["对148项研究（308,849名参与者）的元分析，平均随访7.5年。", "社会关系更牢固的人，生存可能性高50%（OR = 1.50）。", "这是关联，不是已证实的因果：身体更好的人更容易保持联系。", "做法：把和朋友、家人相处当作习惯，就像睡眠和运动。"],
+        src: "Holt-Lunstad J., Smith T.B., Layton J.B. Social relationships and mortality risk: a meta-analytic review. PLoS Medicine, 2010; 7(7): e1000316." },
+      { tag: "运动", t: "每天多少步", s: "多少步数与更低风险相关。",
+        pts: ["对15项队列研究（47,471名成年人）的元分析。", "全因死亡风险在60岁及以上人群中随步数下降至每天6000–8000步，在60岁以下人群中下降至每天8000–10,000步。", "与步数最少的四分之一相比，其他组风险更低：第2、3、4四分位的 HR 分别为 0.60、0.55、0.47。", "这是观察性数据：只显示关联，不证明因果。"],
+        src: "Paluch A.E. et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. The Lancet Public Health, 2022; 7(3): e219–e228." },
+      { tag: "运动", t: "肌肉多久练一次", s: "训练频率影响肌肉增长。",
+        pts: ["对10项研究的元分析。", "更高的训练频率对肌肉量的效应更大：0.49 对 0.30（P = 0.002）。", "作者结论：训练量相同时，每个肌群每周练2次优于1次。", "每周3次是否更好，目前尚不清楚。"],
+        src: "Schoenfeld B.J., Ogborn D., Krieger J.W. Effects of resistance training frequency on measures of muscle hypertrophy: a systematic review and meta-analysis. Sports Medicine, 2016; 46(11): 1689–1697." },
+      { tag: "心理", t: "运动与情绪", s: "体育活动可减轻抑郁和焦虑症状。",
+        pts: ["综述的综述：97项系统综述、1039项试验、128,119名参与者。", "与常规照护相比的中位效应：抑郁 −0.43，焦虑 −0.42，心理困扰 −0.60。", "强度更高的活动效果更大。", "这不能代替治疗：如果情绪低落或焦虑持续，请看医生或心理师。"],
+        src: "Singh B. et al. Effectiveness of physical activity interventions for improving depression, anxiety and distress: an overview of systematic reviews. British Journal of Sports Medicine, 2023." },
+      { tag: "心理", t: "正念：已知的事实", s: "正念有中等程度的帮助，并非神奇。",
+        pts: ["对47项试验（3515名参与者）的元分析。", "对焦虑（8周时效应0.38）、抑郁（0.30，但置信区间包含0）和疼痛（0.33）有中等证据。", "对压力和生活质量的证据较弱。", "未显示优于其他积极治疗。"],
+        src: "Goyal M. et al. Meditation programs for psychological stress and well-being: a systematic review and meta-analysis. JAMA Internal Medicine, 2014; 174(3): 357–368." },
+      { tag: "学习", t: "自测，而不是重读", s: "记忆测试比重读记得更牢。",
+        pts: ["学生先学习文章，然后要么重读，要么在没有提示的情况下做记忆测试。", "5分钟后重读效果更好，但2天和一周后，测试的记忆保持明显更好。", "做法：合上笔记，复述内容或凭记忆回答问题，然后核对。"],
+        src: "Roediger H.L., Karpicke J.D. Test-enhanced learning: taking memory tests improves long-term retention. Psychological Science, 2006; 17(3): 249–255." }
     ]
   };
 
@@ -1000,14 +1165,14 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
-  function emptyState() { return { name: "", goal: "", goals: [], rem: "", remd: null, todo: [], prog: null, skips: {}, journal: {}, progHist: [], fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
+  function emptyState() { return { name: "", goal: "", goals: [], rem: "", remd: null, todo: [], prog: null, skips: {}, journal: {}, progHist: [], shop: { pk: 0, sp: 0, own: [], acc: "", ttl: 0 }, fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
   var state = loadLocal();
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
   }
   function normalize() {
-    state.journal = state.journal && typeof state.journal === "object" ? state.journal : {}; state.progHist = Array.isArray(state.progHist) ? state.progHist : []; state.skips = state.skips && typeof state.skips === "object" ? state.skips : {}; state.goals = (Array.isArray(state.goals) ? state.goals : []).map(function (g) { return { i: g.i, t: g.t, d: !!g.d, dl: g.dl || "", st: Array.isArray(g.st) ? g.st : [] }; }); state.todo = (Array.isArray(state.todo) ? state.todo : []).filter(function (a) { return !(a.x && daysBetween(a.d, todayKey()) > 14); }).slice(-30); state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
+    state.shop = state.shop && typeof state.shop === "object" ? state.shop : {}; state.shop = { pk: +state.shop.pk || 0, sp: +state.shop.sp || 0, own: Array.isArray(state.shop.own) ? state.shop.own : [], acc: state.shop.acc || "", ttl: +state.shop.ttl || 0 }; state.journal = state.journal && typeof state.journal === "object" ? state.journal : {}; state.progHist = Array.isArray(state.progHist) ? state.progHist : []; state.skips = state.skips && typeof state.skips === "object" ? state.skips : {}; state.goals = (Array.isArray(state.goals) ? state.goals : []).map(function (g) { return { i: g.i, t: g.t, d: !!g.d, dl: g.dl || "", st: Array.isArray(g.st) ? g.st : [] }; }); state.todo = (Array.isArray(state.todo) ? state.todo : []).filter(function (a) { return !(a.x && daysBetween(a.d, todayKey()) > 14); }).slice(-30); state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
     state.lib = state.lib || {}; state.lib.f = state.lib.f || []; state.lib.r = state.lib.r || [];
     if (state.fs === undefined) state.fs = true;
     if (!state.start) { var ks = Object.keys(state.days).concat(Object.keys(state.weights)).sort(); state.start = ks.length ? ks[0] : todayKey(); }
@@ -1082,6 +1247,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     var empty = !e.m && !e.w && !e.p && !e.t;
     cset("j_" + k, empty ? "-" : [e.m || 0, e.w || 0, e.p || 0].join("") + "|" + (e.t || ""));
   }
+  function saveShop() { saveLocal(); var h = state.shop; cset("s", JSON.stringify([h.pk, h.sp, h.own, h.acc, h.ttl])); }
   function saveHist() { saveLocal(); cset("q", JSON.stringify(state.progHist.map(function (h) { return [h.id, h.s, h.x, h.f ? 1 : 0]; }))); }
   function saveSkip(k) { saveLocal(); cset("x_" + k, (state.skips[k] || []).join(",") || "-"); }
   function saveTodo() { saveLocal(); cset("o", JSON.stringify(state.todo.map(function (a) { return [a.i, a.t, a.d, a.x ? 1 : 0]; }))); }
@@ -1107,6 +1273,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
             else if (k === "h") { try { s.habits = JSON.parse(v).map(function (a) { return { k: a[0], t: a[1], min: !!a[2], c: a[3] || "other", d: a[4] ? a[4].split("").map(Number) : null, s: a[5] || "", r: a[6] || "" }; }); } catch (e) {} }
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("j_") === 0) { var jm = /^(\d)(\d)(\d)\|([\s\S]*)$/.exec(v || ""); if (jm) s.journal[k.slice(2)] = { m: +jm[1], w: +jm[2], p: +jm[3], t: jm[4] }; }
+            else if (k === "s") { try { var sh = JSON.parse(v); s.shop = { pk: +sh[0] || 0, sp: +sh[1] || 0, own: sh[2] || [], acc: sh[3] || "", ttl: +sh[4] || 0 }; } catch (e) {} }
             else if (k === "q") { try { s.progHist = JSON.parse(v).map(function (a) { return { id: a[0], s: a[1], x: a[2], f: !!a[3] }; }); } catch (e) {} }
             else if (k.indexOf("x_") === 0) { s.skips[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
@@ -1227,14 +1394,47 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
   }
 
   /* ---------- виды ---------- */
-  var LVL = [1, 2, 2, 1, 1, 2, 1, 2, 1, 2], REL = [[3, 6], [2, 8], [1, 8], [0, 4], [5, 3], [4, 3], [9, 0], [0, 9], [1, 3], [6, 7]];
-  var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study", "fitness", "plan"];
+  var LVL = [1, 2, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1], REL = [[3, 6], [2, 8], [1, 8], [0, 4], [5, 3], [4, 3], [9, 0], [0, 9], [1, 3], [6, 7], [0, 11], [0, 10], [13, 1], [12, 2], [17, 18], [8, 17], [1, 8], [15, 18], [17, 14], [7, 6]];
+  var CAT_ART = ["sleep", "nutrition", "nutrition", "health", "skin", "skin", "habits", "study", "fitness", "plan", "sleep", "sleep", "nutrition", "nutrition", "health", "fitness", "fitness", "mind", "mind", "study"];
   var libLvl = 0, goalOpen = -1, hsOpen = null, tasksTab = "today", libAll = false, editing = null, hsRange = 30, libQ = "", libC = "all", libFav = false, confirmDel = false;
   function catName(c) { return t("cat_" + (CATS.indexOf(c) >= 0 ? c : "other")); }
   function schedTxt(h) {
     if (!h.d) return t("f_every");
     var names = D[lang()].days;
     return [1, 2, 3, 4, 5, 6, 0].filter(function (n) { return h.d.indexOf(n) >= 0; }).map(function (n) { return names[n]; }).join(", ");
+  }
+
+  /* ---------- очки и магазин ---------- */
+  var PTS_PER = 3;
+  var ACC = { teal: ["#0e9f8e", "#3fdcc6", "#6a45f0", "#9a7dff"], pink: ["#d6336c", "#ff7aa8", "#6a45f0", "#9a7dff"], orange: ["#d9731f", "#ffb15c", "#0e9f8e", "#3fdcc6"], blue: ["#2f6fe0", "#7fb0ff", "#0e9f8e", "#3fdcc6"] };
+  var SHOP = [["acc_teal", 60], ["acc_pink", 60], ["acc_orange", 60], ["acc_blue", 60], ["ttl_1", 30], ["ttl_2", 90], ["ttl_3", 200], ["ttl_4", 400]];
+  function earnedPts() { return checksTotal() * PTS_PER; }
+  function ptsBalance() { return Math.max(earnedPts(), state.shop.pk) - state.shop.sp; }
+  function owns(id) { return id === "acc_default" || id === "ttl_0" || state.shop.own.indexOf(id) >= 0; }
+  function myTitle() { return t("ttl_" + (owns("ttl_" + state.shop.ttl) ? state.shop.ttl : 0)); }
+  function applyAccent() {
+    var r = document.documentElement, dark = effTheme() === "dark", c = ACC[(state.shop.acc || "").replace("acc_", "")];
+    if (state.shop.acc && c && owns(state.shop.acc)) {
+      var a1 = c[dark ? 1 : 0], a2 = c[dark ? 3 : 2];
+      r.style.setProperty("--a1", a1); r.style.setProperty("--a2", a2);
+      r.style.setProperty("--hero", "linear-gradient(140deg, " + a1 + " 0%, " + a2 + " 130%)");
+    } else { r.style.removeProperty("--a1"); r.style.removeProperty("--a2"); r.style.removeProperty("--hero"); }
+  }
+  function ptsLine() {
+    var tk = todayKey(), tdy = (state.days[tk] || []).length * PTS_PER;
+    return '<button class="pts" data-go="progress">✦ ' + t("pts_bal", { n: ptsBalance() }) + (tdy ? " · " + t("pts_today", { n: tdy }) : "") + "</button>";
+  }
+  function shopCard() {
+    var bal = ptsBalance();
+    function item(id, cost, name, sel) {
+      var own = owns(id), btn;
+      if (own) btn = '<button class="btn soft" data-use="' + id + '"' + (sel ? " disabled" : "") + ">" + t(sel ? "pts_on" : "pts_use") + "</button>";
+      else btn = '<button class="btn" data-buy="' + id + '"' + (bal < cost ? " disabled" : "") + ">" + (bal < cost ? t("pts_need") + " · " + cost : t("pts_buy", { n: cost })) + "</button>";
+      return '<div class="shopi"><span>' + name + "</span>" + btn + "</div>";
+    }
+    var accs = [["acc_default", 0]].concat(SHOP.filter(function (x) { return x[0].indexOf("acc_") === 0; })).map(function (x) { return item(x[0], x[1], '<i class="sw sw-' + x[0].slice(4) + '"></i>' + t(x[0]), (state.shop.acc || "acc_default") === x[0]); }).join("");
+    var ttls = [["ttl_0", 0]].concat(SHOP.filter(function (x) { return x[0].indexOf("ttl_") === 0; })).map(function (x) { return item(x[0], x[1], t(x[0]), "ttl_" + state.shop.ttl === x[0]); }).join("");
+    return '<section class="card stack"><div class="row" style="justify-content:space-between"><h2 style="margin:0">' + t("pts_h") + '</h2><b class="ptsbig">✦ ' + bal + '</b></div><p class="note">' + t("pts_rule") + '</p><h3 class="dgrp">' + t("pts_acc") + "</h3>" + accs + '<h3 class="dgrp">' + t("pts_ttl") + "</h3>" + ttls + "</section>";
   }
   function homeBanner() {
     if (hsStatus !== "missed" && hsStatus !== "unknown") return "";
@@ -1263,7 +1463,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       head(greeting() + (dispName() ? ", " + esc(dispName()) : ""), t("tagline")) +
       '<section class="hero" id="hero"><div class="top"><div class="ring"><svg viewBox="0 0 96 96"><circle class="trk" cx="48" cy="48" r="40"/><circle class="val" cx="48" cy="48" r="40" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/></svg><b>' + pct + '%</b></div>' +
         '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + lv.n + '</b><span>' + t("lvl") + '</span></div></div></div>' +
-        '<p class="msg">' + msg + '</p></section>' +
+        '<p class="msg">' + msg + '</p>' + ptsLine() + '</section>' +
       '<div class="tiles">' + tile("tasks", "g1") + tile("progress", "g2") + tile("base", "g3") + tile("profile", "g4") + '</div>' +
       progCard + planCard +
       (rec ? '<section class="card"><h2>' + t("rec_t") + '</h2><p>' + rec + '</p></section>' : "") +
@@ -1289,7 +1489,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     var mleft = due.filter(function (h) { return h.min && !isDone(tk, h.k); }).length;
     if (tasksTab === "daily") return dailyView(dateTxt);
     if (tasksTab === "prog") return progView(dateTxt);
-    return '<div class="stack">' + head(t("tasks_title"), dateTxt) + tabsBar() +
+    return '<div class="stack">' + head(t("tasks_title"), dateTxt) + tabsBar() + ptsLine() +
       '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: st.done, b: st.due }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (st.due ? st.done / st.due * 100 : 0) + '%"></i></div></div>' +
       (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t(habits().length ? "msg_rest" : "no_habits") + '</p></div>') +
       '<section class="card stack"><label for="note"><b>' + t("note_l") + '</b></label><input id="note" type="text" maxlength="120" value="' + esc(state.notes[tk] || "") + '" placeholder="' + esc(t("note_ph")) + '"></section>' +
@@ -1458,13 +1658,13 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       (diff ? '<p class="sub">' + diff + "</p>" : "") +
       '<div class="row"><input id="w-in" type="number" inputmode="decimal" step="0.1" min="30" max="250" placeholder="' + esc(t("w_ph")) + '" aria-label="' + esc(t("w_aria")) + '"><button class="btn" data-act="addw">' + t("w_save") + "</button></div>" +
       '<p class="note">' + t("w_neutral") + "</p></div></details>";
-    return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) + level + stats + ach + calendar() + report() + xpCard() + hstat + weight + '<button class="btn soft wide" data-go="journal">' + t("jr_open") + "</button></div>";
+    return '<div class="stack">' + head(t("prog_title"), t("prog_streak", { n: streak() })) + level + stats + shopCard() + ach + calendar() + report() + xpCard() + hstat + weight + '<button class="btn soft wide" data-go="journal">' + t("jr_open") + "</button></div>";
   }
   function libGrid() { return libC === "all" && !libAll && !libFav && !libLvl && !libQ.trim(); }
   function base() {
     var arts = BASE[lang()], seen = {}, order = [], cnt = {};
     arts.forEach(function (a, i) { var c = CAT_ART[i]; cnt[c] = (cnt[c] || 0) + 1; if (!seen[c]) { seen[c] = a.tag; order.push(c); } });
-    var CI = { sleep: "moon", nutrition: "scale", health: "user", skin: "sun", habits: "tasks", study: "book", fitness: "chart", plan: "tasks" }, G = ["g1", "g2", "g3", "g4"];
+    var CI = { sleep: "moon", nutrition: "scale", health: "user", skin: "sun", habits: "tasks", study: "book", fitness: "chart", plan: "tasks", mind: "sun" }, G = ["g1", "g2", "g3", "g4"];
     function tl(cls, attr, ico, name, small) { return '<button class="tile cat ' + cls + '" ' + attr + '><span class="banner"><span class="ico">' + ico + '</span></span><span class="tb"><strong>' + esc(name) + "</strong><small>" + small + "</small></span></button>"; }
     var MAPC = { skin: "skin", fit: "fitness", sleep: "sleep", food: "nutrition", focus: "study" }, recs = [];
     habits().forEach(function (h) { var c = MAPC[h.c]; if (c && recs.indexOf(c) < 0 && order.indexOf(c) >= 0) recs.push(c); });
@@ -1524,7 +1724,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       return row;
     }).join("");
     return '<div class="stack">' + head(t("prof_title"), t("prof_sub")) +
-      '<section class="card stack"><div class="who">' + avatar() + '<div style="flex:1;min-width:0"><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(dispName() || t("name_ph")) + '"></div></div>' +
+      '<section class="card stack"><div class="who">' + avatar() + '<div style="flex:1;min-width:0"><span class="note">' + t("pts_title_l") + ': ✦ ' + esc(myTitle()) + '</span><label for="p-name"><b>' + t("name_l") + '</b></label><input id="p-name" type="text" maxlength="30" value="' + esc(state.name || "") + '" placeholder="' + esc(dispName() || t("name_ph")) + '"></div></div>' +
       '<button class="btn" data-act="saveprof">' + t("save") + '</button></section>' +
       '<button class="card tile-card" data-go="progress"><span class="row" style="justify-content:space-between;flex-wrap:nowrap"><b>' + t("prof_lvl", { n: lv.n, x: xpTotal() }) + '</b><span class="sub">' + t("prof_more") + ' ›</span></span><span class="bar" style="margin-top:10px"><i style="width:' + Math.round(lv.into / lv.need * 100) + '%"></i></span><span class="note" style="display:block;margin-top:8px">' + t("prof_ach", { a: got, b: ach.length }) + '</span></button>' +
       '<section class="card stack"><h2 style="margin:0">' + t("goals_h") + '</h2>' + (goals || '<p class="sub">' + t("goals_none") + '</p>') +
@@ -1545,6 +1745,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
   var VIEWS = { home: home, tasks: tasks, habits: habitsView, journal: journal, programs: programsView, progress: progress, base: base, profile: profile };
   function current() { var h = location.hash.replace("#", ""); return VIEWS[h] ? h : "home"; }
   function render(keepScroll) {
+    applyAccent();
     var cur = current(), y = window.scrollY, v = document.getElementById("view");
     v.innerHTML = '<div class="' + (keepScroll ? "" : "view") + '">' + VIEWS[cur]() + "</div>";
     document.getElementById("nav").innerHTML = TABS.map(function (tb) {
@@ -1560,7 +1761,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
 
   function captureName() { var n = document.getElementById("f-name"); if (n && editing) editing.f.t = n.value; }
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-lvl],[data-rel],[data-jr],[data-sk],[data-mv],[data-hs],[data-gp],[data-gx],[data-gs],[data-gsd],[data-liball],[data-libback],[data-tt],[data-ot],[data-od],[data-pstart],[data-rd],[data-libfav],[data-libtog]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-buy],[data-use],[data-lvl],[data-rel],[data-jr],[data-sk],[data-mv],[data-hs],[data-gp],[data-gx],[data-gs],[data-gsd],[data-liball],[data-libback],[data-tt],[data-ot],[data-od],[data-pstart],[data-rd],[data-libfav],[data-libtog]");
     if (!el) return;
     var ds = el.dataset;
     if (ds.go) { editing = null; haptic(); go(ds.go); return; }
@@ -1590,6 +1791,8 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     if (ds.libfav) { libFav = !libFav; libAll = false; render(true); window.scrollTo(0, 0); return; }
     if (ds.liball) { libAll = true; libC = "all"; libFav = false; render(true); window.scrollTo(0, 0); return; }
     if (ds.libback) { libC = "all"; libAll = false; libFav = false; libQ = ""; libLvl = 0; render(true); window.scrollTo(0, 0); return; }
+    if (ds.buy) { var it = SHOP.filter(function (x) { return x[0] === ds.buy; })[0]; if (it && !owns(it[0]) && ptsBalance() >= it[1]) { var sh = state.shop; sh.pk = Math.max(sh.pk, earnedPts()); sh.sp += it[1]; sh.own.push(it[0]); if (it[0].indexOf("acc_") === 0) sh.acc = it[0]; else sh.ttl = +it[0].slice(4); saveShop(); applyTheme(); haptic("ok"); render(true); } return; }
+    if (ds.use) { if (owns(ds.use)) { if (ds.use.indexOf("acc_") === 0) state.shop.acc = ds.use === "acc_default" ? "" : ds.use; else state.shop.ttl = +ds.use.slice(4); saveShop(); applyTheme(); haptic(); render(true); } return; }
     if (ds.sk) { var k0 = todayKey(), ar0 = state.skips[k0] = state.skips[k0] || [], ix0 = ar0.indexOf(ds.sk); if (ix0 >= 0) ar0.splice(ix0, 1); else ar0.push(ds.sk); saveSkip(k0); haptic(); render(true); return; }
     if (ds.mv !== undefined) { var hs0 = cloneHabits(), m0 = +ds.mv, m1 = m0 + (+ds.dir); if (m1 >= 0 && m1 < hs0.length) { var tmp = hs0[m0]; hs0[m0] = hs0[m1]; hs0[m1] = tmp; state.habits = hs0; saveHabits(); haptic(); render(true); } return; }
     if (ds.hs) { hsOpen = hsOpen === ds.hs ? null : ds.hs; render(true); return; }
