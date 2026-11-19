@@ -416,6 +416,43 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       part_m: "Утро",
       part_e: "Вечер",
       rout_h: "Рутины",
+      tt_rout: "Рутины",
+      rt_intro: "Собери свою цепочку шагов: утро, вечер или любую другую. Рутина целиком даёт бонусные очки.",
+      rt_tpl_m: "Шаблон «Утро»",
+      rt_tpl_e: "Шаблон «Вечер»",
+      rt_new: "Новая рутина",
+      rt_name_ph: "Название рутины",
+      rt_name_def: "Моя рутина",
+      rt_name_m: "Утро",
+      rt_name_e: "Вечер",
+      rt_time: "Когда",
+      rt_step_ph: "Свой шаг",
+      rt_add: "Добавить",
+      rt_save: "Сохранить",
+      rt_cancel: "Отмена",
+      rt_del: "Удалить рутину",
+      rt_presets: "Быстро добавить",
+      rt_edit: "Изменить",
+      rt_full30: "Полностью выполнена: {n} из 30 дней",
+      rt_done: "Готово",
+      rt_bonus: "Все шаги за день: +{n} очков (нужно минимум 2 шага).",
+      rt_why: "Почему это работает",
+      rt_steps: "Шаги",
+      rt_nosteps: "Добавь хотя бы один шаг",
+      rt_empty_steps: "В этой рутине пока нет шагов. Открой «Изменить».",
+      rt_max: "Максимум 5 рутин и 8 шагов в каждой.",
+      rs_water: "Стакан воды",
+      rs_spf: "SPF на лицо",
+      rs_wash: "Умывание",
+      rs_move: "Зарядка 5 минут",
+      rs_bfast: "Завтрак с белком",
+      rs_plan: "План дня на 3 дела",
+      rs_screens: "Убрать экраны",
+      rs_night_skin: "Вечерний уход",
+      rs_walk: "Короткая прогулка",
+      rs_jr: "Заметка о дне",
+      rs_prep: "Собрать вещи на завтра",
+      rs_bed: "Лечь в одно время",
       w_priv: "Вес — необязательный личный показатель. Целей по весу здесь нет.",
       tt_today: "Сегодня",
       tt_daily: "Daily",
@@ -502,7 +539,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_idle: "Сейчас программы нет. Можно выбрать одну.",
       pts_h: "Очки и награды",
       pts_bal: "Очки: {n}",
-      pts_rule: "3 очка за каждую отметку привычки. XP остаётся навсегда и даёт уровень, а очки можно тратить в магазине.",
+      pts_rule: "3 очка за каждую отметку привычки и 5 за полностью выполненную рутину. XP остаётся навсегда и даёт уровень, а очки можно тратить в магазине.",
       pts_today: "сегодня +{n}",
       pts_acc: "Цвет приложения",
       pts_ttl: "Звания",
@@ -601,6 +638,43 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       part_m: "Morning",
       part_e: "Evening",
       rout_h: "Routines",
+      tt_rout: "Routines",
+      rt_intro: "Build your own chain of steps: morning, evening or anything else. A fully completed routine gives bonus points.",
+      rt_tpl_m: "“Morning” template",
+      rt_tpl_e: "“Evening” template",
+      rt_new: "New routine",
+      rt_name_ph: "Routine name",
+      rt_name_def: "My routine",
+      rt_name_m: "Morning",
+      rt_name_e: "Evening",
+      rt_time: "When",
+      rt_step_ph: "Your own step",
+      rt_add: "Add",
+      rt_save: "Save",
+      rt_cancel: "Cancel",
+      rt_del: "Delete routine",
+      rt_presets: "Quick add",
+      rt_edit: "Edit",
+      rt_full30: "Fully completed: {n} of 30 days",
+      rt_done: "Done",
+      rt_bonus: "All steps in a day: +{n} points (at least 2 steps).",
+      rt_why: "Why it works",
+      rt_steps: "Steps",
+      rt_nosteps: "Add at least one step",
+      rt_empty_steps: "This routine has no steps yet. Tap “Edit”.",
+      rt_max: "Up to 5 routines and 8 steps each.",
+      rs_water: "A glass of water",
+      rs_spf: "SPF on face",
+      rs_wash: "Wash face",
+      rs_move: "5-minute warm-up",
+      rs_bfast: "Protein breakfast",
+      rs_plan: "Plan 3 tasks for the day",
+      rs_screens: "Put screens away",
+      rs_night_skin: "Evening skincare",
+      rs_walk: "Short walk",
+      rs_jr: "Note about the day",
+      rs_prep: "Prepare for tomorrow",
+      rs_bed: "Go to bed on time",
       w_priv: "Weight is an optional private metric. There are no weight goals here.",
       tt_today: "Today",
       tt_daily: "Daily",
@@ -687,7 +761,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_idle: "No program right now. You can pick one.",
       pts_h: "Points and rewards",
       pts_bal: "Points: {n}",
-      pts_rule: "3 points for every habit check-in. XP stays forever and sets your level, while points can be spent in the shop.",
+      pts_rule: "3 points for every habit check-in and 5 for a fully completed routine. XP stays forever and sets your level, while points can be spent in the shop.",
       pts_today: "today +{n}",
       pts_acc: "App color",
       pts_ttl: "Titles",
@@ -786,6 +860,43 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       part_m: "早晨",
       part_e: "晚上",
       rout_h: "日常流程",
+      tt_rout: "日常流程",
+      rt_intro: "自己搭建步骤链：早晨、晚上或其他时段。完整完成一个流程可获得额外积分。",
+      rt_tpl_m: "“早晨”模板",
+      rt_tpl_e: "“晚上”模板",
+      rt_new: "新建流程",
+      rt_name_ph: "流程名称",
+      rt_name_def: "我的流程",
+      rt_name_m: "早晨",
+      rt_name_e: "晚上",
+      rt_time: "时间",
+      rt_step_ph: "自定义步骤",
+      rt_add: "添加",
+      rt_save: "保存",
+      rt_cancel: "取消",
+      rt_del: "删除流程",
+      rt_presets: "快速添加",
+      rt_edit: "编辑",
+      rt_full30: "完整完成：30天中的{n}天",
+      rt_done: "完成",
+      rt_bonus: "当天所有步骤完成：+{n}积分（至少2个步骤）。",
+      rt_why: "为什么有效",
+      rt_steps: "步骤",
+      rt_nosteps: "请至少添加一个步骤",
+      rt_empty_steps: "该流程还没有步骤，点“编辑”。",
+      rt_max: "最多5个流程，每个最多8个步骤。",
+      rs_water: "喝一杯水",
+      rs_spf: "面部涂防晒",
+      rs_wash: "洗脸",
+      rs_move: "5分钟热身",
+      rs_bfast: "高蛋白早餐",
+      rs_plan: "规划今日3件事",
+      rs_screens: "放下屏幕",
+      rs_night_skin: "晚间护肤",
+      rs_walk: "短暂散步",
+      rs_jr: "记一条今日笔记",
+      rs_prep: "准备明天的物品",
+      rs_bed: "按时睡觉",
       w_priv: "体重是可选的私人指标，这里没有体重目标。",
       tt_today: "今天",
       tt_daily: "待办",
@@ -872,7 +983,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       myprog_idle: "目前没有计划，可以选一个。",
       pts_h: "积分与奖励",
       pts_bal: "积分：{n}",
-      pts_rule: "每次习惯打卡得3分。XP永久保留并决定等级，积分可以在商店消费。",
+      pts_rule: "每次习惯打卡得3分，完整完成一个流程得5分。XP永久保留并决定等级，积分可以在商店消费。",
       pts_today: "今天 +{n}",
       pts_acc: "应用颜色",
       pts_ttl: "称号",
@@ -1165,14 +1276,14 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
   function ver(v) { try { return !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v)); } catch (e) { return false; } }
   function haptic(kind) { try { if (!inTg || !tg.HapticFeedback) return; if (kind === "ok") tg.HapticFeedback.notificationOccurred("success"); else tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
 
-  function emptyState() { return { name: "", goal: "", goals: [], rem: "", remd: null, todo: [], prog: null, skips: {}, journal: {}, progHist: [], shop: { pk: 0, sp: 0, own: [], acc: "", ttl: 0 }, fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
+  function emptyState() { return { name: "", goal: "", goals: [], rem: "", remd: null, todo: [], prog: null, rout: [], rdone: {}, skips: {}, journal: {}, progHist: [], shop: { pk: 0, sp: 0, own: [], acc: "", ttl: 0 }, fs: true, lang: null, theme: null, start: "", habits: null, days: {}, weights: {}, notes: {}, lib: { f: [], r: [] } }; }
   var state = loadLocal();
   function loadLocal() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return s; } catch (e) {}
     return emptyState();
   }
   function normalize() {
-    state.shop = state.shop && typeof state.shop === "object" ? state.shop : {}; state.shop = { pk: +state.shop.pk || 0, sp: +state.shop.sp || 0, own: Array.isArray(state.shop.own) ? state.shop.own : [], acc: state.shop.acc || "", ttl: +state.shop.ttl || 0 }; state.journal = state.journal && typeof state.journal === "object" ? state.journal : {}; state.progHist = Array.isArray(state.progHist) ? state.progHist : []; state.skips = state.skips && typeof state.skips === "object" ? state.skips : {}; state.goals = (Array.isArray(state.goals) ? state.goals : []).map(function (g) { return { i: g.i, t: g.t, d: !!g.d, dl: g.dl || "", st: Array.isArray(g.st) ? g.st : [] }; }); state.todo = (Array.isArray(state.todo) ? state.todo : []).filter(function (a) { return !(a.x && daysBetween(a.d, todayKey()) > 14); }).slice(-30); state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
+    state.shop = state.shop && typeof state.shop === "object" ? state.shop : {}; state.shop = { pk: +state.shop.pk || 0, sp: +state.shop.sp || 0, own: Array.isArray(state.shop.own) ? state.shop.own : [], acc: state.shop.acc || "", ttl: +state.shop.ttl || 0 }; state.rout = (Array.isArray(state.rout) ? state.rout : []).slice(0, 5).map(function (r) { return { i: r.i, n: String(r.n || ""), tm: r.tm || "", st: (Array.isArray(r.st) ? r.st : []).slice(0, 8).map(function (x) { return { i: x.i, t: String(x.t || ""), a: x.a === undefined ? -1 : +x.a }; }) }; }); state.rdone = state.rdone && typeof state.rdone === "object" ? state.rdone : {}; state.journal = state.journal && typeof state.journal === "object" ? state.journal : {}; state.progHist = Array.isArray(state.progHist) ? state.progHist : []; state.skips = state.skips && typeof state.skips === "object" ? state.skips : {}; state.goals = (Array.isArray(state.goals) ? state.goals : []).map(function (g) { return { i: g.i, t: g.t, d: !!g.d, dl: g.dl || "", st: Array.isArray(g.st) ? g.st : [] }; }); state.todo = (Array.isArray(state.todo) ? state.todo : []).filter(function (a) { return !(a.x && daysBetween(a.d, todayKey()) > 14); }).slice(-30); state.days = state.days || {}; state.weights = state.weights || {}; state.notes = state.notes || {};
     state.lib = state.lib || {}; state.lib.f = state.lib.f || []; state.lib.r = state.lib.r || [];
     if (state.fs === undefined) state.fs = true;
     if (!state.start) { var ks = Object.keys(state.days).concat(Object.keys(state.weights)).sort(); state.start = ks.length ? ks[0] : todayKey(); }
@@ -1247,6 +1358,8 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     var empty = !e.m && !e.w && !e.p && !e.t;
     cset("j_" + k, empty ? "-" : [e.m || 0, e.w || 0, e.p || 0].join("") + "|" + (e.t || ""));
   }
+  function saveRout() { saveLocal(); cset("u", JSON.stringify(state.rout.map(function (r) { return [r.i, r.n, r.tm, r.st.map(function (x) { return [x.i, x.t, x.a]; })]; }))); }
+  function saveRDay(k) { saveLocal(); cset("v_" + k, (state.rdone[k] || []).join(",") || "-"); }
   function saveShop() { saveLocal(); var h = state.shop; cset("s", JSON.stringify([h.pk, h.sp, h.own, h.acc, h.ttl])); }
   function saveHist() { saveLocal(); cset("q", JSON.stringify(state.progHist.map(function (h) { return [h.id, h.s, h.x, h.f ? 1 : 0]; }))); }
   function saveSkip(k) { saveLocal(); cset("x_" + k, (state.skips[k] || []).join(",") || "-"); }
@@ -1274,6 +1387,8 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
             else if (k.indexOf("d_") === 0) { s.days[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("j_") === 0) { var jm = /^(\d)(\d)(\d)\|([\s\S]*)$/.exec(v || ""); if (jm) s.journal[k.slice(2)] = { m: +jm[1], w: +jm[2], p: +jm[3], t: jm[4] }; }
             else if (k === "s") { try { var sh = JSON.parse(v); s.shop = { pk: +sh[0] || 0, sp: +sh[1] || 0, own: sh[2] || [], acc: sh[3] || "", ttl: +sh[4] || 0 }; } catch (e) {} }
+            else if (k === "u") { try { s.rout = JSON.parse(v).map(function (a) { return { i: a[0], n: a[1], tm: a[2] || "", st: (a[3] || []).map(function (b) { return { i: b[0], t: b[1], a: b[2] === undefined ? -1 : +b[2] }; }) }; }); } catch (e) {} }
+            else if (k.indexOf("v_") === 0) { s.rdone[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k === "q") { try { s.progHist = JSON.parse(v).map(function (a) { return { id: a[0], s: a[1], x: a[2], f: !!a[3] }; }); } catch (e) {} }
             else if (k.indexOf("x_") === 0) { s.skips[k.slice(2)] = v && v !== "-" ? v.split(",") : []; }
             else if (k.indexOf("w_") === 0) { var n = parseFloat(v); if (n) s.weights[k.slice(2)] = n; }
@@ -1408,7 +1523,12 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
   var PTS_PER = 3;
   var ACC = { teal: ["#0e9f8e", "#3fdcc6", "#6a45f0", "#9a7dff"], pink: ["#d6336c", "#ff7aa8", "#6a45f0", "#9a7dff"], orange: ["#d9731f", "#ffb15c", "#0e9f8e", "#3fdcc6"], blue: ["#2f6fe0", "#7fb0ff", "#0e9f8e", "#3fdcc6"] };
   var SHOP = [["acc_teal", 60], ["acc_pink", 60], ["acc_orange", 60], ["acc_blue", 60], ["ttl_1", 30], ["ttl_2", 90], ["ttl_3", 200], ["ttl_4", 400]];
-  function earnedPts() { return checksTotal() * PTS_PER; }
+  var RB = 5;
+  function rDone(k, sid) { return (state.rdone[k] || []).indexOf(sid) >= 0; }
+  function rProg(r, k) { var n = r.st.length, a = r.st.filter(function (x) { return rDone(k, x.i); }).length; return { a: a, n: n, full: n > 0 && a === n }; }
+  function rBonus(k) { return state.rout.filter(function (r) { return r.st.length >= 2 && rProg(r, k).full; }).length; }
+  function rBonusTotal() { return Object.keys(state.rdone).reduce(function (a, k) { return a + rBonus(k); }, 0); }
+  function earnedPts() { return checksTotal() * PTS_PER + rBonusTotal() * RB; }
   function ptsBalance() { return Math.max(earnedPts(), state.shop.pk) - state.shop.sp; }
   function owns(id) { return id === "acc_default" || id === "ttl_0" || state.shop.own.indexOf(id) >= 0; }
   function myTitle() { return t("ttl_" + (owns("ttl_" + state.shop.ttl) ? state.shop.ttl : 0)); }
@@ -1421,7 +1541,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     } else { r.style.removeProperty("--a1"); r.style.removeProperty("--a2"); r.style.removeProperty("--hero"); }
   }
   function ptsLine() {
-    var tk = todayKey(), tdy = (state.days[tk] || []).length * PTS_PER;
+    var tk = todayKey(), tdy = (state.days[tk] || []).length * PTS_PER + rBonus(tk) * RB;
     return '<button class="pts" data-go="progress">✦ ' + t("pts_bal", { n: ptsBalance() }) + (tdy ? " · " + t("pts_today", { n: tdy }) : "") + "</button>";
   }
   function shopCard() {
@@ -1459,13 +1579,14 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       var pn = PROG_N[pr.id], pd = daysBetween(pr.s, tk) + 1;
       if (pd <= pn) progCard = '<button class="card tile-card" data-gp="1"><span class="row" style="justify-content:space-between;flex-wrap:nowrap"><b>' + esc(PT[lang()][pr.id].n) + '</b><span class="sub">' + t("prog_day", { d: pd, n: pn }) + ' ›</span></span><span class="bar" style="margin-top:10px"><i style="width:' + Math.round((pr.x || []).length / pn * 100) + '%"></i></span><span class="note" style="display:block;margin-top:8px">' + esc(progTask(pr.id, pd)) + '</span></button>';
     }
+    var routCard = state.rout.length ? '<button class="card tile-card" data-gr="1"><span class="row" style="justify-content:space-between;flex-wrap:nowrap"><b>' + t("rout_h") + '</b><span class="sub">›</span></span>' + state.rout.map(function (r) { var p = rProg(r, tk); return '<span class="row" style="justify-content:space-between;margin-top:10px"><span>' + esc(r.n) + '</span><small class="sub">' + p.a + "/" + p.n + '</small></span><span class="bar" style="margin-top:6px"><i style="width:' + (p.n ? p.a / p.n * 100 : 0) + '%"></i></span>'; }).join("") + "</button>" : "";
     return '<div class="stack">' +
       head(greeting() + (dispName() ? ", " + esc(dispName()) : ""), t("tagline")) +
       '<section class="hero" id="hero"><div class="top"><div class="ring"><svg viewBox="0 0 96 96"><circle class="trk" cx="48" cy="48" r="40"/><circle class="val" cx="48" cy="48" r="40" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/></svg><b>' + pct + '%</b></div>' +
         '<div class="nums"><div><b>' + streak() + '</b><span>' + t("streak") + '</span></div><div><b>' + done + '/' + total + '</b><span>' + t("today") + '</span></div><div><b>' + lv.n + '</b><span>' + t("lvl") + '</span></div></div></div>' +
         '<p class="msg">' + msg + '</p>' + ptsLine() + '</section>' +
       '<div class="tiles">' + tile("tasks", "g1") + tile("progress", "g2") + tile("base", "g3") + tile("profile", "g4") + '</div>' +
-      progCard + planCard +
+      progCard + routCard + planCard +
       (rec ? '<section class="card"><h2>' + t("rec_t") + '</h2><p>' + rec + '</p></section>' : "") +
       '<section class="card"><h2>' + t("fact") + '</h2><p>' + esc(tip) + '</p></section>' +
       homeBanner() + '</div>';
@@ -1489,6 +1610,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     var mleft = due.filter(function (h) { return h.min && !isDone(tk, h.k); }).length;
     if (tasksTab === "daily") return dailyView(dateTxt);
     if (tasksTab === "prog") return progView(dateTxt);
+    if (tasksTab === "rout") return routView(dateTxt);
     return '<div class="stack">' + head(t("tasks_title"), dateTxt) + tabsBar() + ptsLine() +
       '<div class="card"><div class="row" style="justify-content:space-between"><b>' + t("done_of", { a: st.done, b: st.due }) + '</b><span class="sub">' + (okDay(tk) ? t("main_closed") : t("to_main", { n: mleft })) + '</span></div><div class="bar" style="margin-top:12px"><i style="width:' + (st.due ? st.done / st.due * 100 : 0) + '%"></i></div></div>' +
       (list || '<div class="card empty"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg><p>' + t(habits().length ? "msg_rest" : "no_habits") + '</p></div>') +
@@ -1496,8 +1618,49 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
       '<div class="row"><button class="btn soft" data-go="habits">' + t("manage") + '</button><button class="btn soft" data-go="journal">' + t("jr_open") + '</button></div>' +
       '<p class="note">' + t("hard_day") + '</p></div>';
   }
+
+  var rEdit = null;
+  var RPRE = [["water", 3, "m"], ["spf", 4, "m"], ["wash", 5, ""], ["move", 8, "m"], ["bfast", 1, "m"], ["plan", 9, ""], ["screens", 11, "e"], ["night_skin", 5, "e"], ["walk", 15, "e"], ["jr", 17, "e"], ["prep", 9, "e"], ["bed", 0, "e"]];
+  var RTPL = { m: ["water", "spf", "move", "plan"], e: ["screens", "night_skin", "jr", "bed"] };
+  function rsid() { return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+  function rpreStep(id) { var x = RPRE.filter(function (a) { return a[0] === id; })[0]; return { i: rsid(), t: t("rs_" + id), a: x ? x[1] : -1 }; }
+  function routView(dt) {
+    var tk = todayKey();
+    if (rEdit) return routEdit(dt);
+    var rk = { m: 0, "": 1, e: 2 };
+    var list = state.rout.slice().sort(function (a, b) { return rk[a.tm || ""] - rk[b.tm || ""]; }).map(function (r) {
+      var p = rProg(r, tk), f30 = 0;
+      for (var i = 0; i < 30; i++) if (rProg(r, dkey(shift(-i))).full) f30++;
+      var steps = r.st.map(function (x) {
+        var on = rDone(tk, x.i);
+        return '<div class="goal"><button class="task" data-rs="' + esc(x.i) + '" aria-pressed="' + on + '">' + CHECK + '<span class="tt"><span class="t">' + esc(x.t) + '</span></span></button>' + (x.a >= 0 ? '<button class="x" data-ra="' + x.a + '" aria-label="' + esc(t("rt_why")) + '" title="' + esc(t("rt_why")) + '">ⓘ</button>' : "") + "</div>";
+      }).join("");
+      return '<section class="card stack"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h2 style="margin:0">' + esc(r.n) + '</h2><span class="star">' + t(r.tm ? (r.tm === "m" ? "part_m" : "part_e") : "part_any") + '</span></div>' +
+        '<div class="row" style="justify-content:space-between"><b>' + p.a + "/" + p.n + '</b><span class="sub">' + (p.full ? t("rt_done") : "") + '</span></div><div class="bar"><i style="width:' + (p.n ? p.a / p.n * 100 : 0) + '%"></i></div>' +
+        (steps || '<p class="note">' + t("rt_empty_steps") + "</p>") + '<p class="note">' + t("rt_full30", { n: f30 }) + '</p><button class="btn soft" data-re="' + esc(r.i) + '">' + t("rt_edit") + "</button></section>";
+    }).join("");
+    var intro = state.rout.length ? "" : '<section class="card stack"><p class="note">' + t("rt_intro") + '</p><div class="row"><button class="btn" data-rtpl="m">' + t("rt_tpl_m") + '</button><button class="btn" data-rtpl="e">' + t("rt_tpl_e") + "</button></div></section>";
+    return '<div class="stack">' + head(t("tasks_title"), dt) + tabsBar() + intro + list +
+      (state.rout.length < 5 ? '<button class="btn soft" data-rx="new">' + t("rt_new") + "</button>" : '<p class="note">' + t("rt_max") + "</p>") +
+      '<p class="note">' + t("rt_bonus", { n: RB }) + "</p></div>";
+  }
+  function routEdit(dt) {
+    var e = rEdit, have = e.st.map(function (x) { return x.t; });
+    var steps = e.st.map(function (x, i) {
+      return '<div class="goal"><span class="task" style="pointer-events:none"><span class="tt"><span class="t">' + esc(x.t) + '</span></span></span><button class="x" data-rsd="' + i + '" aria-label="×">×</button></div>';
+    }).join("");
+    var chips = RPRE.filter(function (x) { return have.indexOf(t("rs_" + x[0])) < 0; }).map(function (x) { return '<button class="chip" data-rp="' + x[0] + '">+ ' + esc(t("rs_" + x[0])) + "</button>"; }).join("");
+    var tm = [["m", "part_m"], ["", "part_any"], ["e", "part_e"]].map(function (x) { return '<button data-rtm="' + x[0] + '" aria-pressed="' + ((e.tm || "") === x[0]) + '">' + t(x[1]) + "</button>"; }).join("");
+    return '<div class="stack">' + head(t("tasks_title"), dt) + tabsBar() +
+      '<section class="card stack"><input id="r-name" type="text" maxlength="24" value="' + esc(e.n) + '" placeholder="' + esc(t("rt_name_ph")) + '" aria-label="' + esc(t("rt_name_ph")) + '"><h3 class="dgrp">' + t("rt_time") + '</h3><div class="seg">' + tm + '</div>' +
+      '<h3 class="dgrp">' + t("rt_steps") + "</h3>" + (steps || '<p class="note">' + t("rt_nosteps") + "</p>") +
+      (e.st.length < 8 ? '<input id="r-step" type="text" maxlength="40" placeholder="' + esc(t("rt_step_ph")) + '" aria-label="' + esc(t("rt_step_ph")) + '"><button class="btn soft" data-rx="stepadd">' + t("rt_add") + '</button><h3 class="dgrp">' + t("rt_presets") + '</h3><div class="chips wrap">' + chips + "</div>" : "") +
+      '</section><div class="row"><button class="btn" data-rx="save">' + t("rt_save") + '</button><button class="btn soft" data-rx="cancel">' + t("rt_cancel") + "</button></div>" +
+      (e.i ? '<button class="btn soft" data-rx="del">' + t("rt_del") + "</button>" : "") + "</div>";
+  }
+  function capR() { var n = document.getElementById("r-name"); if (n && rEdit) rEdit.n = n.value; }
   function tabsBar() {
-    return '<div class="seg">' + [["today", "tt_today"], ["daily", "tt_daily"], ["prog", "tt_prog"]].map(function (x) { return '<button data-tt="' + x[0] + '" aria-pressed="' + (tasksTab === x[0]) + '">' + t(x[1]) + "</button>"; }).join("") + "</div>";
+    return '<div class="seg" style="grid-template-columns:repeat(4,1fr)">' + [["today", "tt_today"], ["daily", "tt_daily"], ["prog", "tt_prog"], ["rout", "tt_rout"]].map(function (x) { return '<button data-tt="' + x[0] + '" aria-pressed="' + (tasksTab === x[0]) + '">' + t(x[1]) + "</button>"; }).join("") + "</div>";
   }
   var CHECK = '<span class="box"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span>';
   function dailyView(dt) {
@@ -1761,7 +1924,7 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
 
   function captureName() { var n = document.getElementById("f-name"); if (n && editing) editing.f.t = n.value; }
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-buy],[data-use],[data-lvl],[data-rel],[data-jr],[data-sk],[data-mv],[data-hs],[data-gp],[data-gx],[data-gs],[data-gsd],[data-liball],[data-libback],[data-tt],[data-ot],[data-od],[data-pstart],[data-rd],[data-libfav],[data-libtog]");
+    var el = e.target.closest("[data-go],[data-t],[data-act],[data-gt],[data-gd],[data-lang],[data-edit],[data-fc],[data-fr],[data-wd],[data-range],[data-libc],[data-buy],[data-use],[data-lvl],[data-rel],[data-jr],[data-sk],[data-mv],[data-hs],[data-gp],[data-gx],[data-gs],[data-gsd],[data-liball],[data-libback],[data-tt],[data-ot],[data-od],[data-pstart],[data-rd],[data-libfav],[data-libtog],[data-rs],[data-ra],[data-re],[data-rx],[data-rtpl],[data-rtm],[data-rp],[data-rsd],[data-gr]");
     if (!el) return;
     var ds = el.dataset;
     if (ds.go) { editing = null; haptic(); go(ds.go); return; }
@@ -1803,7 +1966,29 @@ textarea::placeholder { color: var(--muted); } textarea:focus-visible { outline:
     if (ds.lvl !== undefined) { libLvl = +ds.lvl; render(true); return; }
     if (ds.rel !== undefined) { libQ = ""; libC = "all"; libAll = true; libFav = false; libLvl = 0; render(true); var rd = document.querySelector('details[data-i="' + ds.rel + '"]'); if (rd) { rd.open = true; rd.scrollIntoView({ block: "start" }); } return; }
     if (ds.jr) { var jp = ds.jr.split(":"), jk = todayKey(), je = state.journal[jk] = state.journal[jk] || {}; je[jp[0]] = je[jp[0]] === +jp[1] ? 0 : +jp[1]; saveJournal(jk); haptic(); render(true); return; }
-    if (ds.tt) { tasksTab = ds.tt; haptic(); render(true); return; }
+    if (ds.gr) { tasksTab = "rout"; go("tasks"); return; }
+    if (ds.rs) { var rk0 = todayKey(), ra0 = state.rdone[rk0] = state.rdone[rk0] || [], ri0 = ra0.indexOf(ds.rs), rb0 = rBonus(rk0); if (ri0 >= 0) ra0.splice(ri0, 1); else ra0.push(ds.rs); saveRDay(rk0); haptic(rBonus(rk0) > rb0 ? "ok" : null); render(true); return; }
+    if (ds.ra !== undefined) { var ai = ds.ra; libQ = ""; libC = "all"; libAll = true; libFav = false; libLvl = 0; go("base"); setTimeout(function () { var rd2 = document.querySelector('details[data-i="' + ai + '"]'); if (rd2) { rd2.open = true; rd2.scrollIntoView({ block: "start" }); } }, 90); return; }
+    if (ds.rtpl) { if (state.rout.length < 5) { state.rout.push({ i: "u" + Date.now().toString(36), n: t("rt_name_" + ds.rtpl), tm: ds.rtpl, st: RTPL[ds.rtpl].map(rpreStep) }); saveRout(); haptic("ok"); render(true); } return; }
+    if (ds.re) { var rr = state.rout.filter(function (x) { return x.i === ds.re; })[0]; if (rr) { rEdit = { i: rr.i, n: rr.n, tm: rr.tm, st: rr.st.map(function (x) { return { i: x.i, t: x.t, a: x.a }; }) }; render(true); window.scrollTo(0, 0); } return; }
+    if (ds.rtm !== undefined && rEdit) { capR(); rEdit.tm = ds.rtm; render(true); return; }
+    if (ds.rp && rEdit) { capR(); if (rEdit.st.length < 8) rEdit.st.push(rpreStep(ds.rp)); render(true); return; }
+    if (ds.rsd !== undefined && rEdit) { capR(); rEdit.st.splice(+ds.rsd, 1); render(true); return; }
+    if (ds.rx) {
+      capR();
+      if (ds.rx === "new") { rEdit = { i: "", n: "", tm: "m", st: [] }; render(true); window.scrollTo(0, 0); }
+      else if (ds.rx === "cancel") { rEdit = null; render(true); }
+      else if (ds.rx === "stepadd" && rEdit) { var si = document.getElementById("r-step"), sv = si ? si.value.trim() : ""; if (!sv) { if (si) si.focus(); return; } if (rEdit.st.length < 8) rEdit.st.push({ i: rsid(), t: sv.slice(0, 40), a: -1 }); haptic(); render(true); }
+      else if (ds.rx === "save" && rEdit) {
+        if (!rEdit.st.length) { render(true); return; }
+        var rn = (rEdit.n || "").trim().slice(0, 24) || t("rt_name_def"), ex = rEdit.i ? state.rout.filter(function (x) { return x.i === rEdit.i; })[0] : null;
+        if (ex) { ex.n = rn; ex.tm = rEdit.tm; ex.st = rEdit.st; } else if (state.rout.length < 5) state.rout.push({ i: "u" + Date.now().toString(36), n: rn, tm: rEdit.tm, st: rEdit.st });
+        saveRout(); rEdit = null; haptic("ok"); render(true); window.scrollTo(0, 0);
+      }
+      else if (ds.rx === "del" && rEdit) { state.rout = state.rout.filter(function (x) { return x.i !== rEdit.i; }); saveRout(); rEdit = null; render(true); window.scrollTo(0, 0); }
+      return;
+    }
+    if (ds.tt) { rEdit = null; tasksTab = ds.tt; haptic(); render(true); return; }
     if (ds.ot) { var oa = state.todo.filter(function (x) { return x.i === ds.ot; })[0]; if (oa) { oa.x = !oa.x; saveTodo(); haptic(oa.x ? "ok" : null); render(true); } return; }
     if (ds.od) { state.todo = state.todo.filter(function (x) { return x.i !== ds.od; }); saveTodo(); render(true); return; }
     if (ds.pstart) { state.prog = { id: ds.pstart, s: todayKey(), x: [] }; saveProg(); haptic("ok"); render(true); window.scrollTo(0, 0); return; }
